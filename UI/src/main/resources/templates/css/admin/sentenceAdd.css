@@ -1,0 +1,182 @@
+* {
+  box-sizing: border-box;
+}
+
+@media only screen and (min-width: 800px) {
+  .inner {
+    max-width: 800px;
+  }
+}
+
+
+body {
+  margin: 0 auto;
+  color: #3f464d;
+  font-family: "Spoqa Han Sans Neo", "Sans-serif";
+}
+
+/* a 링크 태그 스타일 초기화 */
+a {
+  all: unset;
+}
+a:link {
+  text-decoration: none;
+  color: #3f464d;
+}
+a:visited {
+  text-decoration: none;
+  color: #3f464d;
+}
+a:active {
+  text-decoration: none;
+  color: #3f464d;
+}
+a:hover {
+  text-decoration: none;
+  color: #3f464d;
+}
+
+.inner {
+  width: 100%; /* 가로 사이즈가 1200px 넘는 해상도에서는 max-width 설정 */
+  height: 100%; /* align-items 등으로 수직 가운데 정렬을 위해, 알맞은 height 설정이 필요함 */
+
+  /*이것이 가운데 정렬 방법이다.*/
+  margin: 0 auto; /* 가운데 정렬: 동일 요소에 width 가 설정되어 있을 때에만 적용 */
+  /*살짝 좌우 띄우게 해서 하기*/
+  padding: 0rem 2rem;
+}
+
+header {
+  width: 100%;
+  height: 60px;
+  background-color: lightblue;
+  /*position: fixed;*/
+  /*top: 0;*/
+  /*left: 0;*/
+  /*z-index: 1000;*/
+}
+
+.head-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 필요시 세부 설정을 위해, 상단 좌측 브랜드만을 별도로 클래스로 정의 */
+.head-container .head-brand {
+  font-weight: normal;
+  font-size: 1.4em;
+}
+
+
+/* 필요시 세부 설정을 위해, 상단 우측 메뉴만을 별도로 클래스로 정의 */
+.head-container .head-home {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.head-container .head-home a:hover {
+  color: #2186c4;
+  cursor: pointer;
+}
+
+.inner hr {
+  margin-top: 0px;
+  width: 100%;
+}
+
+
+section {
+  width: 100%;
+  background-color: #fff;
+  position: relative;
+}
+
+.title-container {
+  width: 100%;
+  height: 60px;
+  background-color: #ffffff;
+  margin: 35px 0px 0px 0px;
+}
+
+.title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2em;
+  letter-spacing: 0.6rem;
+  margin-left: 2rem;
+}
+
+/*new*/
+.select-container {
+  margin-top: 2rem;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.grammar {
+  margin-left: 2rem;
+}
+
+.grammar-title {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.situation {
+  margin-right: 2rem;
+}
+
+.situation-title {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.korean-container {
+  margin-top: 2rem;
+  margin-right: 2rem;
+  margin-left: 2rem;
+}
+
+.korean-title {
+  margin-left: 5.5rem;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.english-container {
+  margin-top: 2rem;
+  margin-right: 2rem;
+  margin-left: 2rem;
+}
+
+.english-title {
+  margin-left: 5.5rem;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.button-container {
+  margin-top: 4rem;
+
+}
+
+.register {
+  margin-right: 2rem;
+  width: 25%;
+
+}
+
+
+
