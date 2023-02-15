@@ -13,4 +13,6 @@ public class AdminSentenceSuccess {
     private int status;
     private AdminSentenceDto adminSentenceDto;
     private List<AdminSentenceDto> list;
+    private List<String> grammarList;
+    private List<String> situationList;
 }

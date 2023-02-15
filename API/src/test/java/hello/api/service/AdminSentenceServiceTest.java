@@ -1,6 +1,8 @@
 package hello.api.service;
 
 import hello.api.entity.AdminSentenceEntity;
+import hello.api.enumforentity.Grammar;
+import hello.api.enumforentity.Situation;
 import hello.api.repository.AdminSentenceRepository;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -31,4 +33,21 @@ class AdminSentenceServiceTest {
         Assertions.assertThat(all.size()).isEqualTo(1);
     }
 
+    @Test
+    void findGrammarValues() {
+        //given
+        //when
+        List<String> grammarValues = adminSentenceService.findGrammarValues();
+        //then
+        Assertions.assertThat(grammarValues.size()).isEqualTo(Grammar.values().length);
+    }
+
+    @Test
+    void findSituationValues() {
+        //given
+        //when
+        List<String> situationValues = adminSentenceService.findSituationValues();
+        //then
+        Assertions.assertThat(situationValues.size()).isEqualTo(Situation.values().length);
+    }
 }

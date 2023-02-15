@@ -4,6 +4,8 @@ import hello.api.entity.AdminSentenceEntity;
 import hello.api.enumforentity.Grammar;
 import hello.api.enumforentity.Situation;
 import hello.api.repository.AdminSentenceRepository;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,24 @@ public class AdminSentenceService {
         AdminSentenceEntity adminSentenceEntity = new AdminSentenceEntity(korean, english,
             grammar, situation);
         adminSentenceRepository.save(adminSentenceEntity);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> findGrammarValues() {
+        List<String> list = new ArrayList<>();
+        for (Grammar grammar : Grammar.values()) {
+            list.add(grammar.getStringGrammar());
+        }
+        return list;
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> findSituationValues() {
+        List<String> list = new ArrayList<>();
+        for (Situation situation : Situation.values()) {
+            list.add(situation.getStringSituation());
+        }
+        return list;
     }
 
     private static Grammar findGrammar(String stringGrammar) {
