@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+server:
+  port: 8080
+url:
+  api: 127.0.0.1:5510
+  ui: 127.0.0.1:8080
+
+---
+spring:
+  config:
+    activate:
+      on-profile: server
+server:
+  port: 8081
+
+#nginX
+url:
+  api: 127.0.0.3
+  ui: 127.0.0.3

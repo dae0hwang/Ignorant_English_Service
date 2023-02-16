@@ -7,5 +7,5 @@ CREATE TABLE admin_sentence(
     grammar VARCHAR(255) NOT NULL,
     situation VARCHAR(255) NOT NULL,
     created_date TIMESTAMP NOT NULL,
-    update_date TIMESTAMP NOT NULL
+    updated_date TIMESTAMP NOT NULL
 );

@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Situation {
     NO("NO"),
-    BUSINESS("HAVE PP"),
+    BUSINESS("BUSINESS"),
     CAFE("CAFE");
 
     private final String stringSituation;
