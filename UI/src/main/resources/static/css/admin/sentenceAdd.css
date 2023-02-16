@@ -121,6 +121,7 @@ section {
 
 .grammar {
   margin-left: 2rem;
+  width: 40%;
 }
 
 .grammar-title {
@@ -132,6 +133,7 @@ section {
 
 .situation {
   margin-right: 2rem;
+  width: 40%;
 }
 
 .situation-title {
