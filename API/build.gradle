@@ -49,6 +49,8 @@ dependencies {
     //테스트에서도 롬복 사용
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
+    //validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     // passay-password logstashsetting
 }
 
