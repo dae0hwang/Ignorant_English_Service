@@ -3,6 +3,8 @@ package hello.api.service;
 import hello.api.entity.AdminSentenceEntity;
 import hello.api.enumforentity.Grammar;
 import hello.api.enumforentity.Situation;
+import hello.api.enumforexception.AdminSentenceExceptionEnum.Constants;
+import hello.api.exception.AdminSentenceException;
 import hello.api.repository.AdminSentenceRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,22 +47,30 @@ public class AdminSentenceService {
     }
 
     private static Grammar findGrammar(String stringGrammar) {
-        Grammar findGrammar = Grammar.NO;
+        Grammar findGrammar = null;
         for (Grammar searchGrammar : Grammar.values()) {
             if (searchGrammar.getStringGrammar().equals(stringGrammar)) {
                 findGrammar = searchGrammar;
             }
         }
-        return findGrammar;
+        if (findGrammar == null) {
+            throw new AdminSentenceException(Constants.noMatchGrammarEnum);
+        } else {
+            return findGrammar;
+        }
     }
 
     private static Situation findSituation(String stringSituation) {
-        Situation findSituation = Situation.NO;
+        Situation findSituation = null;
         for (Situation searchSituation : Situation.values()) {
             if (searchSituation.getStringSituation().equals(stringSituation)) {
                 findSituation = searchSituation;
             }
         }
-        return findSituation;
+        if (findSituation == null) {
+            throw new AdminSentenceException(Constants.noMatchSituationEnum);
+        } else {
+            return findSituation;
+        }
     }
 }

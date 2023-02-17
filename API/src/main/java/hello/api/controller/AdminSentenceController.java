@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,8 @@ public class AdminSentenceController {
     private final AdminSentenceService adminSentenceService;
 
     @PostMapping("/add")
-    public ResponseEntity<AdminSentenceSuccess> addSentence(@RequestBody AdminSentenceRequest request) {
+    public ResponseEntity<AdminSentenceSuccess> addSentence(
+        @RequestBody @Validated AdminSentenceRequest request) {
         adminSentenceService.saveSentence(request.getKorean(), request.getEnglish(),
             request.getGrammar(), request.getSituation());
         AdminSentenceSuccess success = new AdminSentenceSuccess(201, null, null, null, null);
