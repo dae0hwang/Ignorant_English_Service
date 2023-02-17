@@ -3,6 +3,7 @@ package hello.api.service;
 import hello.api.entity.AdminSentenceEntity;
 import hello.api.enumforentity.Grammar;
 import hello.api.enumforentity.Situation;
+import hello.api.exception.AdminSentenceException;
 import hello.api.repository.AdminSentenceRepository;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -31,6 +32,26 @@ class AdminSentenceServiceTest {
         //then
         List<AdminSentenceEntity> all = adminSentenceRepository.findAll();
         Assertions.assertThat(all.size()).isEqualTo(1);
+    }
+
+    @Test
+    void saveSentenceException1() {
+        //given
+        //when
+        //then
+        Assertions.assertThatThrownBy(
+                () -> adminSentenceService.saveSentence("korean", "english", "no-match", "NO"))
+            .isInstanceOf(AdminSentenceException.class);
+    }
+
+    @Test
+    void saveSentenceException2() {
+        //given
+        //when
+        //then
+        Assertions.assertThatThrownBy(
+                () -> adminSentenceService.saveSentence("korean", "english", "NO", "no-match"))
+            .isInstanceOf(AdminSentenceException.class);
     }
 
     @Test
