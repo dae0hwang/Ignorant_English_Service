@@ -1,6 +1,8 @@
 package hello.api.controller;
 
-import static hello.api.enumforexception.AdminSentenceExceptionEnum.*;
+import static hello.api.enumforexception.AdminSentenceExceptionEnum.ADD_SENTENCE_STRING_BLANK;
+import static hello.api.enumforexception.AdminSentenceExceptionEnum.NO_MATCH_GRAMMAR_ENUM;
+import static hello.api.enumforexception.AdminSentenceExceptionEnum.NO_MATCH_SITUATION_ENUM;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
@@ -12,7 +14,6 @@ import hello.api.dto.AdminSentenceSuccess;
 import hello.api.dto.ErrorResponse;
 import hello.api.enumforentity.Grammar;
 import hello.api.enumforentity.Situation;
-import hello.api.enumforexception.AdminSentenceExceptionEnum;
 import hello.api.exceptionadvice.AdminSentenceExceptionAdvice;
 import hello.api.interceptor.ExceptionResponseInterceptor;
 import java.util.Arrays;
@@ -20,7 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -137,10 +137,10 @@ class AdminSentenceControllerTest {
         //given
         String url = baseUrl + "/selection";
 
-        List<String> grammarList = Arrays.stream(Grammar.values()).map(i -> i.getStringGrammar())
+        List<String> grammarList = Arrays.stream(Grammar.values()).map(Grammar::getStringGrammar)
             .collect(Collectors.toList());
         List<String> situationList = Arrays.stream(Situation.values())
-            .map(i -> i.getStringSituation())
+            .map(Situation::getStringSituation)
             .collect(Collectors.toList());
         AdminSentenceSuccess success = new AdminSentenceSuccess(200, null, null, grammarList,
             situationList);
