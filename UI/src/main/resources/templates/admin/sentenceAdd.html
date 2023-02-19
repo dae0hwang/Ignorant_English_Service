@@ -157,10 +157,6 @@
 
   let registerButton = document.getElementById("register-button");
   registerButton.onclick = function () {
-    // console.log(document.getElementById("korean-input").value);
-    // console.log(document.getElementById("english-input").value);
-    // console.log(grammarSelect.options[grammarSelect.selectedIndex].text);
-    // console.log(situationSelect.options[situationSelect.selectedIndex].text);
 
     axios({
       url: "http://"+apiUrl+"/api/admin/sentence/add",
@@ -169,7 +165,7 @@
         korean: document.getElementById("korean-input").value,
         english: document.getElementById("english-input").value,
         grammar: grammarSelect.options[grammarSelect.selectedIndex].text,
-        grammar: situationSelect.options[situationSelect.selectedIndex].text
+        situation: situationSelect.options[situationSelect.selectedIndex].text
       }
 
     })
