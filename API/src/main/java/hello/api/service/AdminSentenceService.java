@@ -46,7 +46,7 @@ public class AdminSentenceService {
         return list;
     }
 
-    private static Grammar findGrammar(String stringGrammar) {
+    private Grammar findGrammar(String stringGrammar) {
         Grammar findGrammar = null;
         for (Grammar searchGrammar : Grammar.values()) {
             if (searchGrammar.getStringGrammar().equals(stringGrammar)) {
@@ -60,7 +60,7 @@ public class AdminSentenceService {
         }
     }
 
-    private static Situation findSituation(String stringSituation) {
+    private Situation findSituation(String stringSituation) {
         Situation findSituation = null;
         for (Situation searchSituation : Situation.values()) {
             if (searchSituation.getStringSituation().equals(stringSituation)) {
