@@ -1,5 +1,6 @@
 package hello.api.service;
 
+import hello.api.dto.AdminSentenceDto;
 import hello.api.entity.AdminSentenceEntity;
 import hello.api.enumforentity.Grammar;
 import hello.api.enumforentity.Situation;
@@ -8,6 +9,7 @@ import hello.api.exception.AdminSentenceException;
 import hello.api.repository.AdminSentenceRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,5 +74,19 @@ public class AdminSentenceService {
         } else {
             return findSituation;
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<AdminSentenceDto> findAll() {
+        List<AdminSentenceEntity> entityList = adminSentenceRepository.findAll();
+        List<AdminSentenceDto> dtoList = entityList.stream()
+            .map(e -> new AdminSentenceDto(e.getId(), e.getKorean(), e.getEnglish(),
+                e.getGrammar().getStringGrammar(), e.getSituation().getStringSituation())).collect(
+                Collectors.toList());
+        return dtoList;
+    }
+
+    public void delete(Long id) {
+        adminSentenceRepository.deleteById(id);
     }
 }

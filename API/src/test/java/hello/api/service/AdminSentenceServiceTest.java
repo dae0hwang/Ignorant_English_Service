@@ -1,5 +1,6 @@
 package hello.api.service;
 
+import hello.api.dto.AdminSentenceDto;
 import hello.api.entity.AdminSentenceEntity;
 import hello.api.enumforentity.Grammar;
 import hello.api.enumforentity.Situation;
@@ -70,5 +71,34 @@ class AdminSentenceServiceTest {
         List<String> situationValues = adminSentenceService.findSituationValues();
         //then
         Assertions.assertThat(situationValues.size()).isEqualTo(Situation.values().length);
+    }
+
+    @Test
+    void findAll() {
+        //given
+        AdminSentenceEntity save1 = adminSentenceRepository.save(
+            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentenceEntity save2 = adminSentenceRepository.save(
+            new AdminSentenceEntity("korean2", "english2", Grammar.NO, Situation.BUSINESS));
+        //when
+        List<AdminSentenceDto> all = adminSentenceService.findAll();
+        //then
+        Assertions.assertThat(all).containsExactly(
+            new AdminSentenceDto(save1.getId(), save1.getKorean(), save1.getEnglish(),
+                save1.getGrammar().getStringGrammar(), save1.getSituation().getStringSituation()),
+            new AdminSentenceDto(save2.getId(), save2.getKorean(), save2.getEnglish(),
+                save2.getGrammar().getStringGrammar(), save2.getSituation().getStringSituation()));
+    }
+
+    @Test
+    void delete() {
+        //given
+        AdminSentenceEntity save = adminSentenceRepository.save(
+            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        //when
+        adminSentenceService.delete(save.getId());
+        //then
+        List<AdminSentenceDto> all = adminSentenceService.findAll();
+        Assertions.assertThat(all).isEmpty();
     }
 }

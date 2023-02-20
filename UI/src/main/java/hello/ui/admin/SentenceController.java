@@ -12,4 +12,9 @@ public class SentenceController {
     public String sentenceAdd() {
         return "admin/sentenceAdd";
     }
+
+    @GetMapping("/list")
+    public String sentenceList() {
+        return "admin/sentenceList";
+    }
 }
