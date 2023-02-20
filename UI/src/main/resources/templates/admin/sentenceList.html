@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>무식한 영어 공부</title>
+
+    <!--스타일 초기화  아이콘 폰트 등록-->
+<!--    <link rel="stylesheet" href="../css/nomalize.css"/>-->
+    <script src="https://kit.fontawesome.com/f1def33959.js" crossorigin="anonymous"></script>
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet"
+          type="text/css"/>
+
+    <!--axios  -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!--css-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/admin/sentenceList.css" />
+</head>
+<body>
+<header>
+    <div class="inner">
+        <div class="head-container">
+            <div class="head-brand">무식한 영어 공부</div>
+            <a class="btn btn-primary head" href="" role="button" style="color: #ffffff"
+               id="home-button">Home</a>
+        </div>
+    </div>
+</header>
+
+<section>
+    <div class="inner">
+        <div class="title-container">
+            <div class="title">관리자 문장 목록</div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="select-container">
+            <div class="grammar">
+                <div class="grammar-title">문법 체크</div>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        id="grammar-select">
+                </select>
+            </div>
+            <div class="situation">
+                <div class="situation-title">상황 체크</div>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        id="situation-select">
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="search-container">
+            <div class="search-input">
+                <div class="search-title">번역, 영어</div>
+                <input class="form-control form-control-lg" type="text" placeholder=""
+                       aria-label=".form-control-lg example" id="search-input">
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end search-button-container">
+                <button type="button" class="btn btn-primary btn-lg register search-button"
+                id="search-button">검색</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="table-inner">
+        <table class="table ">
+            <thead class="table-light">
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">번역</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">영어</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">문법</th>
+                <th scope="col">상황</th>
+                <th scope="col">수정</th>
+                <th scope="col">삭제</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            <tr>
+                <td>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+
+
+
+<script th:inline="javascript">
+  const apiUrl = [[${@environment.getProperty('url.api')}]];
+  const uiUrl = [[${@environment.getProperty('url.ui')}]];
+
+  //home button
+  document.getElementById("home-button").href = "http://" + uiUrl;
+
+  //셀렉트 박스 정보 가져오기.
+  function makeGrammarSelect(dataList) {
+    let grammarSelect = document.getElementById("grammar-select");
+
+    for (let i = 0; i < dataList.length; i++) {
+      if (i === 0) {
+        let optionElement = document.createElement("option");
+        optionElement.selected;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        grammarSelect.appendChild(optionElement)
+      } else {
+        let optionElement = document.createElement("option");
+        optionElement.value = i;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        grammarSelect.appendChild(optionElement)
+      }
+    }
+  }
+
+  function makeSituationSelect(dataList) {
+    let situationSelect = document.getElementById("situation-select");
+
+    for (let i = 0; i < dataList.length; i++) {
+      if (i === 0) {
+        let optionElement = document.createElement("option");
+        optionElement.selected;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        situationSelect.appendChild(optionElement)
+      } else {
+        let optionElement = document.createElement("option");
+        optionElement.value = i;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        situationSelect.appendChild(optionElement)
+      }
+    }
+  }
+
+  //테이블 정보 가져와서 테이블 만들기
+  let bodyElement = document.getElementById("table-body");
+  function makeTable(dataList) {
+
+    for (const dto of dataList) {
+      let idTdElement = document.createElement("td")
+      idTdElement.appendChild(document.createTextNode(dto.id));
+      let koreanTdElement = document.createElement("td")
+      koreanTdElement.appendChild(document.createTextNode(dto.korean));
+      koreanTdElement.setAttribute("colspan", 3);
+      let englishTdElement = document.createElement("td")
+      englishTdElement.appendChild(document.createTextNode(dto.english));
+      englishTdElement.setAttribute("colspan", 3);
+      let grammarTdElement = document.createElement("td")
+      grammarTdElement.appendChild(document.createTextNode(dto.grammar));
+      let situationTdElement = document.createElement("td")
+      situationTdElement.appendChild(document.createTextNode(dto.situation));
+
+      let updateButtonTd = document.createElement("td");
+      let updateButton = document.createElement("button");
+      updateButton.appendChild(document.createTextNode("수정"))
+      updateButton.style.width="100%"
+      updateButton.style.height="100%"
+      updateButton.style.borderRadius="5px"
+      updateButton.style.backgroundColor="rgb(3, 110, 2533)"
+      updateButton.style.border = "none";
+      updateButton.style.color = "rgb(232, 248, 255)";
+      updateButtonTd.appendChild(updateButton);
+      //href 정보 제공하기
+      updateButton.setAttribute("id", "update-button");
+      updateButton.setAttribute("entity", dto.id);
+
+      let deleteButtonTd = document.createElement("td");
+      let deleteButton = document.createElement("button");
+      deleteButton.setAttribute("id", "delete-button");
+      deleteButton.setAttribute("entity", dto.id);
+      deleteButton.appendChild(document.createTextNode("삭제"))
+      deleteButton.style.width="100%"
+      deleteButton.style.height="100%"
+      deleteButton.style.borderRadius="5px"
+      deleteButton.style.backgroundColor="rgb(3, 110, 2533)"
+      deleteButton.style.border = "none";
+      deleteButton.style.color = "rgb(232, 248, 255)";
+      deleteButtonTd.appendChild(deleteButton);
+
+      let trElement = document.createElement("tr");
+      trElement.appendChild(idTdElement);
+      trElement.appendChild(koreanTdElement);
+      trElement.appendChild(englishTdElement);
+      trElement.appendChild(grammarTdElement);
+      trElement.appendChild(situationTdElement);
+      trElement.appendChild(updateButtonTd);
+      trElement.appendChild(deleteButtonTd);
+      bodyElement.appendChild(trElement);
+    }
+  }
+
+  let dataList = null;
+  //셀렉트 박스 한곳에 두기.
+  window.onload = function () {
+    axios({
+      url: "http://"+apiUrl+"/api/admin/sentence/selection",
+      method: 'get',
+    })
+    .then(function (response) {
+      makeGrammarSelect(response.data.grammarList);
+      makeSituationSelect(response.data.situationList);
+    })
+    .catch(function (error) {
+      alert("[실패] 잠시 후 시도해 주세요");
+    });
+
+    axios({
+      url: "http://"+apiUrl+"/api/admin/sentence/all",
+      method: 'get',
+    })
+    .then(function (response) {
+      makeTable(response.data.list)
+      dataList = response.data.list;
+    })
+    .catch(function (error) {
+      alert("[실패] 테이블 정보 가져오기에 실패하였습니다.");
+      console.log(error);
+    });
+
+  }
+
+  //수정 버튼 href 설정하기
+  document.addEventListener("click", function (event) {
+    if (event.target.id != "update-button") {
+      return;
+    }
+    location.href = "/admin/sentence/update/" + event.target.getAttribute("entity");
+  });
+
+  //삭제 버튼 axios 지정하기.
+  document.addEventListener("click", function (event) {
+    if (event.target.id != "delete-button") {
+      return;
+    }
+    event.target.getAttribute("entity");
+    axios({
+      url: "http://"+apiUrl+"/api/admin/sentence/delete/"+event.target.getAttribute("entity"),
+      method: 'delete',
+    })
+    .then(function (response) {
+      window.location.reload()
+    })
+    .catch(function (error) {
+      alert("[실패] 삭제를 실패 했습니다.");
+      console.log(error);
+    });
+  });
+
+  //조건 검색 버튼 기능 오케이 onload라 그래 확인했다. datalist ㅇㅇ
+  //검색 버튼을 누르면, 모든 td들 값을 비교해서 동적 그거네 좆같네.
+  document.addEventListener("click", function (event) {
+    if (event.target.id != "search-button") {
+      return;
+    }
+    console.log(dataList);
+    let searchInput= document.getElementById("search-input").value
+    let grammarSelect = document.getElementById("grammar-select");
+    let situationSelect = document.getElementById("situation-select");
+    let grammar = grammarSelect.options[grammarSelect.selectedIndex].text;
+    let situation = situationSelect.options[situationSelect.selectedIndex].text;
+    if (grammar === "NO") {
+      grammar = "";
+    }
+    if (situation === "NO") {
+      situation = "";
+    }
+    console.log(searchInput);
+    console.log(grammar);
+    console.log(situation);
+
+    //만약 일치한다면 새로운 배열에 담아서 테이블을 만들면된다.
+    let searchList = [];
+    console.log(dataList);
+    for (const data of dataList) {
+      console.log(data);
+      if ((data.korean.includes(searchInput) || data.english.includes(searchInput)) &&
+          data.grammar.includes(grammar) && data.situation.includes(situation)) {
+        searchList.push(data);
+      }
+
+    }
+    console.log(searchList);
+
+    //테이블 바디 엘레멘트 자식전부 삭제, 새로운 자식 등록하기.
+    bodyElement.innerHTML = "";
+    makeTable(searchList);
+  });
+
+
+
+</script>
+</body>
+</html>

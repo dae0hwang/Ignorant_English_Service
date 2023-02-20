@@ -10,12 +10,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hello.api.dto.AdminSentenceDto;
 import hello.api.dto.AdminSentenceSuccess;
 import hello.api.dto.ErrorResponse;
+import hello.api.entity.AdminSentenceEntity;
 import hello.api.enumforentity.Grammar;
 import hello.api.enumforentity.Situation;
 import hello.api.exceptionadvice.AdminSentenceExceptionAdvice;
 import hello.api.interceptor.ExceptionResponseInterceptor;
+import hello.api.repository.AdminSentenceRepository;
+import hello.api.service.AdminSentenceService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +42,8 @@ class AdminSentenceControllerTest {
 
     @Autowired
     AdminSentenceController adminSentenceController;
+    @Autowired
+    AdminSentenceRepository adminSentenceRepository;
     MockMvc mockMvc;
     ObjectMapper objectMapper;
     String baseUrl;
@@ -148,6 +155,49 @@ class AdminSentenceControllerTest {
         //when
         //then
         mockMvc.perform(get(url))
+            .andExpect(status().isOk())
+            .andExpect(content().json(responseContent))
+            .andDo(log());
+    }
+
+    @Test
+    void findAll() throws Exception {
+        //given
+        String url = baseUrl + "/all";
+        AdminSentenceEntity save1 = adminSentenceRepository.save(
+            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentenceEntity save2 = adminSentenceRepository.save(
+            new AdminSentenceEntity("korean2", "english2", Grammar.NO, Situation.BUSINESS));
+
+        List<AdminSentenceDto> dtoList = Arrays.asList(
+            new AdminSentenceDto(save1.getId(), save1.getKorean(), save1.getEnglish(),
+                save1.getGrammar().getStringGrammar(), save1.getSituation().getStringSituation()),
+            new AdminSentenceDto(save2.getId(), save2.getKorean(), save2.getEnglish(),
+                save2.getGrammar().getStringGrammar(), save2.getSituation().getStringSituation()));
+
+        AdminSentenceSuccess success = new AdminSentenceSuccess(200, null, dtoList, null,
+            null);
+        String responseContent = objectMapper.writeValueAsString(success);
+        //when
+        //then
+        mockMvc.perform(get(url))
+            .andExpect(status().isOk())
+            .andExpect(content().json(responseContent))
+            .andDo(log());
+    }
+
+    @Test
+    void delete() throws Exception{
+        //given
+        AdminSentenceEntity save = adminSentenceRepository.save(
+            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        String url = baseUrl + "/delete/"+save.getId();
+        AdminSentenceSuccess success = new AdminSentenceSuccess(200, null, null, null,
+            null);
+        String responseContent = objectMapper.writeValueAsString(success);
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.delete(url))
             .andExpect(status().isOk())
             .andExpect(content().json(responseContent))
             .andDo(log());

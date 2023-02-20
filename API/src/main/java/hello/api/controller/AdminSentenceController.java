@@ -1,5 +1,6 @@
 package hello.api.controller;
 
+import hello.api.dto.AdminSentenceDto;
 import hello.api.dto.AdminSentenceRequest;
 import hello.api.dto.AdminSentenceSuccess;
 import hello.api.service.AdminSentenceService;
@@ -8,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,20 @@ public class AdminSentenceController {
         List<String> situationValues = adminSentenceService.findSituationValues();
         AdminSentenceSuccess success = new AdminSentenceSuccess(200, null, null, grammarValues,
             situationValues);
+        return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<AdminSentenceSuccess> findAll() {
+        List<AdminSentenceDto> dtoList = adminSentenceService.findAll();
+        AdminSentenceSuccess success = new AdminSentenceSuccess(200, null, dtoList, null, null);
+        return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<AdminSentenceSuccess> delete(@PathVariable("id") Long id) {
+        adminSentenceService.delete(id);
+        AdminSentenceSuccess success = new AdminSentenceSuccess(200, null, null, null, null);
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 }
