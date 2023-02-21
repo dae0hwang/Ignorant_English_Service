@@ -5,6 +5,7 @@ import static hello.api.enumforexception.AdminSentenceExceptionEnum.NO_MATCH_GRA
 import static hello.api.enumforexception.AdminSentenceExceptionEnum.NO_MATCH_SITUATION_ENUM;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -19,7 +20,6 @@ import hello.api.enumforentity.Situation;
 import hello.api.exceptionadvice.AdminSentenceExceptionAdvice;
 import hello.api.interceptor.ExceptionResponseInterceptor;
 import hello.api.repository.AdminSentenceRepository;
-import hello.api.service.AdminSentenceService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -198,6 +198,48 @@ class AdminSentenceControllerTest {
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.delete(url))
+            .andExpect(status().isOk())
+            .andExpect(content().json(responseContent))
+            .andDo(log());
+    }
+
+    @Test
+    void find() throws Exception{
+        //given
+        AdminSentenceEntity save = adminSentenceRepository.save(
+            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        String url = baseUrl + "/find/"+save.getId();
+        AdminSentenceDto dto = new AdminSentenceDto(save.getId(), save.getKorean(),
+            save.getEnglish(), save.getGrammar().getStringGrammar(),
+            save.getSituation().getStringSituation());
+        AdminSentenceSuccess success = new AdminSentenceSuccess(200, dto, null, null,
+            null);
+        String responseContent = objectMapper.writeValueAsString(success);
+        //when
+        //then
+        mockMvc.perform(get(url))
+            .andExpect(status().isOk())
+            .andExpect(content().json(responseContent))
+            .andDo(log());
+    }
+
+    @Test
+    void update() throws Exception{
+        //given
+        AdminSentenceEntity save = adminSentenceRepository.save(
+            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+
+        String url = baseUrl + "/update/"+save.getId();
+        String requestJson = "{\"korean\":\"korean2\", \"english\":\"english2\", "
+            + "\"grammar\":\"NO\", \"situation\":\"NO\" }";
+        AdminSentenceSuccess success = new AdminSentenceSuccess(200, null, null, null,
+            null);
+        String responseContent = objectMapper.writeValueAsString(success);
+        //when
+        //then
+        mockMvc.perform(put(url)
+                .contentType("application/json")
+                .content(requestJson))
             .andExpect(status().isOk())
             .andExpect(content().json(responseContent))
             .andDo(log());

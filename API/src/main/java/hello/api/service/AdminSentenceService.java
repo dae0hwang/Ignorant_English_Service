@@ -79,14 +79,41 @@ public class AdminSentenceService {
     @Transactional(readOnly = true)
     public List<AdminSentenceDto> findAll() {
         List<AdminSentenceEntity> entityList = adminSentenceRepository.findAll();
-        List<AdminSentenceDto> dtoList = entityList.stream()
+        return entityList.stream()
             .map(e -> new AdminSentenceDto(e.getId(), e.getKorean(), e.getEnglish(),
                 e.getGrammar().getStringGrammar(), e.getSituation().getStringSituation())).collect(
                 Collectors.toList());
-        return dtoList;
     }
 
+    @Transactional
     public void delete(Long id) {
         adminSentenceRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public AdminSentenceDto findById(Long id) {
+        AdminSentenceEntity entity = adminSentenceRepository.findById(id)
+            .orElseThrow();
+        return new AdminSentenceDto(entity.getId(), entity.getKorean(),
+            entity.getEnglish(), entity.getGrammar().getStringGrammar(),
+            entity.getSituation().getStringSituation());
+    }
+
+    @Transactional
+    public void update(Long id, String korean, String english, String stringGrammar,
+        String stringSituation) {
+        Grammar grammar = findGrammar(stringGrammar);
+        Situation situation = findSituation(stringSituation);
+        updateEntity(id, korean, english, grammar, situation);
+    }
+
+    private void updateEntity(Long id, String korean, String english, Grammar grammar,
+        Situation situation) {
+        AdminSentenceEntity adminSentenceEntity = adminSentenceRepository.findById(id)
+            .orElseThrow();
+        adminSentenceEntity.setKorean(korean);
+        adminSentenceEntity.setEnglish(english);
+        adminSentenceEntity.setGrammar(grammar);
+        adminSentenceEntity.setSituation(situation);
     }
 }
