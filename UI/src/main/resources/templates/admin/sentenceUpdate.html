@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>무식한 영어 공부</title>
+
+    <!--스타일 초기화  아이콘 폰트 등록-->
+    <link rel="stylesheet" href="../css/nomalize.css"/>
+    <script src="https://kit.fontawesome.com/f1def33959.js" crossorigin="anonymous"></script>
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet"
+          type="text/css"/>
+
+    <!--axios  -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!--css-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/admin/sentenceUpdate.css"/>
+</head>
+<body>
+<header>
+    <div class="inner">
+        <div class="head-container">
+            <div class="head-brand">무식한 영어 공부</div>
+            <a class="btn btn-primary head" href="" role="button" style="color: #ffffff"
+               id="home-button">Home</a>
+        </div>
+    </div>
+</header>
+
+<section>
+    <div class="inner">
+        <div class="title-container">
+            <div class="title">관리자 문장 수정</div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="select-container">
+            <div class="grammar">
+                <div class="grammar-title">문법 체크</div>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        id="grammar-select">
+                </select>
+            </div>
+            <div class="situation">
+                <div class="situation-title">상황 체크</div>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        id="situation-select">
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="korean-container">
+            <div class="korean-title">한글 번역</div>
+            <input class="form-control form-control-lg" type="text" placeholder=""
+                   aria-label=".form-control-lg example" id="korean-input">
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="english-container">
+            <div class="english-title">영어 원문</div>
+            <input class="form-control form-control-lg" type="text" placeholder=""
+                   aria-label=".form-control-lg example" id="english-input">
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end button-container">
+            <button type="button" class="btn btn-primary btn-lg register" id="register-button">등록
+            </button>
+        </div>
+    </div>
+</section>
+
+
+<script th:inline="javascript">
+  const apiUrl = [[${@environment.getProperty('url.api')}]];
+  const uiUrl = [[${@environment.getProperty('url.ui')}]];
+
+  //home button
+  document.getElementById("home-button").href = "http://" + uiUrl;
+
+  //thymeleaf id 변수 가져오기
+  const id = [[${id}]];
+
+  //셀렉트 박스 정보 가져오기.
+  function makeGrammarSelect(dataList) {
+    let grammarSelect = document.getElementById("grammar-select");
+
+    for (let i = 0; i < dataList.length; i++) {
+      if (i === 0) {
+        let optionElement = document.createElement("option");
+        optionElement.selected;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        grammarSelect.appendChild(optionElement)
+      } else {
+        let optionElement = document.createElement("option");
+        optionElement.value = i;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        grammarSelect.appendChild(optionElement)
+      }
+    }
+  }
+
+  function makeSituationSelect(dataList) {
+    let situationSelect = document.getElementById("situation-select");
+
+    for (let i = 0; i < dataList.length; i++) {
+      if (i === 0) {
+        let optionElement = document.createElement("option");
+        optionElement.selected;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        situationSelect.appendChild(optionElement)
+      } else {
+        let optionElement = document.createElement("option");
+        optionElement.value = i;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        situationSelect.appendChild(optionElement)
+      }
+    }
+  }
+
+  //id에 해당하는 정보 넣는 함수
+  let grammarSelect = document.getElementById("grammar-select");
+  let situationSelect = document.getElementById("situation-select");
+  let englishInput = document.getElementById("english-input");
+  let koreanInput = document.getElementById("korean-input");
+
+  function valueAdd(dto) {
+    koreanInput.value = dto.korean;
+    englishInput.value = dto.english;
+    //grammarselect 옵션들을 돌아가면서 해당 조건에 맞으면 seletecd 옵션주기.
+    let grammarOptions = grammarSelect.childNodes;
+    for (const grammarOption of grammarOptions) {
+      if (grammarOption.textContent === dto.grammar) {
+        grammarOption.selected = true;
+      }
+    }
+    let situationOptions = situationSelect.childNodes;
+    for (const situationOption of situationOptions) {
+      if (situationOption.textContent === dto.situation) {
+        situationOption.selected = true;
+      }
+    }
+  }
+
+  //플러스 id에 해당하는 값 요소들에 미리 넣어주기
+  window.onload = function () {
+    axios({
+      url: "http://" + apiUrl + "/api/admin/sentence/selection",
+      method: 'get',
+    })
+    .then(function (response) {
+      console.log(response);
+      makeGrammarSelect(response.data.grammarList);
+      makeSituationSelect(response.data.situationList);
+
+      //값 넣는 것은 셀렉트 박스가 완성 된 후에 작동하도록 안에 넣어주었다.
+      axios({
+        url: "http://" + apiUrl + "/api/admin/sentence/find/"+id,
+        method: 'get',
+      })
+      .then(function (response) {
+        console.log(response);
+        valueAdd(response.data.adminSentenceDto);
+      })
+      .catch(function (error) {
+        console.log(error)
+
+      });
+    })
+    .catch(function (error) {
+      alert("[실패] 셀렉트 값 가져오기를 실패했습니다.");
+    });
+  }
+
+  //문장 업데이트 등록
+  let registerButton = document.getElementById("register-button");
+  registerButton.onclick = function () {
+    axios({
+      url: "http://" + apiUrl + "/api/admin/sentence/update/"+id,
+      method: 'put',
+      data: {
+        korean: koreanInput.value,
+        english: englishInput.value,
+        grammar: grammarSelect.options[grammarSelect.selectedIndex].text,
+        situation: situationSelect.options[situationSelect.selectedIndex].text
+      }
+
+    })
+    .then(function (response) {
+      location.href="/admin/sentence/list"
+    })
+    .catch(function (error) {
+      console.log(error)
+      alert("[실패] 잠시 후 시도해 주세요");
+    });
+  }
+</script>
+</body>
+</html>
