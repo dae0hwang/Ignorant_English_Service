@@ -44,6 +44,10 @@ class AdminSentenceControllerTest {
     AdminSentenceController adminSentenceController;
     @Autowired
     AdminSentenceRepository adminSentenceRepository;
+    @Autowired
+    ExceptionResponseInterceptor exceptionResponseInterceptor;
+    @Autowired
+    AdminSentenceExceptionAdvice adminSentenceExceptionAdvice;
     MockMvc mockMvc;
     ObjectMapper objectMapper;
     String baseUrl;
@@ -53,8 +57,8 @@ class AdminSentenceControllerTest {
         objectMapper = new ObjectMapper();
         baseUrl = "/api/admin/sentence";
         mockMvc = MockMvcBuilders.standaloneSetup(adminSentenceController)
-                .setControllerAdvice(new AdminSentenceExceptionAdvice())
-                .addInterceptors(new ExceptionResponseInterceptor())
+                .setControllerAdvice(adminSentenceExceptionAdvice)
+                .addInterceptors(exceptionResponseInterceptor)
                 .build();
     }
 
