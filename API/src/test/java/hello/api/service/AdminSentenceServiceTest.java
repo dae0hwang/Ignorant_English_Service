@@ -11,13 +11,14 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
-//@Commit
+@Commit
 class AdminSentenceServiceTest {
 
     @Autowired
@@ -100,5 +101,35 @@ class AdminSentenceServiceTest {
         //then
         List<AdminSentenceDto> all = adminSentenceService.findAll();
         Assertions.assertThat(all).isEmpty();
+    }
+
+    @Test
+    void findById() {
+        //given
+        AdminSentenceEntity save = adminSentenceRepository.save(
+            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentenceDto actual = new AdminSentenceDto(save.getId(), save.getKorean(),
+            save.getEnglish(), save.getGrammar().getStringGrammar(),
+            save.getSituation().getStringSituation());
+        //when
+        AdminSentenceDto findById = adminSentenceService.findById(save.getId());
+        //then
+        Assertions.assertThat(findById).isEqualTo(actual);
+    }
+
+    @Test
+    void update() {
+        //given
+        AdminSentenceEntity save = adminSentenceRepository.save(
+            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        //when
+        adminSentenceService.update(save.getId(), "korean1", "change", "NO", "NO");
+        //then
+        AdminSentenceEntity changedEntity = adminSentenceRepository.findById(save.getId())
+            .orElseThrow();
+        Assertions.assertThat(changedEntity.getKorean()).isEqualTo("korean1");
+        Assertions.assertThat(changedEntity.getEnglish()).isEqualTo("change");
+        Assertions.assertThat(changedEntity.getGrammar()).isEqualTo(Grammar.NO);
+        Assertions.assertThat(changedEntity.getSituation()).isEqualTo(Situation.NO);
     }
 }
