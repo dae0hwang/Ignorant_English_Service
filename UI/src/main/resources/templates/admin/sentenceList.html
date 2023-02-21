@@ -268,7 +268,6 @@
   });
 
   //조건 검색 버튼 기능 오케이 onload라 그래 확인했다. datalist ㅇㅇ
-  //검색 버튼을 누르면, 모든 td들 값을 비교해서 동적 그거네 좆같네.
   document.addEventListener("click", function (event) {
     if (event.target.id != "search-button") {
       return;
@@ -279,32 +278,47 @@
     let situationSelect = document.getElementById("situation-select");
     let grammar = grammarSelect.options[grammarSelect.selectedIndex].text;
     let situation = situationSelect.options[situationSelect.selectedIndex].text;
-    if (grammar === "NO") {
-      grammar = "";
-    }
-    if (situation === "NO") {
-      situation = "";
-    }
-    console.log(searchInput);
-    console.log(grammar);
-    console.log(situation);
 
-    //만약 일치한다면 새로운 배열에 담아서 테이블을 만들면된다.
-    let searchList = [];
+    console.log("searchInput= " +searchInput);
+    console.log("grammar= "+grammar);
+    console.log("situation= "+situation);
     console.log(dataList);
+
+    //동적 조건
+    let searchList = [];
     for (const data of dataList) {
       console.log(data);
-      if ((data.korean.includes(searchInput) || data.english.includes(searchInput)) &&
-          data.grammar.includes(grammar) && data.situation.includes(situation)) {
-        searchList.push(data);
+      if (grammar === "NO" && situation === "NO") {
+        console.log("both")
+        if (data.korean.includes(searchInput) || data.english.includes(searchInput)) {
+          searchList.push(data);
+        }
+      } else if (grammar === "NO" && situation !== "NO") {
+        console.log("gra")
+        if ((data.korean.includes(searchInput) || data.english.includes(searchInput)) &&
+            data.situation === situation) {
+          searchList.push(data)
+        }
+      } else if (situation === "NO" && grammar !== "NO") {
+        console.log("situ")
+        if ((data.korean.includes(searchInput) || data.english.includes(searchInput)) &&
+            data.grammar === grammar) {
+          searchList.push(data)
+        }
+      }else {
+          console.log("else")
+          if ((data.korean.includes(searchInput) || data.english.includes(searchInput)) &&
+              data.grammar === grammar && data.situation === situation) {
+            searchList.push(data);
+          }
       }
-
     }
-    console.log(searchList);
+      console.log(searchList);
 
-    //테이블 바디 엘레멘트 자식전부 삭제, 새로운 자식 등록하기.
-    bodyElement.innerHTML = "";
-    makeTable(searchList);
+      //테이블 바디 엘레멘트 자식전부 삭제, 새로운 자식 등록하기.
+      bodyElement.innerHTML = "";
+      makeTable(searchList);
+
   });
 
 
