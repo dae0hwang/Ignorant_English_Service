@@ -20,6 +20,7 @@ import hello.api.enumforentity.Situation;
 import hello.api.exceptionadvice.AdminSentenceExceptionAdvice;
 import hello.api.interceptor.ExceptionResponseInterceptor;
 import hello.api.repository.AdminSentenceRepository;
+import hello.api.threadlocalstorage.ErrorInformationTlsContainer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +45,8 @@ class AdminSentenceControllerTest {
     AdminSentenceController adminSentenceController;
     @Autowired
     AdminSentenceRepository adminSentenceRepository;
+    @Autowired
+ErrorInformationTlsContainer errorInformationTlsContainer;
     MockMvc mockMvc;
     ObjectMapper objectMapper;
     String baseUrl;
@@ -53,9 +56,9 @@ class AdminSentenceControllerTest {
         objectMapper = new ObjectMapper();
         baseUrl = "/api/admin/sentence";
         mockMvc = MockMvcBuilders.standaloneSetup(adminSentenceController)
-                .setControllerAdvice(new AdminSentenceExceptionAdvice())
-                .addInterceptors(new ExceptionResponseInterceptor())
-                .build();
+            .setControllerAdvice(new AdminSentenceExceptionAdvice(errorInformationTlsContainer))
+            .addInterceptors(new ExceptionResponseInterceptor(errorInformationTlsContainer))
+            .build();
     }
 
     @Test
