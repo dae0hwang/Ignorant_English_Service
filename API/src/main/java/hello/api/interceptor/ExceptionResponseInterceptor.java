@@ -1,19 +1,22 @@
 package hello.api.interceptor;
 
-import hello.api.dto.ErrorResponse;
-import hello.api.threadlocalstorage.ErrorInformationTls;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hello.api.dto.ErrorResponse;
+import hello.api.threadlocalstorage.ErrorInformation;
+import hello.api.threadlocalstorage.ErrorInformationTlsContainer;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Slf4j
+@RequiredArgsConstructor
 public class ExceptionResponseInterceptor implements HandlerInterceptor {
 
+    private final ErrorInformationTlsContainer errorInformationTlsContainer;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final ErrorInformationTls threadLocalStorage = new ErrorInformationTls();
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
@@ -24,13 +27,12 @@ public class ExceptionResponseInterceptor implements HandlerInterceptor {
     private void threadLocalExceptionControl(HttpServletRequest request,
         HttpServletResponse response)
         throws IOException {
-        if (threadLocalStorage.getErrorType() != null) {
-            String errorType = threadLocalStorage.getErrorType();
-            String errorDetail = threadLocalStorage.getErrorDetail();
-            String errorTitle = threadLocalStorage.getErrorTitle();
-            threadLocalStorage.removeErrorType();
-            threadLocalStorage.removeErrorDetail();
-            threadLocalStorage.removeErrorTitle();
+        if (!errorInformationTlsContainer.getThreadLocal().get().getErrorTitle().equals("none")) {
+            ErrorInformation errorInformation = errorInformationTlsContainer.getThreadLocal().get();
+            String errorType = errorInformation.getErrorType();
+            String errorDetail = errorInformation.getErrorDetail();
+            String errorTitle = errorInformation.getErrorTitle();
+            errorInformationTlsContainer.removeThreadLocal();
             log.warn("TLSExceptionResponseInterceptor, error type={}", errorType);
             ErrorResponse error = new ErrorResponse(errorType, errorTitle,
                 response.getStatus(), errorDetail, request.getRequestURI());

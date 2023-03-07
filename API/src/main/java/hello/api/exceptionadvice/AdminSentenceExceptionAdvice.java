@@ -7,7 +7,10 @@ import static hello.api.enumforexception.AdminSentenceExceptionEnum.findByErrorM
 
 import hello.api.controller.AdminSentenceController;
 import hello.api.exception.AdminSentenceException;
-import hello.api.threadlocalstorage.ErrorInformationTls;
+import hello.api.exception.ErrorInformationTlsException;
+import hello.api.threadlocalstorage.ErrorInformation;
+import hello.api.threadlocalstorage.ErrorInformationTlsContainer;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,10 +18,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestControllerAdvice(assignableTypes = {AdminSentenceController.class})
 public class AdminSentenceExceptionAdvice {
 
-    private final ErrorInformationTls threadLocalStorage = new ErrorInformationTls();
+    private final ErrorInformationTlsContainer errorInformationTlsContainer;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity methodArgumentNotValidExceptionAdvice(MethodArgumentNotValidException e) {
@@ -34,17 +38,25 @@ public class AdminSentenceExceptionAdvice {
 
     private ResponseEntity makeCompanyFoodExceptionResponseAndSetTls(
         AdminSentenceException e) {
+        ThreadLocal<ErrorInformation> threadLocal = errorInformationTlsContainer.getThreadLocal();
+        if (!threadLocal.get().getErrorTitle().equals("none")) {
+            throw new ErrorInformationTlsException("errorInformationTls is not Empty");
+        }
+
         String errorMessage = e.getMessage();
+        ErrorInformation errorInformation = new ErrorInformation();
         switch (findByErrorMessage(errorMessage)) {
             case NO_MATCH_GRAMMAR_ENUM:
-                threadLocalStorage.setErrorType(NO_MATCH_GRAMMAR_ENUM.getErrorType());
-                threadLocalStorage.setErrorTitle(NO_MATCH_GRAMMAR_ENUM.getErrorTitle());
-                threadLocalStorage.setErrorDetail(NO_MATCH_GRAMMAR_ENUM.getErrormessage());
+                errorInformation.setErrorType(NO_MATCH_GRAMMAR_ENUM.getErrorType());
+                errorInformation.setErrorTitle(NO_MATCH_GRAMMAR_ENUM.getErrorTitle());
+                errorInformation.setErrorDetail(NO_MATCH_GRAMMAR_ENUM.getErrormessage());
+                threadLocal.set(errorInformation);
                 return new ResponseEntity(NO_MATCH_GRAMMAR_ENUM.getHttpStatus());
             case NO_MATCH_SITUATION_ENUM:
-                threadLocalStorage.setErrorType(NO_MATCH_SITUATION_ENUM.getErrorType());
-                threadLocalStorage.setErrorTitle(NO_MATCH_SITUATION_ENUM.getErrorTitle());
-                threadLocalStorage.setErrorDetail(NO_MATCH_SITUATION_ENUM.getErrormessage());
+                errorInformation.setErrorType(NO_MATCH_SITUATION_ENUM.getErrorType());
+                errorInformation.setErrorTitle(NO_MATCH_SITUATION_ENUM.getErrorTitle());
+                errorInformation.setErrorDetail(NO_MATCH_SITUATION_ENUM.getErrormessage());
+                threadLocal.set(errorInformation);
                 return new ResponseEntity(NO_MATCH_SITUATION_ENUM.getHttpStatus());
         }
         throw new RuntimeException();
@@ -52,12 +64,18 @@ public class AdminSentenceExceptionAdvice {
 
     private ResponseEntity makeArgumentNotValidResponseAndSetTls(
         MethodArgumentNotValidException e) {
+        ThreadLocal<ErrorInformation> threadLocal = errorInformationTlsContainer.getThreadLocal();
+        if (!threadLocal.get().getErrorTitle().equals("none")) {
+            throw new ErrorInformationTlsException("errorInformationTls is not Empty");
+        }
         String errorMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        ErrorInformation errorInformation = new ErrorInformation();
         switch (findByErrorMessage(errorMessage)) {
             case ADD_SENTENCE_STRING_BLANK:
-                threadLocalStorage.setErrorType(ADD_SENTENCE_STRING_BLANK.getErrorType());
-                threadLocalStorage.setErrorTitle(ADD_SENTENCE_STRING_BLANK.getErrorTitle());
-                threadLocalStorage.setErrorDetail(ADD_SENTENCE_STRING_BLANK.getErrormessage());
+                errorInformation.setErrorType(ADD_SENTENCE_STRING_BLANK.getErrorType());
+                errorInformation.setErrorTitle(ADD_SENTENCE_STRING_BLANK.getErrorTitle());
+                errorInformation.setErrorDetail(ADD_SENTENCE_STRING_BLANK.getErrormessage());
+                threadLocal.set(errorInformation);
                 return new ResponseEntity(ADD_SENTENCE_STRING_BLANK.getHttpStatus());
         }
         throw new RuntimeException();
