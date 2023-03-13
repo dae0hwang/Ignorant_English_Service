@@ -31,7 +31,7 @@ class UserManageServiceTest {
         //when
         userManageService.signup(userSignupRequest);
         //then
-        Users users = userRepository.findByEmail("email@naver.com").get();
+        Users users = userRepository.findByUsername("email@naver.com").get();
         Assertions.assertThat(users.getName()).isEqualTo("name");
     }
 
@@ -39,8 +39,8 @@ class UserManageServiceTest {
     void signupException() {
         //given
         userRepository.save(
-            Users.builder().email("email@naver.com").password("password").name("name")
-                .authority("ROLE_USER").build());
+            Users.builder().username("email@naver.com").password("password").name("name")
+                .roles("ROLE_USER").build());
         UserSignupRequest userSignupRequest = new UserSignupRequest("email@naver.com", "password",
             "name");
         //when

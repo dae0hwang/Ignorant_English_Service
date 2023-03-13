@@ -97,7 +97,7 @@
       url: "http://"+apiUrl+"/api/user/manage/signup",
       method: 'post',
       data: {
-        email: document.getElementById("email-input").value,
+        username: document.getElementById("email-input").value,
         password: document.getElementById("password-input").value,
         name: document.getElementById("name-input").value,
       }
@@ -105,20 +105,23 @@
     })
     .then(function (response) {
       //성공시 이동
-      location.href = "../page"
+      location.href = "http://" + uiUrl + "/user/page";
     })
     .catch(function (error) {
-      console.log(error)
-      const status = error.response.data.status;
-      if (status === 400) {
-        alert("아이디는 이메일 형식, " +
-            "비밀번호는 숫자 8자 이상, 영문 숫자 특수문자를 최소 1자리 이상 조합해 주세요." +
-            "이름은 공백이면 안됩니다.")
-      }else if (status === 409) {
-        alert("이미 등록된 아이디입니다." +
-            "다른 아이디를 사용해주세요.");
-      } else {
+      console.log(error);
+
+      if (error.code === "ERR_NETWORK") {
         alert("[실패] 잠시 후 시도해 주세요");
+      }else {
+        const status = error.response.data.status;
+        if (status === 400) {
+          alert("아이디는 이메일 형식, " +
+              "비밀번호는 숫자 8자 이상, 영문 숫자 특수문자를 최소 1자리 이상 조합해 주세요." +
+              "이름은 공백이면 안됩니다.")
+        }else if (status === 409) {
+          alert("이미 등록된 아이디입니다." +
+              "다른 아이디를 사용해주세요.");
+        }
       }
     });
   }

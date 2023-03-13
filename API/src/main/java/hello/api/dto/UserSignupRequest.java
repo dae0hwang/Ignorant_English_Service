@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserSignupRequest {
     @Email(message = Constants.signupRequestEmail)
-    private String email;
+    private String username;
     @Password
     private String password;
     @NotBlank(message = Constants.signupRequestName)

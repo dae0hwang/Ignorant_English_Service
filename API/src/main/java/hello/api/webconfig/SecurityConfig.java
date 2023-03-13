@@ -1,167 +1,77 @@
 package hello.api.webconfig;
 
-import hello.api.jwt.JwtAccessDeniedHandler;
-import hello.api.jwt.JwtAuthenticationEntryPoint;
-import hello.api.jwt.JwtSecurityConfig;
-import hello.api.jwt.TokenProvider;
-import java.util.Arrays;
-import lombok.RequiredArgsConstructor;
+import hello.api.jwt.JwtAuthenticationFilter;
+import hello.api.jwt.JwtAuthorizationFilter;
+import hello.api.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
-@EnableWebSecurity
-@RequiredArgsConstructor
-//나중에 바꿔야한다 어차피
+@Configuration
+@EnableWebSecurity // 시큐리티 활성화 -> 기본 스프링 필터체인에 등록
 public class SecurityConfig {
 
-    private final TokenProvider tokenProvider;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+	@Autowired
+	private UserRepository userRepository;
 
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.addAllowedOriginPattern("*");
+		configuration.addAllowedHeader("*");
+		configuration.addAllowedMethod("*");
+		configuration.addExposedHeader("*");
+		configuration.setAllowCredentials(true);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		return http
+				.csrf().disable()
+				.cors()
+				.and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.formLogin().disable()
+				.httpBasic().disable()
+				.apply(new MyCustomDsl()) // 커스텀 필터 등록
+				.and()
+				.authorizeRequests(authroize -> authroize
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-            // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
-            .csrf().disable()
+					.antMatchers("/api/v1/user/**")
+					.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+					.antMatchers("/api/v1/manager/**")
+					.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+					.antMatchers("/api/v1/admin/**")
+					.access("hasRole('ROLE_ADMIN')")
 
-            .exceptionHandling()
-            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            .accessDeniedHandler(jwtAccessDeniedHandler)
+					.antMatchers("/api/user/manage/check")
+					.hasAnyRole("USER")
+					.antMatchers("api/user/manage/information")
+					.hasAnyRole("USER")
 
-            // enable h2-console
-//
+					.anyRequest().permitAll())
+				.build();
+	}
 
-            // 세션을 사용하지 않기 때문에 STATELESS로 설정
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-            .and()
-            .authorizeRequests()
-            .antMatchers("/api/hello").permitAll()
-            .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/signup").permitAll()
-
-            .anyRequest().authenticated()
-            .and()
-            .cors()
-
-            .and()
-            .apply(new JwtSecurityConfig(tokenProvider));
-
-        return httpSecurity.build();
-    }
+	public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
+		@Override
+		public void configure(HttpSecurity http) throws Exception {
+			AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+			http
+					.addFilter(new JwtAuthenticationFilter(authenticationManager))
+					.addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
+		}
+	}
 }
-
-//import hello.api.jwt.JwtAccessDeniedHandler;
-//import hello.api.jwt.JwtAuthenticationEntryPoint;
-//import hello.api.jwt.TokenProvider;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-//import org.springframework.security.config.http.SessionCreationPolicy;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.web.SecurityFilterChain;
-//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//import org.springframework.web.filter.CorsFilter;
-//
-//@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-//public class SecurityConfig {
-//    private final TokenProvider tokenProvider;
-//    private final CorsFilter corsFilter;
-//    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-//    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-//
-//    public SecurityConfig(
-//        TokenProvider tokenProvider
-//        CorsFilter corsFilter,
-//        JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-//        JwtAccessDeniedHandler jwtAccessDeniedHandler
-//    ) {
-//
-//        this.tokenProvider = tokenProvider;
-//        this.corsFilter = corsFilter;
-//        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-//        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-//    }
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring().antMatchers("/h2-console/**"
-//            ,"/favicon.ico"
-//            ,"/error");
-//    }
-//
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//            // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
-//            .csrf().disable()
-//
-//            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-//
-//            .exceptionHandling()
-//            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//            .accessDeniedHandler(jwtAccessDeniedHandler)
-//
-//            // enable h2-console
-//            .and()
-//            .headers()
-//            .frameOptions()
-//            .sameOrigin()
-//
-//            // 세션을 사용하지 않기 때문에 STATELESS로 설정
-//            .and()
-//            .sessionManagement()
-//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//
-//            .and()
-//            .authorizeRequests()
-//            .antMatchers("/api/hello").permitAll()
-//            .antMatchers("/api/authenticate").permitAll()
-//            .antMatchers("/api/signup").permitAll()
-//
-//            .anyRequest().authenticated()
-//
-//            .and()
-//            .apply(new JwtSecurityConfig(tokenProvider));
-//
-//        return httpSecurity.build();
-//    }
-//}

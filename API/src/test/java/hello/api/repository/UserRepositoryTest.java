@@ -21,10 +21,10 @@ class UserRepositoryTest {
     void findOneWithAuthoritiesByEmail() {
         //given
         Users saveUser = userRepository.save(
-            Users.builder().email("email@naver.com").password("password").name("name").authority(
+            Users.builder().username("email@naver.com").password("password").name("name").roles(
                 "ROLE_USER").build());
         //when
-        Users findUser = userRepository.findByEmail("email@naver.com").get();
+        Users findUser = userRepository.findByUsername("email@naver.com").get();
         //then
         assertThat(findUser).isEqualTo(saveUser);
     }
