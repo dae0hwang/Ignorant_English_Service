@@ -70,6 +70,11 @@ header {
 }
 
 
+/*.head-container .head-brand a:hover {*/
+/*  color: #2186c4;*/
+/*  cursor: pointer;*/
+/*}*/
+
 /* 필요시 세부 설정을 위해, 상단 우측 메뉴만을 별도로 클래스로 정의 */
 .head-container .head-home {
   font-weight: bold;
@@ -107,50 +112,4 @@ section {
   letter-spacing: 0.6rem;
   margin-left: 2rem;
 }
-
-/*new*/
-
-
-
-
-.email-container {
-  margin-top: 2rem;
-  margin-right: 2rem;
-  margin-left: 2rem;
-}
-
-.email-title {
-  margin-left: 5.5rem;
-  font-size: large;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.password-container {
-  margin-top: 2rem;
-  margin-right: 2rem;
-  margin-left: 2rem;
-}
-
-.password-title {
-  margin-left: 5.5rem;
-  font-size: large;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-
-
-.button-container {
-  margin-top: 4rem;
-
-}
-
-.register {
-  margin-right: 2rem;
-  width: 25%;
-
-}
-
-
 

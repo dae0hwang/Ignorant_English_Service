@@ -53,7 +53,7 @@ class UserManageControllerTest {
     void signup() throws Exception {
         //given
         String url = baseUrl + "/signup";
-        String requestJson = "{\"email\":\"email@naver.com\", \"password\":\"AAss!!123456\", "
+        String requestJson = "{\"username\":\"email@naver.com\", \"password\":\"AAss!!123456\", "
             + "\"name\":\"name\"}";
         //when
         //then
@@ -69,11 +69,11 @@ class UserManageControllerTest {
     void signupException1() throws Exception {
         //given
         String url = baseUrl + "/signup";
-        String requestJson = "{\"email\":\"email@naver.com\", \"password\":\"AAss!!123456\", "
+        String requestJson = "{\"username\":\"email@naver.com\", \"password\":\"AAss!!123456\", "
             + "\"name\":\"name\"}";
 
         userRepository.save(
-            Users.builder().email("email@naver.com").password("BBdd!!123456").name("saveName")
+            Users.builder().username("email@naver.com").password("BBdd!!123456").name("saveName")
                 .build());
         ErrorResponse error = new ErrorResponse(DUPLICATED_SIGNUP_EMAIL.getErrorType(),
             DUPLICATED_SIGNUP_EMAIL.getErrorTitle(), 409,
@@ -94,7 +94,7 @@ class UserManageControllerTest {
     void signupException2() throws Exception {
         //given
         String url = baseUrl + "/signup";
-        String requestJson = "{\"email\":\"noEmailPattern\", \"password\":\"AAss!!123456\", "
+        String requestJson = "{\"username\":\"noEmailPattern\", \"password\":\"AAss!!123456\", "
             + "\"name\":\"name\"}";
         ErrorResponse error = new ErrorResponse(SIGNUP_REQUEST_EMAIL.getErrorType(),
             SIGNUP_REQUEST_EMAIL.getErrorTitle(), 400,
@@ -115,7 +115,7 @@ class UserManageControllerTest {
     void signupException3() throws Exception {
         //given
         String url = baseUrl + "/signup";
-        String requestJson = "{\"email\":\"email@naver.com\", \"password\":\"wrongPasswordPattern\", "
+        String requestJson = "{\"username\":\"email@naver.com\", \"password\":\"wrongPasswordPattern\", "
             + "\"name\":\"name\"}";
         ErrorResponse error = new ErrorResponse(SIGNUP_REQUEST_PASSWORD.getErrorType(),
             SIGNUP_REQUEST_PASSWORD.getErrorTitle(), 400,
@@ -136,7 +136,7 @@ class UserManageControllerTest {
     void signupException4() throws Exception {
         //given
         String url = baseUrl + "/signup";
-        String requestJson = "{\"email\":\"email@naver.com\", \"password\":\"AAss!!123456\", "
+        String requestJson = "{\"username\":\"email@naver.com\", \"password\":\"AAss!!123456\", "
             + "\"name\":\"\"}";
         ErrorResponse error = new ErrorResponse(SIGNUP_REQUEST_NAME.getErrorType(),
             SIGNUP_REQUEST_NAME.getErrorTitle(), 400,
