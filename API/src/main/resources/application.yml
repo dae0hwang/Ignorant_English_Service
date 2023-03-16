@@ -72,3 +72,5 @@ server:
   port: 5511
 logging:
   config: classpath:logback-server.xml
+
+#  이제 local별 server별 servers 다르게 해서 진행하면되는 것이고 127.0.0.7:9092 10.0.2.7:하면 되는 것이다.
