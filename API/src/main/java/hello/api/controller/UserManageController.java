@@ -2,6 +2,7 @@ package hello.api.controller;
 
 import hello.api.dto.UserInformationDto;
 import hello.api.dto.UserSignupRequest;
+import hello.api.service.KafkaService;
 import hello.api.service.UserManageService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserManageController {
 
     private final UserManageService userManageService;
+    private final KafkaService kafkaService;
 
     @PostMapping("/signup")
     public ResponseEntity signup(
         @Valid @RequestBody UserSignupRequest userSignupRequest) {
-        log.info(userSignupRequest.toString());
+        kafkaService.sendEmailMessage(userSignupRequest.getUsername());
         userManageService.signup(userSignupRequest);
         return new ResponseEntity(HttpStatus.CREATED);
     }

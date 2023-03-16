@@ -55,11 +55,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'com.auth0:java-jwt:3.19.2'
     testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.5.2'
-
-
+    //kafka
+    implementation 'org.springframework.kafka:spring-kafka'
     //passay-password-validation
     implementation 'org.passay:passay:1.6.2'
-    // passay-password logstashsetting
+    // logstashsetting
 }
 
 tasks.named('test') {

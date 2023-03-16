@@ -10,7 +10,6 @@ logging:
     org:
       hibernate:
         sql: debug
-
 ---
 spring:
   config:
@@ -45,6 +44,17 @@ spring:
     url: "jdbc:mysql://127.0.0.3:3306/english"
     username: "hwang"
     password: "5510"
+  kafka:
+    consumer:
+      bootstrap-servers: 127.0.0.7:9092
+      group-id: foo
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    producer:
+      bootstrap-servers: 127.0.0.7:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 server:
   port: 5510
 logging:
@@ -58,7 +68,14 @@ spring:
     url: "jdbc:mysql://10.0.2.3:3306/english"
     username: "hwang"
     password: "5510"
+  kafka:
+    producer:
+      bootstrap-servers: 10.0.2.7:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.JsonSerializer
 server:
   port: 5511
 logging:
   config: classpath:logback-server.xml
+
+#  이제 local별 server별 servers 다르게 해서 진행하면되는 것이고 127.0.0.7:9092 10.0.2.7:하면 되는 것이다.
