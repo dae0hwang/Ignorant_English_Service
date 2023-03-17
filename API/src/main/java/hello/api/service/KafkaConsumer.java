@@ -16,7 +16,7 @@ public class KafkaConsumer {
 //        System.out.println(String.format("Consumed message : %s", emailDto));
 //    }
 
-    @KafkaListener(topics = "exam", groupId = "foo", containerFactory = "stockChangeListener")
+    @KafkaListener(topics = "newexam", groupId = "foo", containerFactory = "stockChangeListener")
     public void consume(EmailDto emailDto) {
 
         log.info("email consume={}", emailDto);
