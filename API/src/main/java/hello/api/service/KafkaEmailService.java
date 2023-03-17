@@ -12,17 +12,17 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class KafkaEmailService {
 
-    private static final String TOPIC = "realmail";
+    private static final String TOPIC = "email";
     private final KafkaTemplate<String, KafkaEmailDto> kafkaTemplate;
 
-    public void sendMessage(String message) {
-        KafkaEmailDto kafkaEmailDto = new KafkaEmailDto(message);
+    public void sendMessage(String email) {
+        KafkaEmailDto kafkaEmailDto = new KafkaEmailDto(email);
         log.info("email produce ={}", kafkaEmailDto);
         kafkaTemplate.send(TOPIC, kafkaEmailDto);
     }
 
-    @KafkaListener(topics = TOPIC, groupId = "foo", containerFactory = "kafkaEmailListener")
-    public void consume(KafkaEmailDto kafkaEmailDto) {
-        log.info("email consume ={}", kafkaEmailDto);
-    }
+//    @KafkaListener(topics = TOPIC, groupId = "foo", containerFactory = "kafkaEmailListener")
+//    public void consume(KafkaEmailDto kafkaEmailDto) {
+//        log.info("email consume ={}", kafkaEmailDto);
+//    }
 }
