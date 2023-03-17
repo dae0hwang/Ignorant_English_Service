@@ -23,15 +23,15 @@ package hello.api.service;
 //    }
 //}
 
-import hello.api.dto.StockChange;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
-
-@Service
-public class KafkaConsumer {
-
-    @KafkaListener(topics = "aa", groupId = "foo", containerFactory = "stockChangeListener")
-    public void consume(StockChange stockChange) {
-        System.out.printf("Consumed message : %s%n", stockChange.getYyyymmdd());
-    }
-}
+//import hello.api.dto.StockChange;
+//import org.springframework.kafka.annotation.KafkaListener;
+//import org.springframework.stereotype.Service;
+//
+//@Service
+//public class KafkaConsumer {
+//
+//    @KafkaListener(topics = "aa", groupId = "foo", containerFactory = "stockChangeListener")
+//    public void consume(StockChange stockChange) {
+//        System.out.printf("Consumed message : %s%n", stockChange.getYyyymmdd());
+//    }
+//}

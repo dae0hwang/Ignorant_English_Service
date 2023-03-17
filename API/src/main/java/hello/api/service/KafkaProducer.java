@@ -28,32 +28,32 @@ package hello.api.service;
 //    }
 //}
 
-import hello.api.dto.StockChange;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Service;
-
-@Service
-public class KafkaProducer {
-
-    private static final String TOPIC = "aa";
-    private final KafkaTemplate<String, StockChange> kafkaTemplate;
-
-    @Autowired
-    public KafkaProducer(KafkaTemplate<String, StockChange> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
-
-    public void sendMessage(String message) {
-
-        StockChange stockChange = StockChange.builder()
-            .yyyymmdd("2021-01-01")
-            .skuCd("10300000033")
-            .fieldName("ipgoNo")
-            .diff(100)
-            .build();
-
-        // Send a message
-        kafkaTemplate.send(TOPIC, stockChange);
-    }
-}
+//import hello.api.dto.StockChange;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.kafka.core.KafkaTemplate;
+//import org.springframework.stereotype.Service;
+//
+//@Service
+//public class KafkaProducer {
+//
+//    private static final String TOPIC = "aa";
+//    private final KafkaTemplate<String, StockChange> kafkaTemplate;
+//
+//    @Autowired
+//    public KafkaProducer(KafkaTemplate<String, StockChange> kafkaTemplate) {
+//        this.kafkaTemplate = kafkaTemplate;
+//    }
+//
+//    public void sendMessage(String message) {
+//
+//        StockChange stockChange = StockChange.builder()
+//            .yyyymmdd("2021-01-01")
+//            .skuCd("10300000033")
+//            .fieldName("ipgoNo")
+//            .diff(100)
+//            .build();
+//
+//        // Send a message
+//        kafkaTemplate.send(TOPIC, stockChange);
+//    }
+//}
