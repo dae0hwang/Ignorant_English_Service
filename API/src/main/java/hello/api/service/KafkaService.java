@@ -36,8 +36,8 @@ public class KafkaService {
         statisticTemplate.send(STATISTIC_TOPIC, statisticDto);
     }
 
-    @KafkaListener(topics = "statistic", groupId = "foo")
-    public void consume(StatisticDto statisticDto) throws IOException {
-        log.info("consume statistic={}", statisticDto);
-    }
+//    @KafkaListener(topics = "statistic", groupId = "foo")
+//    public void consume(StatisticDto statisticDto) throws IOException {
+//        log.info("consume statistic={}", statisticDto);
+//    }
 }
