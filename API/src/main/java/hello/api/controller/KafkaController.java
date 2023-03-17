@@ -1,7 +1,6 @@
 package hello.api.controller;
 
-//import hello.api.service.KafkaProducer;
-import hello.api.service.KafkaService;
+import hello.api.service.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,24 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping(value = "/kafka")
 public class KafkaController {
-//    private final KafkaProducer producer;
-    private final KafkaService kafkaService;
+    private final KafkaProducer producer;
 
-//    @PostMapping("statistic")
-//    public String sendMessage(@RequestParam("message") String message) {
-//        this.producer.sendMessage(message);
-//        return "success";
-//    }
-
-    @PostMapping("/email")
-    public String sendEmail(@RequestParam("message") String message) {
-        kafkaService.sendEmailMessage(message);
-        return "email";
+    @PostMapping
+    public String sendMessage(@RequestParam("message") String message) {
+        this.producer.sendMessage(message);
+        return "success";
     }
-
-//    @PostMapping("/statistic")
-//    public String sendStatistic(@RequestParam("message") String message) {
-//        kafkaService.sendStatistic(message);
-//        return "statistic";
-//    }
 }

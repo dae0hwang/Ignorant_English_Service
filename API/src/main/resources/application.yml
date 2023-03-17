@@ -50,11 +50,11 @@ spring:
       group-id: foo
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     producer:
       bootstrap-servers: 127.0.0.7:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 server:
   port: 5510
 logging:
@@ -74,11 +74,11 @@ spring:
       group-id: foo
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     producer:
       bootstrap-servers: 10.0.2.7:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 server:
   port: 5511
 logging:
