@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaConsumer {
 
-    @KafkaListener(topics = "exam", groupId = "foo", containerFactory = "stockChangeListener")
+    @KafkaListener(topics = "aa", groupId = "foo", containerFactory = "stockChangeListener")
     public void consume(StockChange stockChange) {
         System.out.printf("Consumed message : %s%n", stockChange.getYyyymmdd());
     }
