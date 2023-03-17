@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class KafkaEmailService {
 
-    private static final String TOPIC = "newemail";
+    private static final String TOPIC = "realmail";
     private final KafkaTemplate<String, KafkaEmailDto> kafkaTemplate;
 
     public void sendMessage(String message) {
