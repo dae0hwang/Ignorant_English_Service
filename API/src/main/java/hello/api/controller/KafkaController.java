@@ -28,9 +28,9 @@ public class KafkaController {
         return "email";
     }
 
-    @PostMapping("/statistic")
-    public String sendStatistic(@RequestParam("message") String message) {
-        kafkaService.sendStatistic(message);
-        return "statistic";
-    }
+//    @PostMapping("/statistic")
+//    public String sendStatistic(@RequestParam("message") String message) {
+//        kafkaService.sendStatistic(message);
+//        return "statistic";
+//    }
 }

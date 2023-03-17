@@ -17,7 +17,7 @@ public class KafkaService {
     private static final String EMAIL_TOPIC = "email";
     private static final String STATISTIC_TOPIC = "statistic";
     private final KafkaTemplate<String, KafkaEmailDto> emailTemplate;
-    private final KafkaTemplate<String, StatisticDto> statisticTemplate;
+//    private final KafkaTemplate<String, StatisticDto> statisticTemplate;
 
     public void sendEmailMessage(String email) {
         KafkaEmailDto kafkaEmailDto = new KafkaEmailDto(email);
@@ -30,11 +30,11 @@ public class KafkaService {
         log.info("consume email={}", emailDto);
     }
 
-    public void sendStatistic(String str) {
-        StatisticDto statisticDto = new StatisticDto(str);
-        log.info("produce statistic = {}", statisticDto);
-        statisticTemplate.send(STATISTIC_TOPIC, statisticDto);
-    }
+//    public void sendStatistic(String str) {
+//        StatisticDto statisticDto = new StatisticDto(str);
+//        log.info("produce statistic = {}", statisticDto);
+//        statisticTemplate.send(STATISTIC_TOPIC, statisticDto);
+//    }
 
 //    @KafkaListener(topics = "statistic", groupId = "foo")
 //    public void consume(StatisticDto statisticDto) throws IOException {
