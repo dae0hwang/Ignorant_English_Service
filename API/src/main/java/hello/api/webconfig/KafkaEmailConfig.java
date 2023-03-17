@@ -1,7 +1,6 @@
 package hello.api.webconfig;
 
-import hello.api.dto.EmailDto;
-import hello.api.dto.StockChange;
+import hello.api.dto.KafkaEmailDto;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -26,7 +25,7 @@ public class KafkaEmailConfig {
     private String bootstrapServers;
 
     @Bean
-    public ProducerFactory<String, EmailDto> producerFactory() {
+    public ProducerFactory<String, KafkaEmailDto> producerFactory() {
         Map<String,Object> configs = new HashMap<>();
         configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -35,24 +34,24 @@ public class KafkaEmailConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, EmailDto> kafkaEmailTemplate() {
+    public KafkaTemplate<String, KafkaEmailDto> kafkaEmailTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
     @Bean
-    public ConsumerFactory<String, EmailDto> kafkaEmailConsumer() {
+    public ConsumerFactory<String, KafkaEmailDto> kafkaEmailConsumer() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configs.put(ConsumerConfig.GROUP_ID_CONFIG, "foo");
         return new DefaultKafkaConsumerFactory<>(
             configs,
             new StringDeserializer(),
-            new JsonDeserializer<>(EmailDto.class));
+            new JsonDeserializer<>(KafkaEmailDto.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, EmailDto> kafkaEmailListener() {
-        ConcurrentKafkaListenerContainerFactory<String, EmailDto> factory
+    public ConcurrentKafkaListenerContainerFactory<String, KafkaEmailDto> kafkaEmailListener() {
+        ConcurrentKafkaListenerContainerFactory<String, KafkaEmailDto> factory
             = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(kafkaEmailConsumer());
         return factory;

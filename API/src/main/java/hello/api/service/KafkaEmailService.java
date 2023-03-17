@@ -1,7 +1,6 @@
 package hello.api.service;
 
-import hello.api.dto.EmailDto;
-import hello.api.dto.StockChange;
+import hello.api.dto.KafkaEmailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,16 +13,16 @@ import org.springframework.stereotype.Service;
 public class KafkaEmailService {
 
     private static final String TOPIC = "newemail";
-    private final KafkaTemplate<String, EmailDto> kafkaTemplate;
+    private final KafkaTemplate<String, KafkaEmailDto> kafkaTemplate;
 
     public void sendMessage(String message) {
-        EmailDto emailDto = new EmailDto(message);
-        log.info("email produce ={}", emailDto);
-        kafkaTemplate.send(TOPIC, emailDto);
+        KafkaEmailDto kafkaEmailDto = new KafkaEmailDto(message);
+        log.info("email produce ={}", kafkaEmailDto);
+        kafkaTemplate.send(TOPIC, kafkaEmailDto);
     }
 
     @KafkaListener(topics = TOPIC, groupId = "foo", containerFactory = "kafkaEmailListener")
-    public void consume(EmailDto emailDto) {
-        log.info("email consume ={}", emailDto);
+    public void consume(KafkaEmailDto kafkaEmailDto) {
+        log.info("email consume ={}", kafkaEmailDto);
     }
 }
