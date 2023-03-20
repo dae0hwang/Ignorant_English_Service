@@ -1,10 +1,23 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: geungan9@gmail.com
+    password: fkxutsddgdecradp
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+          timeout: 5000
   jpa:
     open-in-view: false
     properties:
       hibernate:
         format_sql: true
     show-sql: true
+
 logging:
   level:
     org:
@@ -66,3 +79,4 @@ server:
 logging:
   config: classpath:logback-server.xml
 
+#  이제 local별 server별 servers 다르게 해서 진행하면되는 것이고 127.0.0.7:9092 10.0.2.7:하면 되는 것이다.
