@@ -10,6 +10,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class KafkaEmailDto {
-
-    String email;
+    private String email;
 }
