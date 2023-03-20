@@ -21,8 +21,8 @@ public class KafkaEmailService {
         kafkaTemplate.send(TOPIC, kafkaEmailDto);
     }
 
-//    @KafkaListener(topics = TOPIC, groupId = "foo", containerFactory = "kafkaEmailListener")
-//    public void consume(KafkaEmailDto kafkaEmailDto) {
-//        log.info("email consume ={}", kafkaEmailDto);
-//    }
+    @KafkaListener(topics = TOPIC, groupId = "foo", containerFactory = "kafkaEmailListener")
+    public void consume(KafkaEmailDto kafkaEmailDto) {
+        log.info("email consume ={}", kafkaEmailDto);
+    }
 }
