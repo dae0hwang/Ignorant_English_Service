@@ -56,8 +56,9 @@ bootRun {
     systemProperty "spring.profiles.active", activeProfile
 }
 
-//querydsl start
+//querydsl 추가 시작
 def querydslDir = "$buildDir/generated/querydsl"
+
 querydsl {
     jpa = true
     querydslSourcesDir = querydslDir
@@ -65,10 +66,13 @@ querydsl {
 sourceSets {
     main.java.srcDir querydslDir
 }
-configurations {
-    querydsl.extendsFrom compileClasspath
-}
-compileQuerydsl {
+compileQuerydsl{
     options.annotationProcessorPath = configurations.querydsl
 }
-//querydsl end
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
+//querydsl 추가 끝
