@@ -45,7 +45,7 @@ spring:
     username: "hwang"
     password: "5510"
   kafka:
-    bootstrap-servers: 127.0.0.7:9092
+    bootstrap-servers: 127.0.0.7:9093
 #    consumer:
 #      bootstrap-servers: 127.0.0.7:9092
 #      group-id: foo
