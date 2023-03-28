@@ -1,7 +1,5 @@
 package hello.api.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hello.api.dto.UserSignupRequest;
 import hello.api.entity.Users;
 import hello.api.exception.UserManageException;

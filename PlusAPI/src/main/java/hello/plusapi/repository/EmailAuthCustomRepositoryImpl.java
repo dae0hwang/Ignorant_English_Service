@@ -1,27 +1,42 @@
 package hello.plusapi.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import hello.plusapi.Entity.EmailAuth;
-import hello.plusapi.Entity.QEmailAuth;
-import java.sql.Timestamp;
+import hello.plusapi.entity.EmailAuth;
+import hello.plusapi.entity.QEmailAuth;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import javax.persistence.EntityManager;
+import lombok.extern.slf4j.Slf4j;
 
-public class EmailAuthCustomRepositoryImpl implements EmailAuthRepositoryCustom{
+@Slf4j
+public class EmailAuthCustomRepositoryImpl implements EmailAuthCustomRepository{
 
-    private final JPAQueryFactory jpaQueryFactory;
+    JPAQueryFactory jpaQueryFactory;
 
     public EmailAuthCustomRepositoryImpl(EntityManager em) {
-        jpaQueryFactory = new JPAQueryFactory(em);
+        this.jpaQueryFactory = new JPAQueryFactory(em);
     }
 
-    @Override
-    public Optional<EmailAuth> findValidAuthByEmail(String authToken, Timestamp currentTime) {
-        EmailAuth emailAuth = jpaQueryFactory.selectFrom(QEmailAuth.emailAuth)
+    public Optional<EmailAuth> findValidAuthByEmail(String authToken, LocalDateTime currentTime) {
+        EmailAuth emailAuth = jpaQueryFactory
+            .selectFrom(QEmailAuth.emailAuth)
             .where(QEmailAuth.emailAuth.authToken.eq(authToken),
                 QEmailAuth.emailAuth.expireDate.goe(currentTime),
                 QEmailAuth.emailAuth.expired.eq(false))
             .fetchFirst();
+
         return Optional.ofNullable(emailAuth);
     }
+
+    @Override
+    public Optional<EmailAuth> findExpiredAuth(String authToken, LocalDateTime currentTime) {
+        EmailAuth emailAuth = jpaQueryFactory
+            .selectFrom(QEmailAuth.emailAuth)
+            .where(QEmailAuth.emailAuth.authToken.eq(authToken),
+                QEmailAuth.emailAuth.expireDate.loe(currentTime),
+                QEmailAuth.emailAuth.expired.eq(false))
+            .fetchFirst();
+        return Optional.ofNullable(emailAuth);
+    }
+
 }
