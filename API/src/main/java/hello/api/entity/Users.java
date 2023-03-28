@@ -26,6 +26,7 @@ public class Users {
     private String password;
     private String name;
     private String roles;
+    private Boolean emailAuth;
 
     public List<String> getRoleList() {
         if (this.roles.length() > 0) {

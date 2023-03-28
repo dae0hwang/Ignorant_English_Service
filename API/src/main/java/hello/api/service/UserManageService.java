@@ -32,6 +32,7 @@ public class UserManageService {
             .username(request.getUsername())
             .password(passwordEncoder.encode(request.getPassword()))
             .name(request.getName())
+            .emailAuth(false)
             .roles("ROLE_USER")
             .build();
         userRepository.save(users);
@@ -40,8 +41,15 @@ public class UserManageService {
     @Transactional(readOnly = true)
     public UserInformationDto getUserInformation(Authentication authentication) {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        boolean emailAuth = findEmailAuth(principal);
         UserInformationDto userInformationDto = new UserInformationDto(
-            principal.getUser().getUsername(), principal.getUser().getName());
+            principal.getUser().getUsername(), principal.getUser().getName(), emailAuth);
         return userInformationDto;
+    }
+
+    private boolean findEmailAuth(PrincipalDetails principal) {
+        Users users = userRepository.findByUsername(principal.getUsername()).orElseThrow();
+        boolean emailAuth = users.getEmailAuth();
+        return emailAuth;
     }
 }

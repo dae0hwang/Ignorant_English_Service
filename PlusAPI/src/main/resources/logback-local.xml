@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false" scanPeriod="10 seconds">
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-4relative] %green([%thread]) %highlight(%-5level)
+        %logger
+        %boldWhite([%C.%M:%yellow(%L)]) - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="CONSOLE"/>
+  </root>
+
+  <!--  logger name 과 level을 지정해서 로거를 설정 -->
+  <!--  <logger name="com.example.apideliveryservice.ApiDeliveryServiceApplication" level="warn"/>-->
+</configuration>

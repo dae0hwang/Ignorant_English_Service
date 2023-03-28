@@ -1,4 +1,4 @@
-package hello.api.dto;
+package hello.plusapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

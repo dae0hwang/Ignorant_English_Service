@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: kafka.yml
   mail:
     host: smtp.gmail.com
     port: 587
@@ -57,12 +59,12 @@ spring:
     url: "jdbc:mysql://127.0.0.3:3306/english"
     username: "hwang"
     password: "5510"
-  kafka:
-    bootstrap-servers: 127.0.0.7:9092
 server:
-  port: 5510
+  port: 6610
 logging:
   config: classpath:logback-local.xml
+api:
+  ip: 127.0.0.1
 ---
 spring:
   config:
@@ -72,11 +74,9 @@ spring:
     url: "jdbc:mysql://10.0.2.3:3306/english"
     username: "hwang"
     password: "5510"
-  kafka:
-    bootstrap-servers: 10.0.2.7:9092
 server:
-  port: 5511
+  port: 6611
 logging:
   config: classpath:logback-server.xml
-
-#  이제 local별 server별 servers 다르게 해서 진행하면되는 것이고 127.0.0.7:9092 10.0.2.7:하면 되는 것이다.
+api:
+  ip: 127.0.0.5

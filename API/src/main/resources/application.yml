@@ -5,6 +5,8 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+  config:
+    import: kafka.yml
 logging:
   level:
     org:
@@ -44,8 +46,6 @@ spring:
     url: "jdbc:mysql://127.0.0.3:3306/english"
     username: "hwang"
     password: "5510"
-  kafka:
-    bootstrap-servers: 127.0.0.7:9092
 server:
   port: 5510
 logging:
@@ -59,8 +59,6 @@ spring:
     url: "jdbc:mysql://10.0.2.3:3306/english"
     username: "hwang"
     password: "5510"
-  kafka:
-    bootstrap-servers: 10.0.2.7:9092
 server:
   port: 5511
 logging:

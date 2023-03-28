@@ -108,8 +108,18 @@ section {
 .title {
   text-align: center;
   font-weight: bold;
-  font-size: 2em;
+  font-size: 2rem;
   letter-spacing: 0.6rem;
   margin-left: 2rem;
 }
+
+#email-auth-check {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.no-email-auth {
+  color: red;
+}
+
 
