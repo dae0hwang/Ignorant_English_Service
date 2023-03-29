@@ -28,5 +28,5 @@ CREATE TABLE email_auth(
     email VARCHAR(255) NOT NULL,
     auth_token VARCHAR(255) NOT NULL,
     expired TINYINT(1) NOT NULL,
-    expire_date  TIMESTAMP NOT NULL,
+    expire_date  TIMESTAMP NOT NULL
 );

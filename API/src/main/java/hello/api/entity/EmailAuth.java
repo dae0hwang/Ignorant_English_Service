@@ -1,5 +1,6 @@
 package hello.api.entity;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,14 +25,14 @@ public class EmailAuth {
     private String email;
     private String authToken;
     private Boolean expired;
-    private LocalDateTime expireDate;
+    private Timestamp expireDate;
 
     @Builder
     public EmailAuth(String email, String authToken, Boolean expired) {
         this.email = email;
         this.authToken = authToken;
         this.expired = expired;
-        this.expireDate = LocalDateTime.now().plusMinutes(MAX_EXPIRE_TIME);
+        this.expireDate = Timestamp.valueOf(LocalDateTime.now().plusMinutes(MAX_EXPIRE_TIME));
     }
     public void useToken() {
         this.expired = true;
