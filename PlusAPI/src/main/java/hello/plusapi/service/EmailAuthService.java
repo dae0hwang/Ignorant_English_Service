@@ -35,7 +35,7 @@ public class EmailAuthService {
 
     @KafkaListener(topics = TOPIC, groupId = "foo", properties = {
         "spring.json.value.default.type:hello.plusapi.dto.KafkaEmailDto"})
-    public void sendEmailAuth(KafkaEmailDto kafkaEmailDto) throws UnknownHostException {
+    public void sendEmailAuth(KafkaEmailDto kafkaEmailDto) {
         EmailAuth emailAuth = emailAuthRepository.findByEmail(kafkaEmailDto.getEmail())
             .orElseThrow();
 
@@ -53,16 +53,14 @@ public class EmailAuthService {
 
     @Transactional
     public void confirmEmail(String authToken) {
-        Optional<EmailAuth> findOptionalExpiredAuth = emailAuthRepository.findExpiredAuth(authToken,
-            LocalDateTime.now());
+        Optional<EmailAuth> findOptionalExpiredAuth = emailAuthRepository.findExpiredAuth(authToken);
         if (findOptionalExpiredAuth.isPresent()) {
             EmailAuth emailAuth = findOptionalExpiredAuth.get();
             emailAuth.useToken();
             throw new EmailAuthException(
                 EmailAuthExceptionEnum.EXPIRED_EMAILAUTHTOKEN.getErrormessage());
         } else {
-            EmailAuth emailAuth = emailAuthRepository.findValidAuthByEmail(authToken,
-                    LocalDateTime.now())
+            EmailAuth emailAuth = emailAuthRepository.findValidAuthByEmail(authToken)
                 .orElseThrow(() -> new EmailAuthException(
                     EmailAuthExceptionEnum.NOEXIST_EMAILAUTHTOKEN.getErrormessage()));
             Users users = userRepository.findByUsername(emailAuth.getEmail()).orElseThrow();
