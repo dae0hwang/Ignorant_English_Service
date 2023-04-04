@@ -18,6 +18,7 @@ import org.apache.tomcat.jni.Time;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class EmailAuth {
 
     private static final Long MAX_EXPIRE_TIME = 5L;
