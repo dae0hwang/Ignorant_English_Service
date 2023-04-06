@@ -105,31 +105,95 @@ section {
   margin: 35px 0px 0px 0px;
 }
 
-.title {
-  text-align: center;
+/*여기 일단 주석 처리 그냥 복사해온 것이라 여기 아래 부터 테스트 페이지 관한css 넣어야 한다.*/
+/*.title {*/
+/*  text-align: center;*/
+/*  font-weight: bold;*/
+/*  font-size: 2rem;*/
+/*  letter-spacing: 0.6rem;*/
+/*  margin-left: 2rem;*/
+/*}*/
+
+/*#email-auth-check {*/
+/*  text-align: center;*/
+/*  font-size: 1.2rem;*/
+/*}*/
+
+/*.no-email-auth {*/
+/*  color: red;*/
+/*}*/
+
+/*!*!*관리자 문장 테스트 페이지*!*!*/
+/*.button-container {*/
+/*  margin-top: 35px;*/
+/*}*/
+/*.test-button {*/
+/*  width: 80%;*/
+/*  align-self: auto;*/
+/*  height: 50px;*/
+/*  margin: auto;*/
+/*  font-size: 1.4rem;*/
+/*}*/
+
+
+/*테스트 슬라이드 만들기 css 시작*/
+/*일단 위에 마진은 신경 쓰지 않을께 어차피 container하나더 감싸야 하니깐*/
+/*예비용 마진*/
+.test-container{
+  margin: 75px;
+}
+.first-line {
+  display: flex;
+  justify-content: space-between;
+}
+.count {
+  font-size: 1.9rem;
+  margin-left: 30px;
+}
+.test-btn {
+  width: 100px;
+  font-weight: normal;
+}
+.hint-btn {
+  margin-left: 20px;
+}
+
+.second-line {
+  margin-top: 30px;
+  display: flex;
+  justify-content: right;
+}
+.wrong-btn {
+  margin-left: 20px;
+}
+
+.third-line {
+  margin-left: 20px;
+  margin-top: 60px;
+}
+.korean-text {
   font-weight: bold;
-  font-size: 2rem;
-  letter-spacing: 0.6rem;
-  margin-left: 2rem;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}
+.korean-data {
+  font-size: 1.3rem;
+  margin-bottom: 25px;
 }
 
-#email-auth-check {
-  text-align: center;
-  font-size: 1.2rem;
+.fourth-line {
+  margin-left: 20px;
+  margin-top: 60px;
+}
+.english-text {
+  font-weight: bold;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}
+.english-data {
+  font-size: 1.3rem;
+  margin-bottom: 25px;
 }
 
-.no-email-auth {
-  color: red;
-}
 
-/*!*관리자 문장 테스트 페이지*!*/
-.button-container {
-  margin-top: 35px;
-}
-.test-button {
-  width: 80%;
-  align-self: auto;
-  height: 50px;
-  margin: auto;
-  font-size: 1.4rem;
-}
+

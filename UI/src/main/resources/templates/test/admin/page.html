@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0,
+           minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>무식한 영어 공부</title>
+
+    <!--스타일 초기화  아이콘 폰트 등록-->
+    <link rel="stylesheet" href="../css/nomalize.css"/>
+    <script src="https://kit.fontawesome.com/f1def33959.js" crossorigin="anonymous"></script>
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet"
+          type="text/css"/>
+
+    <!--axios  -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!--css-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/test.admin/page.css" />
+</head>
+
+<body>
+<header>
+    <div class="inner">
+        <div class="head-container">
+            <div class="head-brand">무식한 영어 공부</div>
+            <div class="head-button-container">
+                <a class="btn btn-primary head" href="" role="button" style="color: #ffffff"
+                   id="home-button">Home</a>
+                <button type="button" class="btn btn-primary" id="logout-button">Logout</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!--타이틀, 관리자 문장 테스트 버튼 있던 자리 일단 삭제함 테스트 페이지 관련 html을 넣어야 하기 때문에.-->
+<section>
+    <div class="inner">
+        <!--        일단 전부 만들지 말고 하나만 만들어 보자.-->
+        <div class="test-container" id="0">
+
+            <div class = "first-line">
+                <div class ="count">0/15</div>
+                <div class="btn-container">
+                    <button class="answer-btn test-btn btn btn-primary btn-lg" type="button">정 답</button>
+                    <button class="hint-btn test-btn btn btn-primary btn-lg" type="button">힌 트</button>
+                </div>
+            </div>
+
+            <div class = "second-line">
+                <div class="btn-container">
+                    <button class="right-btn test-btn btn btn-primary btn-lg" type="button">맞 음</button>
+                    <button class="wrong-btn test-btn btn btn-primary btn-lg" type="button">틀 림</button>
+                </div>
+            </div>
+
+            <div class = "third-line">
+                <div class="korean-text">번 역</div>
+                <div class="korean-data">식은 죽 먹기지</div>
+            </div>
+<!--            <hr>-->
+            <div class = "fourth-line">
+                <div class="english-text">영 어</div>
+                <div class="english-data">A piece of cake</div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+
+<script th:inline="javascript">
+  const apiUrl = [[${@environment.getProperty('url.api')}]];
+  const uiUrl = [[${@environment.getProperty('url.ui')}]];
+
+  //home button
+  document.getElementById("home-button").href = "http://" + uiUrl;
+
+  //logout button
+  let logoutButton = document.getElementById("logout-button");
+  logoutButton.onclick = function () {
+    window.localStorage.removeItem("Authorization");
+    location.href = "http://" + uiUrl + "/user/page";
+  };
+
+  //JWT 토큰
+  let jwtToken = localStorage.getItem("Authorization")
+
+  window.onload =function () {
+    //유저 권한 확인하기
+    axios({
+      url: "http://"+apiUrl+"/api/user/manage/check",
+      method: "get",
+      headers: {
+        "Authorization": jwtToken
+      }
+    })
+    .then(function (response) {
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error)
+      location.href="http://"+uiUrl+"/user/manage/login"
+    });
+
+    //타이틀에 이름 사용자 이름, 이메일 인증 정보 가져오기
+    //아마 여기는 필요 없지 일단 주석 정보 받아와야 하긴 하는데 UI 테스트 페이지 만든 이후라 래당 코드는 accounthtml보면 있다.
+
+    //일단 야매로 여기다가 Json 데이터 넣어서 마치 받아온 것 처럼 해야 겠다.
+    let testData= [ {"id":1,"korean":"식은 죽 먹기지","english":"A piece of cake","hint":"x"},
+      {"id":2,"korean":"당근 빠따!","english":"Absolutely.","hint":"x"},
+      {"id":3,"korean":"먼저 가세요.","english":"After you.","hint":"x"},
+      {"id":4,"korean":"항상 그렇지요","english":"Always.","hint":"x"},
+      {"id":5,"korean":"사양하지 마세요","english":"Be my guest.","hint":"x"},
+      {"id":6,"korean":"샘이라고 불러 주세요","english":"Call me Sam, please.","hint":"x"},
+      {"id":7,"korean":"계산서 좀 주세요","english":"Check, please","hint":"x"},
+      {"id":8,"korean":"너무 심각하게 그러지 말아요","english":"Don’t get too serious","hint":"x"},
+      {"id":9,"korean":"겸손해 하지 말아요","english":"Don't be modest","hint":"x"},
+    ];
+    //이런 데이터 받았어 그러면 레츠고 해야지
+    //숫자를 띄운다 1/9 이렇게 플러스로 id도 띄운다 쓸것이기 때문에
+    //힌트 버튼 -힌트를 띄운다.
+    //정답 버튼 -정답을 띄운다.
+    //틀림 - 다음 문장으로 넘어간다    =========  통계서버에 틀림 ====== api 서버에 테이블 틀림으로 수정
+    //맞음 - 다음 문장으로 넘어간다. ===== 통계서버 ==== api 서버
+
+    //일단 하나만 만들어보자.
+    let data1 = {"id": 1, "korean": "식은 죽 먹기지", "english": "A piece of cake", "hint": "x"};
+  }
+</script>
+</body>
+</html>

@@ -47,6 +47,19 @@
     </div>
 </section>
 
+<!--관리자 문장 체크 테스트 페이지로 넘어가는 버튼 만들어보기-->
+<!--일단 예비로 바로 테스트 페이지로 넘어가게 설정-->
+<section>
+    <div class="inner">
+        <div class="button-container">
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary test-button" type="button"
+                onclick="location.href='/user/test/admin/page'">관리자 문장 테스트</button>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
