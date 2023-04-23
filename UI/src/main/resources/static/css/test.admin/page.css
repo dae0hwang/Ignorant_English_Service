@@ -1,0 +1,205 @@
+* {
+  box-sizing: border-box;
+}
+
+@media only screen and (min-width: 800px) {
+  .inner {
+    max-width: 800px;
+  }
+}
+
+body {
+  margin: 0 auto;
+  color: #3f464d;
+  font-family: "Spoqa Han Sans Neo", "Sans-serif";
+}
+
+/* a 링크 태그 스타일 초기화 */
+a {
+  all: unset;
+}
+a:link {
+  text-decoration: none;
+  color: #3f464d;
+}
+a:visited {
+  text-decoration: none;
+  color: #3f464d;
+}
+a:active {
+  text-decoration: none;
+  color: #3f464d;
+}
+a:hover {
+  text-decoration: none;
+  color: #3f464d;
+}
+
+.inner {
+  width: 800px; /* 가로 사이즈가 1200px 넘는 해상도에서는 max-width 설정 이번에 좀 수정*/
+  height: 100%; /* align-items 등으로 수직 가운데 정렬을 위해, 알맞은 height 설정이 필요함 */
+
+  /*이것이 가운데 정렬 방법이다.*/
+  margin: 0 auto; /* 가운데 정렬: 동일 요소에 width 가 설정되어 있을 때에만 적용 */
+  /*살짝 좌우 띄우게 해서 하기*/
+  padding: 0rem 2rem;
+}
+
+header {
+  width: 100%;
+  height: 60px;
+  background-color: lightblue;
+  /*position: fixed;*/
+  /*top: 0;*/
+  /*left: 0;*/
+  /*z-index: 1000;*/
+}
+
+.head-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 필요시 세부 설정을 위해, 상단 좌측 브랜드만을 별도로 클래스로 정의 */
+.head-container .head-brand {
+  font-weight: normal;
+  font-size: 1.4em;
+}
+
+
+/*.head-container .head-brand a:hover {*/
+/*  color: #2186c4;*/
+/*  cursor: pointer;*/
+/*}*/
+
+/* 필요시 세부 설정을 위해, 상단 우측 메뉴만을 별도로 클래스로 정의 */
+.head-container .head-home {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.head-container .head-home a:hover {
+  color: #2186c4;
+  cursor: pointer;
+}
+
+.inner hr {
+  margin-top: 0px;
+  width: 100%;
+}
+
+
+section {
+  width: 100%;
+  background-color: #fff;
+  position: relative;
+}
+
+.title-container {
+  width: 100%;
+  height: 100px;
+  background-color: #ffffff;
+  margin: 35px 0px 0px 0px;
+}
+
+/*여기 일단 주석 처리 그냥 복사해온 것이라 여기 아래 부터 테스트 페이지 관한css 넣어야 한다.*/
+/*타이틀관련 그냥 삭제 */
+
+
+
+/*테스트 슬라이드 만들기 css 시작*/
+/*일단 위에 마진은 신경 쓰지 않을께 어차피 container하나더 감싸야 하니깐*/
+/*예비용 마진*/
+.test-inner {
+  width: 800px; /* 가로 사이즈가 1200px 넘는 해상도에서는 max-width 설정 이번에 좀 수정*/
+  /*border: 1px solid black;*/
+  height: 100%; /* align-items 등으로 수직 가운데 정렬을 위해, 알맞은 height 설정이 필요함 */
+
+  /*이것이 가운데 정렬 방법이다.*/
+  margin: 0 auto; /* 가운데 정렬: 동일 요소에 width 가 설정되어 있을 때에만 적용 */
+  /*살짝 좌우 띄우게 해서 하기*/
+  /*padding: 0rem 2rem;*/
+}
+
+/*한번 더 감싸면 800으로 맞추면된다*/
+.width-container {
+  width: 800px;
+  padding: 60px 35px 35px 35px;
+  float: left;
+}
+
+.test-container{
+  width: 100%;
+  height: 450px;
+  /*padding: 60px 35px 35px 35px;*/
+  /*margin: 60px 35px 35px 35px;*/
+  border: 1px solid #3f464d;
+  border-radius: 10px;
+}
+.test-inner-container {
+  margin: 35px;
+
+  /*border: 1px solid #3f464d;*/
+  /*border-radius: 10px;*/
+}
+
+
+.first-line {
+  display: flex;
+  justify-content: space-between;
+}
+.count {
+  font-size: 1.9rem;
+  margin-left: 30px;
+}
+.test-btn {
+  width: 100px;
+  font-weight: normal;
+}
+.hint-btn {
+  margin-left: 20px;
+}
+
+.second-line {
+  margin-top: 20px;
+  display: flex;
+  justify-content: right;
+}
+.wrong-btn {
+  margin-left: 20px;
+}
+
+.third-line {
+  margin-left: 30px;
+  margin-top: 30px;
+}
+.korean-text {
+  font-weight: bold;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}
+.korean-data {
+  font-size: 1.3rem;
+  margin-bottom: 35px;
+}
+
+.fourth-line {
+  margin-left: 30px;
+  margin-top: 40px;
+}
+.english-text {
+  font-weight: bold;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}
+.english-data {
+  font-size: 1.3rem;
+  margin-bottom: 25px;
+}
+
+/*.all-container {*/
+/*  width: 10000px;*/
+/*}*/

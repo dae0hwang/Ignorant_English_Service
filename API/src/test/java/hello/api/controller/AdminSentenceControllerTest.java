@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hello.api.dto.AdminSentenceDto;
 import hello.api.dto.AdminSentenceSuccess;
 import hello.api.dto.ErrorResponse;
-import hello.api.entity.AdminSentenceEntity;
+import hello.api.entity.AdminSentence;
 import hello.api.enumforentity.Grammar;
 import hello.api.enumforentity.Situation;
 import hello.api.exceptionadvice.AdminSentenceExceptionAdvice;
@@ -167,10 +167,10 @@ ErrorInformationTlsContainer errorInformationTlsContainer;
     void findAll() throws Exception {
         //given
         String url = baseUrl + "/all";
-        AdminSentenceEntity save1 = adminSentenceRepository.save(
-            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
-        AdminSentenceEntity save2 = adminSentenceRepository.save(
-            new AdminSentenceEntity("korean2", "english2", Grammar.NO, Situation.BUSINESS));
+        AdminSentence save1 = adminSentenceRepository.save(
+            new AdminSentence("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentence save2 = adminSentenceRepository.save(
+            new AdminSentence("korean2", "english2", Grammar.NO, Situation.BUSINESS));
 
         List<AdminSentenceDto> dtoList = Arrays.asList(
             new AdminSentenceDto(save1.getId(), save1.getKorean(), save1.getEnglish(),
@@ -192,8 +192,8 @@ ErrorInformationTlsContainer errorInformationTlsContainer;
     @Test
     void delete() throws Exception{
         //given
-        AdminSentenceEntity save = adminSentenceRepository.save(
-            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentence save = adminSentenceRepository.save(
+            new AdminSentence("korean1", "english1", Grammar.IF, Situation.NO));
         String url = baseUrl + "/delete/"+save.getId();
         AdminSentenceSuccess success = new AdminSentenceSuccess(200, null, null, null,
             null);
@@ -209,8 +209,8 @@ ErrorInformationTlsContainer errorInformationTlsContainer;
     @Test
     void find() throws Exception{
         //given
-        AdminSentenceEntity save = adminSentenceRepository.save(
-            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentence save = adminSentenceRepository.save(
+            new AdminSentence("korean1", "english1", Grammar.IF, Situation.NO));
         String url = baseUrl + "/find/"+save.getId();
         AdminSentenceDto dto = new AdminSentenceDto(save.getId(), save.getKorean(),
             save.getEnglish(), save.getGrammar().getStringGrammar(),
@@ -229,8 +229,8 @@ ErrorInformationTlsContainer errorInformationTlsContainer;
     @Test
     void update() throws Exception{
         //given
-        AdminSentenceEntity save = adminSentenceRepository.save(
-            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentence save = adminSentenceRepository.save(
+            new AdminSentence("korean1", "english1", Grammar.IF, Situation.NO));
 
         String url = baseUrl + "/update/"+save.getId();
         String requestJson = "{\"korean\":\"korean2\", \"english\":\"english2\", "

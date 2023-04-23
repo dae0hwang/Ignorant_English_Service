@@ -25,18 +25,18 @@ public class AdminSentenceExceptionAdvice {
     private final ErrorInformationTlsContainer errorInformationTlsContainer;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity methodArgumentNotValidExceptionAdvice(MethodArgumentNotValidException e) {
+    public ResponseEntity<Void> methodArgumentNotValidExceptionAdvice(MethodArgumentNotValidException e) {
         log.warn("[exceptionAdvice] ex", e);
         return makeArgumentNotValidResponseAndSetTls(e);
     }
 
     @ExceptionHandler(AdminSentenceException.class)
-    public ResponseEntity companyFoodExceptionAdvice(AdminSentenceException e) {
+    public ResponseEntity<Void> companyFoodExceptionAdvice(AdminSentenceException e) {
         log.warn("[exceptionAdvice] ex", e);
         return makeCompanyFoodExceptionResponseAndSetTls(e);
     }
 
-    private ResponseEntity makeCompanyFoodExceptionResponseAndSetTls(
+    private ResponseEntity<Void> makeCompanyFoodExceptionResponseAndSetTls(
         AdminSentenceException e) {
         ThreadLocal<ErrorInformation> threadLocal = errorInformationTlsContainer.getThreadLocal();
         if (!threadLocal.get().getErrorTitle().equals("none")) {
@@ -51,18 +51,18 @@ public class AdminSentenceExceptionAdvice {
                 errorInformation.setErrorTitle(NO_MATCH_GRAMMAR_ENUM.getErrorTitle());
                 errorInformation.setErrorDetail(NO_MATCH_GRAMMAR_ENUM.getErrormessage());
                 threadLocal.set(errorInformation);
-                return new ResponseEntity(NO_MATCH_GRAMMAR_ENUM.getHttpStatus());
+                return new ResponseEntity<>(NO_MATCH_GRAMMAR_ENUM.getHttpStatus());
             case NO_MATCH_SITUATION_ENUM:
                 errorInformation.setErrorType(NO_MATCH_SITUATION_ENUM.getErrorType());
                 errorInformation.setErrorTitle(NO_MATCH_SITUATION_ENUM.getErrorTitle());
                 errorInformation.setErrorDetail(NO_MATCH_SITUATION_ENUM.getErrormessage());
                 threadLocal.set(errorInformation);
-                return new ResponseEntity(NO_MATCH_SITUATION_ENUM.getHttpStatus());
+                return new ResponseEntity<>(NO_MATCH_SITUATION_ENUM.getHttpStatus());
         }
         throw new RuntimeException();
     }
 
-    private ResponseEntity makeArgumentNotValidResponseAndSetTls(
+    private ResponseEntity<Void> makeArgumentNotValidResponseAndSetTls(
         MethodArgumentNotValidException e) {
         ThreadLocal<ErrorInformation> threadLocal = errorInformationTlsContainer.getThreadLocal();
         if (!threadLocal.get().getErrorTitle().equals("none")) {
@@ -76,7 +76,7 @@ public class AdminSentenceExceptionAdvice {
                 errorInformation.setErrorTitle(ADD_SENTENCE_STRING_BLANK.getErrorTitle());
                 errorInformation.setErrorDetail(ADD_SENTENCE_STRING_BLANK.getErrormessage());
                 threadLocal.set(errorInformation);
-                return new ResponseEntity(ADD_SENTENCE_STRING_BLANK.getHttpStatus());
+                return new ResponseEntity<>(ADD_SENTENCE_STRING_BLANK.getHttpStatus());
         }
         throw new RuntimeException();
     }

@@ -1,10 +1,7 @@
 package hello.api.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import hello.api.entity.EmailAuth;
 import hello.api.repository.EmailAuthRepository;
-import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

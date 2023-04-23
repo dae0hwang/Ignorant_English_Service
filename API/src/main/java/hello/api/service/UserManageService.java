@@ -28,7 +28,7 @@ public class UserManageService {
 
     @Transactional
     public void signup(UserSignupRequest request) {
-        //users에 아이디 존재하고, 이메일 인증이 안되어 있고, emailAuth 이메일 존재하고 ,만료된 인증 정보일 때
+        //users에 아이디 존재, 이메일 인증 여부는 false 그리고 emailAuth 이메일 존재하고 ,만료된 인증 정보일 때
         //재가입을 시켜준다
         rejoinExpiredAuthUser(request);
 
@@ -52,7 +52,7 @@ public class UserManageService {
         Optional<EmailAuth> byEmailAndExpiredTrue = emailAuthRepository.findByEmailAndExpiredTrue(
             request.getUsername());
         if (byUsernameAndEmailAuthFalse.isPresent() && byEmailAndExpiredTrue.isPresent()) {
-            log.info("재가입 조건 충족 로직 들어옴");
+            log.info("재가입 조건 충족");
             userRepository.delete(byUsernameAndEmailAuthFalse.orElseThrow());
             emailAuthRepository.delete(byEmailAndExpiredTrue.orElseThrow());
         }
@@ -62,14 +62,15 @@ public class UserManageService {
     public UserInformationDto getUserInformation(Authentication authentication) {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         boolean emailAuth = findEmailAuth(principal);
-        UserInformationDto userInformationDto = new UserInformationDto(
-            principal.getUser().getUsername(), principal.getUser().getName(), emailAuth);
-        return userInformationDto;
+        Users findUser = userRepository.findByUsername(principal.getUser().getUsername())
+            .orElseThrow();
+        return new UserInformationDto(
+            principal.getUser().getUsername(), findUser.getId(), principal.getUser().getName(),
+            emailAuth);
     }
 
     private boolean findEmailAuth(PrincipalDetails principal) {
         Users users = userRepository.findByUsername(principal.getUsername()).orElseThrow();
-        boolean emailAuth = users.getEmailAuth();
-        return emailAuth;
+        return users.getEmailAuth();
     }
 }

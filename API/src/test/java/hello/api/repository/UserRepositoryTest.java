@@ -24,7 +24,7 @@ class UserRepositoryTest {
             Users.builder().username("email@naver.com").password("password").name("name").roles(
                 "ROLE_USER").build());
         //when
-        Users findUser = userRepository.findByUsername("email@naver.com").get();
+        Users findUser = userRepository.findByUsername("email@naver.com").orElseThrow();
         //then
         assertThat(findUser).isEqualTo(saveUser);
     }

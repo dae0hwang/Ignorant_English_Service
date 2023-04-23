@@ -2,7 +2,6 @@ package hello.api.controller;
 
 import hello.api.dto.UserInformationDto;
 import hello.api.dto.UserSignupRequest;
-import hello.api.repository.EmailAuthRepository;
 import hello.api.service.EmailAuthService;
 import hello.api.service.KafkaEmailService;
 import hello.api.service.UserManageService;
@@ -29,17 +28,17 @@ public class UserManageController {
     private final EmailAuthService emailAuthService;
 
     @PostMapping("/signup")
-    public ResponseEntity signup(
+    public ResponseEntity<Void> signup(
         @Valid @RequestBody UserSignupRequest userSignupRequest) {
         userManageService.signup(userSignupRequest);
         emailAuthService.save(userSignupRequest.getUsername());
         kafkaEmailService.sendMessage(userSignupRequest.getUsername());
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/check")
-    public ResponseEntity check() {
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<Void> check() {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/information")

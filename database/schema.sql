@@ -30,3 +30,14 @@ CREATE TABLE email_auth(
     expired TINYINT(1) NOT NULL,
     expire_date  TIMESTAMP NOT NULL
 );
+
+DROP TABLE IF EXISTS admin_test_check;
+
+CREATE TABLE admin_test_check(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    admin_sentence_id BIGINT NOT NULL,
+    test_check VARCHAR(255) NOT NULL,
+    created_date TIMESTAMP NOT NULL,
+    updated_date TIMESTAMP NOT NULL
+);

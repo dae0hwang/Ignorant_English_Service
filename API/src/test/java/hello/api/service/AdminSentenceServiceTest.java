@@ -1,7 +1,7 @@
 package hello.api.service;
 
 import hello.api.dto.AdminSentenceDto;
-import hello.api.entity.AdminSentenceEntity;
+import hello.api.entity.AdminSentence;
 import hello.api.enumforentity.Grammar;
 import hello.api.enumforentity.Situation;
 import hello.api.exception.AdminSentenceException;
@@ -11,7 +11,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +30,7 @@ class AdminSentenceServiceTest {
         //when
         adminSentenceService.saveSentence("korean", "english", "HAVE PP", "NO");
         //then
-        List<AdminSentenceEntity> all = adminSentenceRepository.findAll();
+        List<AdminSentence> all = adminSentenceRepository.findAll();
         Assertions.assertThat(all.size()).isEqualTo(1);
     }
 
@@ -76,10 +75,10 @@ class AdminSentenceServiceTest {
     @Test
     void findAll() {
         //given
-        AdminSentenceEntity save1 = adminSentenceRepository.save(
-            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
-        AdminSentenceEntity save2 = adminSentenceRepository.save(
-            new AdminSentenceEntity("korean2", "english2", Grammar.NO, Situation.BUSINESS));
+        AdminSentence save1 = adminSentenceRepository.save(
+            new AdminSentence("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentence save2 = adminSentenceRepository.save(
+            new AdminSentence("korean2", "english2", Grammar.NO, Situation.BUSINESS));
         //when
         List<AdminSentenceDto> all = adminSentenceService.findAll();
         //then
@@ -93,8 +92,8 @@ class AdminSentenceServiceTest {
     @Test
     void delete() {
         //given
-        AdminSentenceEntity save = adminSentenceRepository.save(
-            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentence save = adminSentenceRepository.save(
+            new AdminSentence("korean1", "english1", Grammar.IF, Situation.NO));
         //when
         adminSentenceService.delete(save.getId());
         //then
@@ -105,8 +104,8 @@ class AdminSentenceServiceTest {
     @Test
     void findById() {
         //given
-        AdminSentenceEntity save = adminSentenceRepository.save(
-            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentence save = adminSentenceRepository.save(
+            new AdminSentence("korean1", "english1", Grammar.IF, Situation.NO));
         AdminSentenceDto actual = new AdminSentenceDto(save.getId(), save.getKorean(),
             save.getEnglish(), save.getGrammar().getStringGrammar(),
             save.getSituation().getStringSituation());
@@ -119,12 +118,12 @@ class AdminSentenceServiceTest {
     @Test
     void update() {
         //given
-        AdminSentenceEntity save = adminSentenceRepository.save(
-            new AdminSentenceEntity("korean1", "english1", Grammar.IF, Situation.NO));
+        AdminSentence save = adminSentenceRepository.save(
+            new AdminSentence("korean1", "english1", Grammar.IF, Situation.NO));
         //when
         adminSentenceService.update(save.getId(), "korean1", "change", "NO", "NO");
         //then
-        AdminSentenceEntity changedEntity = adminSentenceRepository.findById(save.getId())
+        AdminSentence changedEntity = adminSentenceRepository.findById(save.getId())
             .orElseThrow();
         Assertions.assertThat(changedEntity.getKorean()).isEqualTo("korean1");
         Assertions.assertThat(changedEntity.getEnglish()).isEqualTo("change");

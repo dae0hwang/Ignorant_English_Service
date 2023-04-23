@@ -100,7 +100,7 @@ section {
 
 .title-container {
   width: 100%;
-  height: 100px;
+  height: 60px;
   background-color: #ffffff;
   margin: 35px 0px 0px 0px;
 }
@@ -108,28 +108,123 @@ section {
 .title {
   text-align: center;
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 2em;
   letter-spacing: 0.6rem;
   margin-left: 2rem;
 }
 
-#email-auth-check {
+
+
+
+
+/**/
+.select-container {
+  margin-top: 2rem;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.grammar {
+  margin-left: 2rem;
+  width: 40%;
+}
+
+.grammar-title {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
-.no-email-auth {
-  color: red;
+.situation {
+  margin-right: 2rem;
+  width: 40%;
 }
 
-/*!*관리자 문장 테스트 페이지*!*/
-.button-container {
-  margin-top: 35px;
+.situation-title {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
-.test-button {
-  width: 80%;
-  align-self: auto;
+
+
+.search-container {
+  margin-top: 1.5rem;
+  /*margin-right: 2rem;*/
+  /*margin-left: 2rem;*/
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.check {
+  margin-left: 2rem;
+  width: 40%;
+}
+
+.check-title {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+
+.search-button-container {
+  width: 45%;
+  margin-top: 1.2rem;
+  margin-right: 2rem;
+}
+
+.search-button {
+  /*margin-top: 2rem;*/
+  width: 100%;
+  margin-left: 2.2rem;
+}
+
+.start-container {
+  margin-top: 1.9rem;
+  /*margin-right: 2rem;*/
+  /*margin-left: 2rem;*/
+  width: 100%;
+  height: 75px;
+  /*display: flex;*/
+  /*justify-content: space-between;*/
+  /*align-items: center;*/
+}
+
+.start-button {
   height: 50px;
-  margin: auto;
-  font-size: 1.4rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  font-size: x-large;
 }
+
+
+
+.table-inner {
+  width: 1000px;
+  height: 100%;
+  /*이것이 가운데 정렬 방법이다.*/
+  margin: 0 auto; /* 가운데 정렬: 동일 요소에 width 가 설정되어 있을 때에만 적용 */
+  /*살짝 좌우 띄우게 해서 하기*/
+  padding: 0rem 2rem;
+}
+
+.table {
+  margin-top: 2rem;
+  table-layout: fixed;
+  word-break: break-all;
+  height: auto;
+}
+
+
+
+
+/**/

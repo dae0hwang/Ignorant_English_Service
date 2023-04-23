@@ -65,7 +65,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	// 로그인 인증 성공하면 들어오는 메소드
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-		Authentication authResult) throws IOException, ServletException {
+		Authentication authResult)  {
 		//Authentication에 있는 정보로 JWT Token 생성해서 response에 담아주기
 		PrincipalDetails principalDetailis = (PrincipalDetails) authResult.getPrincipal();
 		String jwtToken = JWT.create()

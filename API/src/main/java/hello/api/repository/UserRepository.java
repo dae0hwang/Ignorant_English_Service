@@ -10,6 +10,5 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
     Optional<Users> findByUsernameAndEmailAuthFalse(String username);
 
-    @Override
-    void delete(Users users);
+
 }

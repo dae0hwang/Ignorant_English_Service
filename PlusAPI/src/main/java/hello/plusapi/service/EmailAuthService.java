@@ -10,6 +10,8 @@ import hello.plusapi.repository.UserRepository;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,10 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class EmailAuthService {
 
-    @Value("${server.port}")
+    @Value("${server.port:5510}")
     private String port;
-    @Value("${api.ip}")
+    @Value("${api.ip:localhost}")
     private String ip;
+    @PersistenceContext
+    EntityManager em;
     private static final String TOPIC = "email";
     private final JavaMailSender javaMailSender;
     private final EmailAuthRepository emailAuthRepository;
@@ -51,7 +55,7 @@ public class EmailAuthService {
         return "http://" + ip + ":" + port + "/api/email/auth" + "?authToken=" + authToken;
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = {EmailAuthException.class})
     public void confirmEmail(String authToken) {
         Optional<EmailAuth> findOptionalExpiredAuth = emailAuthRepository.findExpiredAuth(authToken);
         if (findOptionalExpiredAuth.isPresent()) {
