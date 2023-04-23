@@ -8,7 +8,6 @@ import hello.api.exception.UserManageException;
 import hello.api.jwt.PrincipalDetails;
 import hello.api.repository.EmailAuthRepository;
 import hello.api.repository.UserRepository;
-import org.apache.catalina.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -98,8 +97,8 @@ class UserManageServiceTest {
         UserInformationDto findUserInformationDto = userManageService.getUserInformation(
             authentication);
         //then
-        UserInformationDto actualDto = new UserInformationDto(save.getUsername(), save.getName(),
-            save.getEmailAuth());
+        UserInformationDto actualDto = new UserInformationDto(save.getUsername(), save.getId(),
+            save.getName(), save.getEmailAuth());
         Assertions.assertThat(findUserInformationDto).isEqualTo(actualDto);
     }
 }

@@ -11,5 +11,4 @@ public enum Situation {
     CAFE("CAFE");
 
     private final String stringSituation;
-
 }

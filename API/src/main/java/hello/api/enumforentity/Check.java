@@ -5,12 +5,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Grammar {
-
+public enum Check {
     NO("NO"),
-    HAVEPP("HAVEPP"),
-    IF("IF"),
-    AS("AS");
+    WRONG("WRONG"),
+    CORRECT("CORRECT");
 
-    private final String stringGrammar;
+    private final String stringCheck;
 }

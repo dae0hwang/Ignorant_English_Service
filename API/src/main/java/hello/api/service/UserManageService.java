@@ -62,14 +62,15 @@ public class UserManageService {
     public UserInformationDto getUserInformation(Authentication authentication) {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         boolean emailAuth = findEmailAuth(principal);
-        UserInformationDto userInformationDto = new UserInformationDto(
-            principal.getUser().getUsername(), principal.getUser().getName(), emailAuth);
-        return userInformationDto;
+        Users findUser = userRepository.findByUsername(principal.getUser().getUsername())
+            .orElseThrow();
+        return new UserInformationDto(
+            principal.getUser().getUsername(), findUser.getId(), principal.getUser().getName(),
+            emailAuth);
     }
 
     private boolean findEmailAuth(PrincipalDetails principal) {
         Users users = userRepository.findByUsername(principal.getUsername()).orElseThrow();
-        boolean emailAuth = users.getEmailAuth();
-        return emailAuth;
+        return users.getEmailAuth();
     }
 }

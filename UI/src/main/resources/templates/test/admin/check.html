@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>무식한 영어 공부</title>
+
+    <!--스타일 초기화  아이콘 폰트 등록-->
+<!--    <link rel="stylesheet" href="../css/nomalize.css"/>-->
+    <script src="https://kit.fontawesome.com/f1def33959.js" crossorigin="anonymous"></script>
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet"
+          type="text/css"/>
+
+    <!--axios  -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!--css-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/test.admin/check.css" />
+</head>
+<body>
+<header>
+    <div class="inner">
+        <div class="head-container">
+            <div class="head-brand">무식한 영어 공부</div>
+            <a class="btn btn-primary head" href="" role="button" style="color: #ffffff"
+               id="home-button">Home</a>
+        </div>
+    </div>
+</header>
+
+<section>
+    <div class="inner">
+        <div class="title-container">
+            <div class="title">관리자 문장 목록</div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="select-container">
+            <div class="grammar">
+                <div class="grammar-title">문법 체크</div>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        id="grammar-select">
+                </select>
+            </div>
+            <div class="situation">
+                <div class="situation-title">상황 체크</div>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        id="situation-select">
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="search-container">
+            <div class="check">
+                <div class="check-title">테스트 체크</div>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        id="check-select">
+                </select>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end search-button-container">
+                <button type="button" class="btn btn-primary btn-lg register search-button"
+                id="search-button">검색</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="start-container">
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary start-button" type="button"
+                id="start-button">테스트 시작</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="table-inner">
+        <table class="table ">
+            <thead class="table-light">
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">번역</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">영어</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">문법</th>
+                <th scope="col">상황</th>
+                <th scope="col">테스트</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+
+<script th:inline="javascript">
+  const apiUrl = [[${@environment.getProperty('url.api')}]];
+  const uiUrl = [[${@environment.getProperty('url.ui')}]];
+
+  //JWT 토큰
+  let jwtToken = localStorage.getItem("Authorization")
+
+  //UserId
+  let userId;
+
+  //home button
+  document.getElementById("home-button").href = "http://" + uiUrl;
+
+  //셀렉트 박스 정보 가져오기.
+  function makeGrammarSelect(dataList) {
+    let grammarSelect = document.getElementById("grammar-select");
+
+    for (let i = 0; i < dataList.length; i++) {
+      if (i === 0) {
+        let optionElement = document.createElement("option");
+        optionElement.selected;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        grammarSelect.appendChild(optionElement)
+      } else {
+        let optionElement = document.createElement("option");
+        optionElement.value = i;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        grammarSelect.appendChild(optionElement)
+      }
+    }
+  }
+
+  function makeSituationSelect(dataList) {
+    let situationSelect = document.getElementById("situation-select");
+
+    for (let i = 0; i < dataList.length; i++) {
+      if (i === 0) {
+        let optionElement = document.createElement("option");
+        optionElement.selected;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        situationSelect.appendChild(optionElement)
+      } else {
+        let optionElement = document.createElement("option");
+        optionElement.value = i;
+        optionElement.appendChild(document.createTextNode(dataList[i]));
+        situationSelect.appendChild(optionElement)
+      }
+    }
+  }
+
+  //여기부터  새로추가
+  function makeCheckSelect() {
+    let checkSelect = document.getElementById("check-select");
+
+    let optionElement1 = document.createElement("option");
+    optionElement1.selected;
+    optionElement1.appendChild(document.createTextNode("전체"));
+    checkSelect.appendChild(optionElement1)
+
+    let optionElement2 = document.createElement("option");
+    optionElement2.value = 1;
+    optionElement2.appendChild(document.createTextNode("틀림&안품"));
+    checkSelect.appendChild(optionElement2)
+
+    let optionElement3 = document.createElement("option");
+    optionElement3.value = 2;
+    optionElement3.appendChild(document.createTextNode("맞음"));
+    checkSelect.appendChild(optionElement3)
+  }
+
+  //셀렉트 박스 한곳에 두기.
+  window.onload = function () {
+    axios({
+      url: "http://"+apiUrl+"/api/admin/sentence/selection",
+      method: 'get',
+    })
+    .then(function (response) {
+      makeGrammarSelect(response.data.grammarList);
+      makeSituationSelect(response.data.situationList);
+      makeCheckSelect();
+    })
+    .catch(function (error) {
+      alert("[실패] 잠시 후 시도해 주세요");
+    });
+
+    //유저 아이디 가져오기
+    axios({
+      url: "http://"+apiUrl+"/api/user/manage/information",
+      method: "get",
+      headers: {
+        "Authorization": jwtToken
+      }
+    })
+    .then(function (response) {
+      console.log(response)
+      userId = response.data.id;
+      document.getElementById("title-div").textContent = response.data.name+"님의 페이지";
+      const emailAuthBoolean = response.data.emailAuth;
+      if (emailAuthBoolean) {
+        document.getElementById("email-auth-check").textContent = "이메일 인증 완료";
+      } else {
+        document.getElementById("email-auth-check").textContent = "이메일 인증이 필요합니다";
+        document.getElementById("email-auth-check").setAttribute("class", "no-email-auth")
+      }
+
+    })
+    .catch(function (error) {
+    });
+  }
+
+
+  //이제 여기다가 검색 버튼 클릭하면 makeTable 하기
+  document.addEventListener("click", function (event) {
+    if (event.target.id !== "search-button") {
+      return;
+    }
+    let grammarSelect = document.getElementById("grammar-select");
+    let situationSelect = document.getElementById("situation-select");
+    let checkSelect = document.getElementById("check-select");
+    let grammar = grammarSelect.options[grammarSelect.selectedIndex].text;
+    let situation = situationSelect.options[situationSelect.selectedIndex].text;
+    let check = checkSelect.options[checkSelect.selectedIndex].text;
+
+    console.log("grammar= "+grammar);
+    console.log("situation= "+situation);
+    switch (check) {
+      case "전체":
+        check = "NO";
+        break;
+      case "틀림&안품":
+        check = "WRONG";
+        break;
+      case "맞음":
+        check = "CORRECT";
+        break;
+    }
+    console.log("check= "+check);
+    axios({
+      url: "http://"+apiUrl+"/api/admin/test/list",
+      method: 'put',
+      data: {
+        userId: userId,
+        grammar: grammar,
+        situation: situation,
+        check: check
+      }
+
+    })
+    .then(function (response) {
+      console.log(response);
+      let bodyElement = document.getElementById("table-body");
+      bodyElement.replaceChildren();
+      makeTable(response.data);
+
+    })
+    .catch(function (error) {
+      console.log(error)
+      alert("[실패] 테이블 정보 가져오기에 실패하였습니다.");
+    });
+  });
+
+
+
+  //테이블 정보 가져와서 테이블 만들기 이것도 수정 필요.
+  let bodyElement = document.getElementById("table-body");
+  function makeTable(dataList) {
+
+    for (const dto of dataList) {
+      let idTdElement = document.createElement("td")
+      idTdElement.appendChild(document.createTextNode(dto.sentenceId));
+      let koreanTdElement = document.createElement("td")
+      koreanTdElement.appendChild(document.createTextNode(dto.korean));
+      koreanTdElement.setAttribute("colspan", 3);
+      let englishTdElement = document.createElement("td")
+      englishTdElement.appendChild(document.createTextNode(dto.english));
+      englishTdElement.setAttribute("colspan", 3);
+      let grammarTdElement = document.createElement("td")
+      grammarTdElement.appendChild(document.createTextNode(dto.grammar));
+      let situationTdElement = document.createElement("td")
+      situationTdElement.appendChild(document.createTextNode(dto.situation));
+      let checkTdElement = document.createElement("td");
+      checkTdElement.appendChild(document.createTextNode(dto.check));
+
+      let trElement = document.createElement("tr");
+      trElement.appendChild(idTdElement);
+      trElement.appendChild(koreanTdElement);
+      trElement.appendChild(englishTdElement);
+      trElement.appendChild(grammarTdElement);
+      trElement.appendChild(situationTdElement);
+      trElement.appendChild(checkTdElement)
+      bodyElement.appendChild(trElement);
+    }
+  }
+
+  //테스트 시작 버튼 누르기.
+  document.addEventListener("click", function (event) {
+    if (event.target.id !== "start-button") {
+      return;
+    }
+    let grammarSelect = document.getElementById("grammar-select");
+    let situationSelect = document.getElementById("situation-select");
+    let checkSelect = document.getElementById("check-select");
+    let grammar = grammarSelect.options[grammarSelect.selectedIndex].text;
+    let situation = situationSelect.options[situationSelect.selectedIndex].text;
+    let check = checkSelect.options[checkSelect.selectedIndex].text;
+    switch (check) {
+      case "전체":
+        check = "NO";
+        break;
+      case "틀림&안품":
+        check = "WRONG";
+        break;
+      case "맞음":
+        check = "CORRECT";
+        break;
+    }
+    //로컬 스토리지 저장 후 이동.
+    const condtion = {"userId":userId, "grammar": grammar, "situation":situation, "check": check}
+    localStorage.removeItem("AdminTestCondition");
+    localStorage.setItem("AdminTestCondition", JSON.stringify(condtion));
+    location.href = "http://" + uiUrl + "/user/test/admin/page";
+  })
+</script>
+</body>
+</html>

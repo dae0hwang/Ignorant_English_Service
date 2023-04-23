@@ -20,7 +20,6 @@ public class EmailAuthService {
             .authToken(UUID.randomUUID().toString())
             .expired(false)
             .build();
-        EmailAuth saveEntity = emailAuthRepository.save(emailAuth);
-        return saveEntity;
+        return emailAuthRepository.save(emailAuth);
     }
 }

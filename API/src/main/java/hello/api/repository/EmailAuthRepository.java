@@ -7,7 +7,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface EmailAuthRepository extends JpaRepository<EmailAuth, Long> {
 
     Optional<EmailAuth> findByEmailAndExpiredTrue(String email);
-
-    @Override
-    void delete(EmailAuth emailAuth);
 }

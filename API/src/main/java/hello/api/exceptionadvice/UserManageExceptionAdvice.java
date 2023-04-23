@@ -26,12 +26,12 @@ public class UserManageExceptionAdvice {
     private final ErrorInformationTlsContainer errorInformationTlsContainer;
 
     @ExceptionHandler(UserManageException.class)
-    public ResponseEntity userManageExceptionAdvice(UserManageException e) {
+    public ResponseEntity<Void> userManageExceptionAdvice(UserManageException e) {
         log.warn("[exceptionAdvice] ex", e);
         return userManageExceptionResponseAndSetTls(e);
     }
 
-    private ResponseEntity userManageExceptionResponseAndSetTls(UserManageException e) {
+    private ResponseEntity<Void> userManageExceptionResponseAndSetTls(UserManageException e) {
         ThreadLocal<ErrorInformation> threadLocal = errorInformationTlsContainer.getThreadLocal();
         if (!threadLocal.get().getErrorTitle().equals("none")) {
             throw new ErrorInformationTlsException("errorInformationTls is not Empty");
@@ -45,18 +45,18 @@ public class UserManageExceptionAdvice {
                 errorInformation.setErrorTitle(DUPLICATED_SIGNUP_EMAIL.getErrorTitle());
                 errorInformation.setErrorDetail(DUPLICATED_SIGNUP_EMAIL.getErrormessage());
                 threadLocal.set(errorInformation);
-                return new ResponseEntity(DUPLICATED_SIGNUP_EMAIL.getHttpStatus());
+                return new ResponseEntity<>(DUPLICATED_SIGNUP_EMAIL.getHttpStatus());
         }
         throw new RuntimeException();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity methodArgumentNotValidExceptionAdvice(MethodArgumentNotValidException e) {
+    public ResponseEntity<Void> methodArgumentNotValidExceptionAdvice(MethodArgumentNotValidException e) {
         log.warn("[exceptionAdvice] ex", e);
         return methodArgumentNotValidExceptionResponseAndSetTls(e);
     }
 
-    private ResponseEntity methodArgumentNotValidExceptionResponseAndSetTls(
+    private ResponseEntity<Void> methodArgumentNotValidExceptionResponseAndSetTls(
         MethodArgumentNotValidException e) {
         ThreadLocal<ErrorInformation> threadLocal = errorInformationTlsContainer.getThreadLocal();
         if (!threadLocal.get().getErrorTitle().equals("none")) {
@@ -71,19 +71,19 @@ public class UserManageExceptionAdvice {
                 errorInformation.setErrorTitle(SIGNUP_REQUEST_EMAIL.getErrorTitle());
                 errorInformation.setErrorDetail(SIGNUP_REQUEST_EMAIL.getErrormessage());
                 threadLocal.set(errorInformation);
-                return new ResponseEntity(SIGNUP_REQUEST_EMAIL.getHttpStatus());
+                return new ResponseEntity<>(SIGNUP_REQUEST_EMAIL.getHttpStatus());
             case SIGNUP_REQUEST_NAME:
                 errorInformation.setErrorType(SIGNUP_REQUEST_NAME.getErrorType());
                 errorInformation.setErrorTitle(SIGNUP_REQUEST_NAME.getErrorTitle());
                 errorInformation.setErrorDetail(SIGNUP_REQUEST_NAME.getErrormessage());
                 threadLocal.set(errorInformation);
-                return new ResponseEntity(SIGNUP_REQUEST_NAME.getHttpStatus());
+                return new ResponseEntity<>(SIGNUP_REQUEST_NAME.getHttpStatus());
             case SIGNUP_REQUEST_PASSWORD:
                 errorInformation.setErrorType(SIGNUP_REQUEST_PASSWORD.getErrorType());
                 errorInformation.setErrorTitle(SIGNUP_REQUEST_PASSWORD.getErrorTitle());
                 errorInformation.setErrorDetail(SIGNUP_REQUEST_PASSWORD.getErrormessage());
                 threadLocal.set(errorInformation);
-                return new ResponseEntity(SIGNUP_REQUEST_PASSWORD.getHttpStatus());
+                return new ResponseEntity<>(SIGNUP_REQUEST_PASSWORD.getHttpStatus());
         }
         throw new RuntimeException();
     }

@@ -36,7 +36,7 @@ a:hover {
 }
 
 .inner {
-  width: 100%; /* 가로 사이즈가 1200px 넘는 해상도에서는 max-width 설정 */
+  width: 800px; /* 가로 사이즈가 1200px 넘는 해상도에서는 max-width 설정 이번에 좀 수정*/
   height: 100%; /* align-items 등으로 수직 가운데 정렬을 위해, 알맞은 height 설정이 필요함 */
 
   /*이것이 가운데 정렬 방법이다.*/
@@ -106,42 +106,47 @@ section {
 }
 
 /*여기 일단 주석 처리 그냥 복사해온 것이라 여기 아래 부터 테스트 페이지 관한css 넣어야 한다.*/
-/*.title {*/
-/*  text-align: center;*/
-/*  font-weight: bold;*/
-/*  font-size: 2rem;*/
-/*  letter-spacing: 0.6rem;*/
-/*  margin-left: 2rem;*/
-/*}*/
+/*타이틀관련 그냥 삭제 */
 
-/*#email-auth-check {*/
-/*  text-align: center;*/
-/*  font-size: 1.2rem;*/
-/*}*/
-
-/*.no-email-auth {*/
-/*  color: red;*/
-/*}*/
-
-/*!*!*관리자 문장 테스트 페이지*!*!*/
-/*.button-container {*/
-/*  margin-top: 35px;*/
-/*}*/
-/*.test-button {*/
-/*  width: 80%;*/
-/*  align-self: auto;*/
-/*  height: 50px;*/
-/*  margin: auto;*/
-/*  font-size: 1.4rem;*/
-/*}*/
 
 
 /*테스트 슬라이드 만들기 css 시작*/
 /*일단 위에 마진은 신경 쓰지 않을께 어차피 container하나더 감싸야 하니깐*/
 /*예비용 마진*/
-.test-container{
-  margin: 75px;
+.test-inner {
+  width: 800px; /* 가로 사이즈가 1200px 넘는 해상도에서는 max-width 설정 이번에 좀 수정*/
+  /*border: 1px solid black;*/
+  height: 100%; /* align-items 등으로 수직 가운데 정렬을 위해, 알맞은 height 설정이 필요함 */
+
+  /*이것이 가운데 정렬 방법이다.*/
+  margin: 0 auto; /* 가운데 정렬: 동일 요소에 width 가 설정되어 있을 때에만 적용 */
+  /*살짝 좌우 띄우게 해서 하기*/
+  /*padding: 0rem 2rem;*/
 }
+
+/*한번 더 감싸면 800으로 맞추면된다*/
+.width-container {
+  width: 800px;
+  padding: 60px 35px 35px 35px;
+  float: left;
+}
+
+.test-container{
+  width: 100%;
+  height: 450px;
+  /*padding: 60px 35px 35px 35px;*/
+  /*margin: 60px 35px 35px 35px;*/
+  border: 1px solid #3f464d;
+  border-radius: 10px;
+}
+.test-inner-container {
+  margin: 35px;
+
+  /*border: 1px solid #3f464d;*/
+  /*border-radius: 10px;*/
+}
+
+
 .first-line {
   display: flex;
   justify-content: space-between;
@@ -159,7 +164,7 @@ section {
 }
 
 .second-line {
-  margin-top: 30px;
+  margin-top: 20px;
   display: flex;
   justify-content: right;
 }
@@ -168,8 +173,8 @@ section {
 }
 
 .third-line {
-  margin-left: 20px;
-  margin-top: 60px;
+  margin-left: 30px;
+  margin-top: 30px;
 }
 .korean-text {
   font-weight: bold;
@@ -178,12 +183,12 @@ section {
 }
 .korean-data {
   font-size: 1.3rem;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
 }
 
 .fourth-line {
-  margin-left: 20px;
-  margin-top: 60px;
+  margin-left: 30px;
+  margin-top: 40px;
 }
 .english-text {
   font-weight: bold;
@@ -195,5 +200,6 @@ section {
   margin-bottom: 25px;
 }
 
-
-
+/*.all-container {*/
+/*  width: 10000px;*/
+/*}*/
