@@ -59,6 +59,10 @@ dependencies {
     //passay-password-validation
     implementation 'org.passay:passay:1.6.2'
     // logstashsetting
+    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.0.1'
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2'
 }
 
 tasks.named('test') {

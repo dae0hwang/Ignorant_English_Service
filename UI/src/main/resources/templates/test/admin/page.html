@@ -41,8 +41,6 @@
 <!--타이틀, 관리자 문장 테스트 버튼 있던 자리 일단 삭제함 테스트 페이지 관련 html을 넣어야 하기 때문에.-->
 <section>
     <div class="test-inner" style="overflow: hidden">
-        <!--        일단 전부 만들지 말고 하나만 만들어 보자.-->
-        <!-- style="overflow: hidden  잠시 삭제 노드 복사 잘 되는 지 확인하기 위해서.-->
         <div >
             <div class="all-container", id="all-container">
 
@@ -78,12 +76,8 @@
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
-
     </div>
 </section>
 
@@ -131,73 +125,6 @@
     })
     .then(function (response) {
       console.log(response)
-      // let testNode = document.getElementById("width-container");
-      // console.log(testNode);
-      // // let cloneNode = testNode.cloneNode(true);
-      // // console.log(cloneNode);
-      // // testNode.appendChild(cloneNode);
-      // // elementById.after(testNode);
-      //
-      // //data안에 값 만들 때 해당 사용자 id도 넣어주면 좋다.
-      //
-      // let length = testData.length;
-      // //let 이전 노드 여기다가 저장한 후에 여기에서 붙이기
-      // let previousNode = testNode;
-      // for (let i = 0; i < testData.length; i++) {
-      //   let cloneNode = previousNode.cloneNode(true);
-      //   // console.log("잘생 성 되는 지 확인" + cloneNode);
-      //   // console.log(cloneNode);
-      //   cloneNode.setAttribute("data", testData[i]);
-      //   cloneNode.id = i;
-      //
-      //   previousNode.after(cloneNode);
-      //   //끝나면 previous 교체
-      //   previousNode = cloneNode;
-      // }
-      //
-      // //아에 뒤쪽에 해둘까.
-      // for (let i = 0; i < testData.length; i++) {
-      //   let currentNode = document.getElementById(i.toString());
-      //   let elementsByClassName = document.getElementById(i.toString()).getElementsByClassName("count")[0];
-      //   // console.log(elementsByClassName);
-      //   elementsByClassName.innerText = i+1 + "/" + length;
-      //
-      //   currentNode.getElementsByClassName("korean-data")[0].innerText = testData[i].korean;
-      //   // currentNode.getElementsByClassName("english-data")[0].innerText = testData[i].english;
-      //
-      //
-      //   //여기다가 버튼에다가
-      //   //여기 안에서 다 처리하면 될듯
-      //   //정답 버튼 클릭
-      //   let answerButton = currentNode.getElementsByClassName("answer-btn")[0];
-      //   answerButton.onclick = function () {
-      //     currentNode.getElementsByClassName("english-data")[0].innerText = testData[i].english;
-      //   }
-      //   let hintButton = currentNode.getElementsByClassName("hint-btn")[0];
-      //   hintButton.onclick = function () {
-      //     currentNode.getElementsByClassName("english-data")[0].innerText = testData[i].hint;
-      //   }
-      //
-      //   let rightButton = currentNode.getElementsByClassName("right-btn")[0];
-      //   rightButton.onclick = function () {
-      //     // console.log("맞음")
-      //     // console.log(i);
-      //     allContainer.style.transform = 'translate('+(-800*(i+1)).toString()+'px)';
-      //   };
-      //
-      //   let wrongButton = currentNode.getElementsByClassName("wrong-btn")[0];
-      //   wrongButton.onclick = function () {
-      //     // console.log("틀림")
-      //     // console.log(i);
-      //     allContainer.style.transform = 'translate('+(-800*(i+1)).toString()+'px)';
-      //   };
-      //
-      //   //마지막 문제시에 체크한다음 사용자 페이지로 이동하기.
-      //
-      // }
-      //
-      // //그리고 처음 노드를 삭제한다.
-      // testNode.remove();
     })
     .catch(function (error) {
       console.log(error)
@@ -236,6 +163,15 @@
     });
   }
   function makeTest(dataList) {
+    //처음 들어어면 1번 문장 stattime 저장하기
+    axios({
+      url: "http://"+apiUrl+"/api/test/result/time/start",
+      method: 'post',
+      data: {
+        userId: userId,
+        sentenceId: dataList[0].sentenceId
+      }
+    })
 
 
     let testNode = document.getElementById("width-container");
@@ -272,6 +208,15 @@
       let hintButton = currentNode.getElementsByClassName("hint-btn")[0];
       hintButton.onclick = function () {
         currentNode.getElementsByClassName("english-data")[0].innerText = dataList[i].hint;
+        //힌트 테스트 보내기
+        axios({
+          url: "http://"+apiUrl+"/api/test/result/hint",
+          method: 'post',
+          data: {
+            userId: userId,
+            sentenceId: dataList[0].sentenceId
+          }
+        })
       }
 
       let rightButton = currentNode.getElementsByClassName("right-btn")[0];
@@ -291,7 +236,6 @@
               sentenceId : dataList[i].sentenceId,
               check: "CORRECT"
             }
-
           })
           .then(function (response) {
             console.log("correct 완료")
@@ -307,6 +251,37 @@
             console.log("correct 실패")
             console.log(error)
           });
+
+          //test time 계상 위한 axios 보내기.
+          axios({
+            url: "http://"+apiUrl+"/api/test/result/time/end",
+            method: 'post',
+            data: {
+              userId: userId,
+              sentenceId: dataList[i].sentenceId
+            }
+          })
+
+          //다음 문장 테스트 시작 보내기 해야한다.
+          axios({
+            url: "http://"+apiUrl+"/api/test/result/time/start",
+            method: 'post',
+            data: {
+              userId: userId,
+              sentenceId: dataList[i+1].sentenceId
+            }
+          })
+
+          //맞음 테스트 보내기
+          axios({
+            url: "http://"+apiUrl+"/api/test/result/correct",
+            method: 'post',
+            data: {
+              userId: userId,
+              sentenceId: dataList[0].sentenceId
+            }
+          })
+
         }else {
           alert("정답을 확인해주세요")
         }
@@ -341,6 +316,28 @@
             console.log("wrong 실패")
             console.log(error)
           });
+
+          //다음 문장 테스트 시작 보내기
+          axios({
+            url: "http://"+apiUrl+"/api/test/result/time/start",
+            method: 'post',
+            data: {
+              userId: userId,
+              sentenceId: dataList[i+1].sentenceId
+            }
+          })
+
+          //맞음 테스트 보내기
+          axios({
+            url: "http://"+apiUrl+"/api/test/result/wrong",
+            method: 'post',
+            data: {
+              userId: userId,
+              sentenceId: dataList[0].sentenceId
+            }
+          })
+
+
         }else {
           alert("정답을 확인해주세요")
         }

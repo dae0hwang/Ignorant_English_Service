@@ -47,6 +47,10 @@ spring:
     url: "jdbc:mysql://127.0.0.3:3306/english"
     username: "hwang"
     password: "5510"
+  redis:
+    host: 127.0.0.3
+    port: 6379
+
 server:
   port: 5510
 logging:

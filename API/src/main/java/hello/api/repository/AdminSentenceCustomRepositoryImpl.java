@@ -70,7 +70,6 @@ public class AdminSentenceCustomRepositoryImpl implements AdminSentenceCustomRep
     }
 
 
-
     private BooleanExpression grammarEq(String stringGrammar) {
         //NO가 오면 where 절 적용 안함
         Grammar grammar = Grammar.valueOf(stringGrammar);
@@ -82,8 +81,4 @@ public class AdminSentenceCustomRepositoryImpl implements AdminSentenceCustomRep
         Situation situation = Situation.valueOf(stringSituation);
         return stringSituation.equals("NO") ? null : adminSentence.situation.eq(situation);
     }
-
-
-
-
 }
