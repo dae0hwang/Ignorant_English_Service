@@ -1,5 +1,9 @@
 package hello.plusapi.service;
 
+import static hello.plusapi.enumforkafaka.KafkaTopicEnum.*;
+
+import hello.plusapi.dto.UserSentenceDto;
+import hello.plusapi.dto.UserSentenceKafkaDto;
 import hello.plusapi.dto.UserSentenceRequest;
 import hello.plusapi.entity.Alarm;
 import hello.plusapi.entity.SentenceGroup;
@@ -7,13 +11,17 @@ import hello.plusapi.entity.SentenceSubscribe;
 import hello.plusapi.entity.UserSentence;
 import hello.plusapi.entity.Users;
 import hello.plusapi.enumforentity.AlarmType;
+import hello.plusapi.enumforkafaka.KafkaTopicEnum;
+import hello.plusapi.enumforkafaka.KafkaTopicEnum.Constants;
 import hello.plusapi.repository.AlarmRepository;
 import hello.plusapi.repository.SentenceGroupRepository;
 import hello.plusapi.repository.SentenceSubscribeRepository;
 import hello.plusapi.repository.UserRepository;
 import hello.plusapi.repository.UserSentenceRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +39,14 @@ public class UserSentenceService {
     //request대신에 다른 것 진행 ㅇㅇ 아니면 그대로 받아도 되고 ㅇㅇ
     //11 문장 그룹 추가하기.
     //작동 되는 지 확인
+    //카프카도 완성
     @Transactional
-    public void addSentenceGroup(UserSentenceRequest request) {
-        Users findUser = userRepository.findById(request.getProviderId()).orElseThrow();
+    @KafkaListener(topics = Constants.CREATETABLE, groupId = "foo", properties = {
+        "spring.json.value.default.type:hello.plusapi.dto.UserSentenceKafkaDto"})
+    public void addSentenceGroup(UserSentenceKafkaDto kafkaDto) {
+        Users findUser = userRepository.findById(kafkaDto.getProviderId()).orElseThrow();
         SentenceGroup sentenceGroup = SentenceGroup.builder().user(findUser)
-            .sentenceName(request.getSentenceName()).build();
+            .sentenceName(kafkaDto.getSentenceName()).build();
         sentenceGroupRepository.save(sentenceGroup);
         //일단 저장 오케이 그 다음 해야할 것이 알람 서비스 주입 받아서 구독자들에게
     }
@@ -43,12 +54,15 @@ public class UserSentenceService {
     //문장 구독하기 유저 아이디 와 구독할 문장 가져와와서
     //구독하기 여기에는 알람이 추가되어야 한다!!!!!!1
     //22 구독하기
+
     @Transactional
-    public void subscribeSentence(UserSentenceRequest request) {
-        Users findUser = userRepository.findById(request.getSubscriberId()).orElseThrow();
+    @KafkaListener(topics = Constants.SUBSCRIBE, groupId = "foo", properties = {
+        "spring.json.value.default.type:hello.plusapi.dto.UserSentenceKafkaDto"})
+    public void subscribeSentence(UserSentenceKafkaDto kafkaDto) {
+        Users findUser = userRepository.findById(kafkaDto.getSubscriberId()).orElseThrow();
 
         SentenceGroup findSentenceGroup = sentenceGroupRepository.findById(
-            request.getSubscribedSentenceId()).orElseThrow();
+            kafkaDto.getSubscribedSentenceId()).orElseThrow();
 
         SentenceSubscribe sentenceSubscribe = SentenceSubscribe.builder().subscribedUser(findUser)
             .sentenceGroup(findSentenceGroup).build();
@@ -70,14 +84,16 @@ public class UserSentenceService {
 
     //33  문장 추가
     @Transactional
-    public void addSentence(UserSentenceRequest request) {
+    @KafkaListener(topics = Constants.ADDSENTECE, groupId = "foo", properties = {
+        "spring.json.value.default.type:hello.plusapi.dto.UserSentenceKafkaDto"})
+    public void addSentence(UserSentenceKafkaDto kafkaDto) {
         //등록유저인지
 
         SentenceGroup findSentenceGroup = sentenceGroupRepository.findById(
-            request.getUpdateSentenceGroupId()).orElseThrow();
+            kafkaDto.getUpdateSentenceGroupId()).orElseThrow();
         UserSentence userSentence = UserSentence.builder()
-            .sentenceGroup(findSentenceGroup).korean(request.getKorean())
-            .english(request.getEnglish()).build();
+            .sentenceGroup(findSentenceGroup).korean(kafkaDto.getKorean())
+            .english(kafkaDto.getEnglish()).build();
         userSentenceRepository.save(userSentence);
 
         //알림 가야한다.!!!!!!!!
@@ -99,12 +115,14 @@ public class UserSentenceService {
     //44  문장 삭제
     //이것은 일단 문장 추가부터 성공하면 진행하기. ㅇㅇㅇㅇ
     @Transactional
-    public void deleteSentence(UserSentenceRequest request) {
+    @KafkaListener(topics = Constants.DELETESENTENCE, groupId = "foo", properties = {
+        "spring.json.value.default.type:hello.plusapi.dto.UserSentenceKafkaDto"})
+    public void deleteSentence(UserSentenceKafkaDto kafkaDto) {
         UserSentence findUserSentence = userSentenceRepository.findById(
-                request.getDeleteSentenceId())
+                kafkaDto.getDeleteSentenceId())
             .orElseThrow();
         //지울 문장 아이디로 지우고 찾은 문장의
-        userSentenceRepository.deleteById(request.getDeleteSentenceId());
+        userSentenceRepository.deleteById(kafkaDto.getDeleteSentenceId());
 
 
         //request안에는 해당 테이블 목록도 가지고 있어야 한다.
@@ -126,9 +144,45 @@ public class UserSentenceService {
 
     //55  알림 확인하기
     @Transactional
-    public void checkAlarm(UserSentenceRequest request) {
+    @KafkaListener(topics = Constants.CHECKALARM, groupId = "foo", properties = {
+        "spring.json.value.default.type:hello.plusapi.dto.UserSentenceKafkaDto"})
+    public void checkAlarm(UserSentenceKafkaDto kafkaDto) {
         //해당 알림이 무엇인지 들고와야지 alarm
-        Alarm findAlarm = alarmRepository.findById(request.getAlarmId()).orElseThrow();
+        Alarm findAlarm = alarmRepository.findById(kafkaDto.getAlarmId()).orElseThrow();
         findAlarm.setCheckStatus(true);
+    }
+
+
+
+    //ui랑 직접 소통
+    public List<UserSentenceDto> getUserSentenceGroupList(UserSentenceRequest request) {
+        Users findUser = userRepository.findById(request.getSentenceUserId()).orElseThrow();
+        List<SentenceGroup> findGroupList = sentenceGroupRepository.findListByUser(findUser);
+        List<UserSentenceDto> list = new ArrayList<>();
+        for (SentenceGroup sentenceGroup : findGroupList) {
+            list.add(
+                UserSentenceDto.builder().sentenceGroupId(sentenceGroup.getId()).sentenceGroupName(
+                    sentenceGroup.getSentenceName()).build());
+        }
+        return list;
+    }
+
+    public UserSentenceDto getSentenceGroupInfo(Long groupId) {
+        SentenceGroup findSentenceGroup = sentenceGroupRepository.findById(groupId).orElseThrow();
+        UserSentenceDto dto = UserSentenceDto.builder()
+            .sentenceGroupName(findSentenceGroup.getSentenceName()).build();
+        return dto;
+    }
+
+    public List<UserSentenceDto> getGroupSentence(Long groupId) {
+        SentenceGroup findSentenceGroup = sentenceGroupRepository.findById(groupId).orElseThrow();
+        List<UserSentence> findUserSentence = userSentenceRepository.findBySentenceGroup(
+            findSentenceGroup);
+        List<UserSentenceDto> list = new ArrayList<>();
+        for (UserSentence userSentence : findUserSentence) {
+            list.add(UserSentenceDto.builder().sentenceId(userSentence.getId()).korean(
+                userSentence.getKorean()).english(userSentence.getEnglish()).build());
+        }
+        return list;
     }
 }

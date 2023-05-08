@@ -33,10 +33,13 @@
                 <a class="btn btn-primary head" href="" role="button" style="color: #ffffff"
                    id="home-button">Home</a>
                 <button type="button" class="btn btn-primary" id="logout-button">Logout</button>
+                <button type="button" class="btn btn-primary" id="alarm" >알림</button>
             </div>
         </div>
     </div>
 </header>
+
+
 
 <section>
     <div class="inner">
@@ -61,9 +64,61 @@
 </section>
 
 
+<!--사용자 문장 관리하기-->
+<section>
+    <div class="inner">
+        <div class="select-container">
+                <select class="form-select" aria-label="Default select example"
+                id="user-sentence-select">
+                    <option selected>유저 문장 관리하기</option>
+                </select>
+                <button type="button" class="btn btn-primary select-button" id="my-sentence-button">선택</button>
+        </div>
+    </div>
+</section>
+
+<!--사용자 문장 추가하기-->
+<section>
+    <div class="inner">
+        <div class="add-sentence-container">
+            <input type="text" class="form-control" placeholder="등록할 문장 이름 입력" id="add-sentence-input">
+            <button type="button" class="btn btn-primary" id="add-button">추가</button>
+        </div>
+    </div>
+</section>
+
+<!--구독한 유전 문장 보기-->
+<section>
+    <div class="inner">
+        <div class="select-container">
+            <select class="form-select" aria-label="Default select example">
+                <option selected>구독한 유저 문장 보기</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <button type="button" class="btn btn-primary select-button" id="subscribe-check-button">선택</button>
+        </div>
+    </div>
+</section>
+
+<!--구독 하기-->
+<section>
+    <div class="inner">
+        <div class="select-container2">
+            <select class="form-select" aria-label="Default select example">
+                <option selected>구독할 유저 문장 선택</option>
+            </select>
+            <button type="button" class="btn btn-primary select-button" id="subscribe-add-button">구독</button>
+        </div>
+    </div>
+</section>
+
+
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
   const uiUrl = [[${@environment.getProperty('url.ui')}]];
+  const plusApi = [[${@environment.getProperty('url.plusApi')}]];
 
   //home button
   document.getElementById("home-button").href = "http://" + uiUrl;
@@ -77,6 +132,9 @@
 
   //JWT 토큰
   let jwtToken = localStorage.getItem("Authorization")
+
+  //유저아이디
+  let userId
 
   window.onload =function () {
     //유저 권한 확인하기
@@ -105,6 +163,7 @@
     })
     .then(function (response) {
       console.log(response)
+      userId = response.data.id;
       document.getElementById("title-div").textContent = response.data.name+"님의 페이지";
       const emailAuthBoolean = response.data.emailAuth;
       if (emailAuthBoolean) {
@@ -113,10 +172,89 @@
         document.getElementById("email-auth-check").textContent = "이메일 인증이 필요합니다";
         document.getElementById("email-auth-check").setAttribute("class", "no-email-auth")
       }
-
+      //new 유저문장관라힉 셀렉트박스 채우기
+      axios({
+        url: "http://" + plusApi + "/api/user/sentence/get/list/group",
+        method: "post",
+        data: {
+          sentenceUserId: userId,
+        }
+      })
+      .then(function (response) {
+        console.log(response)
+        //정보 들어 오면 채우기.
+        let selectBox = document.getElementById("user-sentence-select");
+        let dataList = response.data;
+        for (let i = 0; i < dataList.length; i++) {
+          let optionElement = document.createElement("option");
+          optionElement.value = i;
+          optionElement.setAttribute("groupId", dataList[i].sentenceGroupId)
+          optionElement.appendChild(document.createTextNode(dataList[i].sentenceGroupName));
+          selectBox.appendChild(optionElement);
+        }
+      });
     })
     .catch(function (error) {
     });
+    //new 문장 그룹 이동하기
+    document.getElementById("my-sentence-button").onclick = function () {
+      let selectedGroup = document.getElementById("user-sentence-select");
+      let groupId = selectedGroup.options[selectedGroup.selectedIndex].getAttribute("groupid");
+      //그룹아이디 구했고 pathparmeter로 보내기 ㅇㅇ
+      window.location = "/user/sentence/page/" + groupId;
+    }
+
+    //new 문장 그룹 등록 버튼 클릭.
+    document.getElementById("add-button").onclick = function () {
+      axios({
+        url: "http://" + apiUrl + "/api/user/sentence/add/group",
+        method: "post",
+        data: {
+          providerId: userId,
+          sentenceName: document.getElementById("add-sentence-input").value
+        }
+      })
+      .then(function (response) {
+        window.location.reload()
+      });
+    }
+
+    //구독할 유저 문장 선택 셀렉트 리스트 가져오기 자신 userId 제외하기
+    //new 유저문장관라힉 셀렉트박스 채우기 여기부터 할 차례
+    axios({
+      url: "http://" + plusApi + "/api/user/sentence/get/list/group",
+      method: "post",
+      data: {
+        sentenceUserId: userId,
+      }
+    })
+    .then(function (response) {
+      console.log(response)
+      //정보 들어 오면 채우기.
+      let selectBox = document.getElementById("user-sentence-select");
+      let dataList = response.data;
+      for (let i = 0; i < dataList.length; i++) {
+        let optionElement = document.createElement("option");
+        optionElement.value = i;
+        optionElement.setAttribute("groupId", dataList[i].sentenceGroupId)
+        optionElement.appendChild(document.createTextNode(dataList[i].sentenceGroupName));
+        selectBox.appendChild(optionElement);
+      }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 </script>
 </body>

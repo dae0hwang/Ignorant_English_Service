@@ -100,7 +100,7 @@ section {
 
 .title-container {
   width: 100%;
-  height: 100px;
+  height: 60px;
   background-color: #ffffff;
   margin: 35px 0px 0px 0px;
 }
@@ -108,83 +108,59 @@ section {
 .title {
   text-align: center;
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 2em;
   letter-spacing: 0.6rem;
   margin-left: 2rem;
 }
 
-#email-auth-check {
+
+.input-container {
+  width: 80%;
+  margin: 5px auto;
+}
+.input-title {
+  font-size: 1.1rem;
+  margin-left: 30px;
+}
+
+.input-input {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
   text-align: center;
-  font-size: 1.2rem;
 }
 
-.no-email-auth {
-  color: red;
-}
-
-/*!*관리자 문장 테스트 페이지*!*/
-.button-container {
-  margin-top: 35px;
-}
-.test-button {
+#input-button {
+  margin-top: 10px;
   width: 80%;
-  align-self: auto;
-  height: 50px;
-  margin: auto;
-  font-size: 1.4rem;
+  margin-left: auto;
+  margin-right: auto;
+  height: 3rem;
+  font-size: large;
 }
 
 
 
-#alarm {
-  background-image: -webkit-linear-gradient(top, #e8616c, #dd202f);
-  background-image: -moz-linear-gradient(top, #e8616c, #dd202f);
-  background-image: -o-linear-gradient(top, #e8616c, #dd202f);
-  background-image: linear-gradient(to bottom, #e8616c, #dd202f);
-  border-color: #DD202FFF;
+.table-inner {
+  width: 800px;
+  height: 100%;
+  /*이것이 가운데 정렬 방법이다.*/
+  margin: 0 auto; /* 가운데 정렬: 동일 요소에 width 가 설정되어 있을 때에만 적용 */
+  /*살짝 좌우 띄우게 해서 하기*/
+  padding: 0rem 2rem;
 }
 
-.select-container {
-  display: flex;
-  margin: 55px auto 0px;
-  height: 50px;
-  width: 80%;
-
-}
-.form-select {
-  width: 80%;
-  font-size: 1.3rem;
-  text-align-last: center;
-}
-.select-button {
-  width: 15%;
-  margin-left: 5%;
-  font-size: 1.3rem;
+.table {
+  margin-top: 2rem;
+  table-layout: fixed;
+  word-break: break-all;
+  height: auto;
 }
 
-.add-sentence-container {
-  display: flex;
-  margin: 20px auto;
-  height: 50px;
-  width: 80%;
-}
 
-#add-sentence-input{
-  width: 80%;
-  font-size: 1.3rem;
-  text-align-last: center;
-}
 
-#add-button {
-  width: 15%;
-  margin-left: 5%;
-  font-size: 1.3rem;
-}
 
-.select-container2 {
-  display: flex;
-  margin: 20px auto 0px;
-  height: 50px;
-  width: 80%;
-}
 
+
+/**/

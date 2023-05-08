@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>무식한 영어 공부</title>
+
+    <!--스타일 초기화  아이콘 폰트 등록-->
+<!--    <link rel="stylesheet" href="../css/nomalize.css"/>-->
+    <script src="https://kit.fontawesome.com/f1def33959.js" crossorigin="anonymous"></script>
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet"
+          type="text/css"/>
+
+    <!--axios  -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!--css-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/user/sentence/page.css" />
+</head>
+<body>
+<header>
+    <div class="inner">
+        <div class="head-container">
+            <div class="head-brand">무식한 영어 공부</div>
+            <a class="btn btn-primary head" href="" role="button" style="color: #ffffff"
+               id="home-button">Home</a>
+        </div>
+    </div>
+</header>
+
+<section>
+    <div class="inner">
+        <div class="title-container">
+            <div class="title" id="title-div"></div>
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <div class="inner">
+        <div class="input-container">
+            <div class="input-title">번역</div>
+            <input class="input-input" id="korean-input">
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="input-container">
+            <div class="input-title">영어</div>
+            <input class="input-input" id="english-input">
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="inner">
+        <div class="d-grid gap-2">
+            <button class="btn btn-primary" type="button" id="input-button">문장 등록</button>
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <div class="table-inner">
+        <table class="table ">
+            <thead class="table-light">
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">번역</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">영어</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">삭제</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            <tr>
+<!--                <td>-->
+
+<!--                </td>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+
+
+
+<script th:inline="javascript">
+  const apiUrl = [[${@environment.getProperty('url.api')}]];
+  const uiUrl = [[${@environment.getProperty('url.ui')}]];
+  const plusApi = [[${@environment.getProperty('url.plusApi')}]];
+
+  //home button
+  document.getElementById("home-button").href = "http://" + uiUrl;
+
+  //타이틀 문장 목록 이름으로 하기
+  const groupId = window.location.href.slice(-1);
+  axios({
+    url: "http://" + plusApi + "/api/user/sentence/get/info/group",
+    method: 'get',
+    params: {"groupId": groupId}
+  }).then(function (response) {
+    console.log(response);
+    document.getElementById("title-div").innerText = response.data.sentenceGroupName;
+  });
+
+  //문장 등록하기
+  document.getElementById("input-button").onclick = function () {
+    axios({
+      url: "http://" + apiUrl + "/api/user/sentence/add/sentence",
+      method: "post",
+      data: {
+        "updateSentenceGroupId": groupId,
+        "korean": document.getElementById("korean-input").value,
+        "english": document.getElementById("english-input").value
+      }
+    })
+    .then(function (response) {
+      console.log(response);
+      document.getElementById("korean-input").value = "";
+      document.getElementById("english-input").value = "";
+    });
+  };
+
+
+  //일단 문장 목록 가져와기 -> 삭제 버튼도 만들기
+  window.onload = function (){
+    axios({
+      url: "http://" + plusApi + "/api/user/sentence/get/group/sentence",
+      method: 'get',
+      params: {"groupId": groupId}
+    }).then(function (response) {
+      console.log(response);
+      makeTable(response.data);
+    });
+  }
+
+
+  //테이블 정보 가져와서 테이블 만들기
+  let bodyElement = document.getElementById("table-body");
+  function makeTable(dataList) {
+
+    for (const dto of dataList) {
+      let idTdElement = document.createElement("td")
+      idTdElement.appendChild(document.createTextNode(dto.sentenceId));
+      let koreanTdElement = document.createElement("td")
+      koreanTdElement.appendChild(document.createTextNode(dto.korean));
+      koreanTdElement.setAttribute("colspan", 3);
+      let englishTdElement = document.createElement("td")
+      englishTdElement.appendChild(document.createTextNode(dto.english));
+      englishTdElement.setAttribute("colspan", 3);
+
+
+      let deleteButtonTd = document.createElement("td");
+      let deleteButton = document.createElement("button");
+      deleteButton.setAttribute("id", "delete-button");
+      deleteButton.setAttribute("entity", dto.sentenceId);
+      deleteButton.appendChild(document.createTextNode("삭제"))
+      deleteButton.style.width="100%"
+      deleteButton.style.height="100%"
+      deleteButton.style.borderRadius="5px"
+      deleteButton.style.backgroundColor="rgb(3, 110, 2533)"
+      deleteButton.style.border = "none";
+      deleteButton.style.color = "rgb(232, 248, 255)";
+      deleteButtonTd.appendChild(deleteButton);
+
+      let trElement = document.createElement("tr");
+      trElement.appendChild(idTdElement);
+      trElement.appendChild(koreanTdElement);
+      trElement.appendChild(englishTdElement);
+      trElement.appendChild(deleteButtonTd);
+      bodyElement.appendChild(trElement);
+    }
+  }
+
+
+
+  //삭제 버튼 axios 지정하기.
+  document.addEventListener("click", function (event) {
+    if (event.target.id != "delete-button") {
+      return;
+    }
+    event.target.getAttribute("entity");
+    axios({
+      url: "http://"+apiUrl+"/api/user/sentence/delete/sentence",
+      method: 'post',
+      data: {
+          "deleteSentenceId": event.target.getAttribute("entity")
+      }
+    })
+    .then(function (response) {
+      console.log(response)
+      window.location.reload()
+    })
+  });
+
+
+
+
+</script>
+</body>
+</html>

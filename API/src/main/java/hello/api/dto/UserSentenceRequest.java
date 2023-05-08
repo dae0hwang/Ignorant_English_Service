@@ -1,4 +1,4 @@
-package hello.plusapi.dto;
+package hello.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,8 +24,4 @@ public class UserSentenceRequest {
     private Long deleteSentenceId;
 
     private Long alarmId;
-
-
-    //유저가 가지고 있는 문장 그룹 전체 정보 아이디랑, 그룹이름 가져오기
-    private Long sentenceUserId;
 }
