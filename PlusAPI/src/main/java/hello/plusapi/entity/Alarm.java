@@ -33,5 +33,4 @@ public class Alarm {
     @Enumerated(EnumType.STRING)
     private AlarmType alarmType;
     private String alarmMessage;
-    private boolean checkStatus;
 }

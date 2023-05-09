@@ -1,5 +1,6 @@
 package hello.plusapi.controller;
 
+import hello.plusapi.dto.AlarmInfoDto;
 import hello.plusapi.dto.UserSentenceDto;
 import hello.plusapi.dto.UserSentenceRequest;
 import hello.plusapi.service.UserSentenceService;
@@ -7,6 +8,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +45,40 @@ public class UserSentenceController {
         return new ResponseEntity<>(groupSentence, HttpStatus.OK);
     }
 
+    @PostMapping("/get/list/subscribe/group")
+    public ResponseEntity<List<UserSentenceDto>> getSentenceSubscribeGroup(
+        @RequestBody UserSentenceRequest request) {
+        //userId 제외한 문장목록
+        List<UserSentenceDto> userSentenceGroupList =
+            userSentenceService.getUserSentenceSubscribeGroupList(request);
+        return new ResponseEntity<>(userSentenceGroupList, HttpStatus.OK);
+    }
+
+    @PostMapping("/get/list/my/subscribe/group")
+    public ResponseEntity<List<UserSentenceDto>> getSentenceMySubscribeGroup(
+        @RequestBody UserSentenceRequest request) {
+        //userId가 포함된 subscribe문장 정보 가져오기
+        List<UserSentenceDto> userSentenceGroupList =
+            userSentenceService.getUserSubscribeGroupLIst(request);
+        return new ResponseEntity<>(userSentenceGroupList, HttpStatus.OK);
+    }
+
+    //알람 정보 가져오기 내것있나
+    //이게살짝 query가 복잡하다 그래도 해야지 뭐
+    @PostMapping("/get/list/my/alarm")
+    public ResponseEntity<List<AlarmInfoDto>> getMyAlarmList(
+        @RequestBody UserSentenceRequest request) {
+        System.out.println("request==" + request.toString());
+        List<AlarmInfoDto> myAlarmList = userSentenceService.getMyAlarmList(request);
+        return new ResponseEntity<>(myAlarmList, HttpStatus.OK);
+    }
+
+    //알림 삭제하기!!!!!! 센텐스 문장이랑 관련없고 알림 관련이니깐 ㅇㅇㅇ
+    @PostMapping("delete/alarm")
+    public ResponseEntity<Void> deleteAlarm(@RequestBody UserSentenceRequest request) {
+        userSentenceService.deleteAlarm(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     //문장 목록 추가하기가 있다. 이름 지정해서
     //이건 완성

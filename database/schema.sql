@@ -78,7 +78,6 @@ CREATE TABLE alarm(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     alarm_type VARCHAR(255) NOT NULL,
     alarm_message VARCHAR(255) NOT NULL,
-    check_status TINYINT NOT NULL,
     sentence_group_id BIGINT NOT NULL,
     subscribed_user_id BIGINT NOT NULL
 );

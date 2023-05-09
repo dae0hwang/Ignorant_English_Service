@@ -33,7 +33,6 @@ public class SentenceAlarmKafkaService {
             request.getUpdateSentenceGroupId()).Korean(request.getKorean()).english(
             request.getEnglish()).build();
         kafkaTemplate.send(KafkaTopicEnum.ADDSENTECE.getStringTopic(), kafkaDto);
-
     }
 
     public void sendDeleteSentenceMessage(UserSentenceRequest request) {

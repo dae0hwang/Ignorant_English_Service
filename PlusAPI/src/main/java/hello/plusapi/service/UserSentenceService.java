@@ -2,6 +2,7 @@ package hello.plusapi.service;
 
 import static hello.plusapi.enumforkafaka.KafkaTopicEnum.*;
 
+import hello.plusapi.dto.AlarmInfoDto;
 import hello.plusapi.dto.UserSentenceDto;
 import hello.plusapi.dto.UserSentenceKafkaDto;
 import hello.plusapi.dto.UserSentenceRequest;
@@ -54,7 +55,6 @@ public class UserSentenceService {
     //문장 구독하기 유저 아이디 와 구독할 문장 가져와와서
     //구독하기 여기에는 알람이 추가되어야 한다!!!!!!1
     //22 구독하기
-
     @Transactional
     @KafkaListener(topics = Constants.SUBSCRIBE, groupId = "foo", properties = {
         "spring.json.value.default.type:hello.plusapi.dto.UserSentenceKafkaDto"})
@@ -73,7 +73,7 @@ public class UserSentenceService {
             findUser.getName() + "님이 " + findSentenceGroup.getSentenceName() + " 목록을 구독했습니다.";
         Alarm alarm = Alarm.builder().sentenceGroup(findSentenceGroup).subscribedUser(findUser)
             .alarmType(
-                AlarmType.SUBSCRIBE).alarmMessage(alarmMessage).checkStatus(false).build();
+                AlarmType.SUBSCRIBE).alarmMessage(alarmMessage).build();
         alarmRepository.save(alarm);
     }
 
@@ -107,7 +107,7 @@ public class UserSentenceService {
             Alarm alarm = Alarm.builder().sentenceGroup(findSentenceGroup)
                 .subscribedUser(sentenceSubscribe.getSubscribedUser())
                 .alarmType(
-                    AlarmType.UPDATE).alarmMessage(alarmMessage).checkStatus(false).build();
+                    AlarmType.UPDATE).alarmMessage(alarmMessage).build();
             alarmRepository.save(alarm);
         }
     }
@@ -137,7 +137,7 @@ public class UserSentenceService {
             Alarm alarm = Alarm.builder().sentenceGroup(findSentenceGroup)
                 .subscribedUser(sentenceSubscribe.getSubscribedUser())
                 .alarmType(
-                    AlarmType.UPDATE).alarmMessage(alarmMessage).checkStatus(false).build();
+                    AlarmType.UPDATE).alarmMessage(alarmMessage).build();
             alarmRepository.save(alarm);
         }
     }
@@ -147,9 +147,8 @@ public class UserSentenceService {
     @KafkaListener(topics = Constants.CHECKALARM, groupId = "foo", properties = {
         "spring.json.value.default.type:hello.plusapi.dto.UserSentenceKafkaDto"})
     public void checkAlarm(UserSentenceKafkaDto kafkaDto) {
-        //해당 알림이 무엇인지 들고와야지 alarm
-        Alarm findAlarm = alarmRepository.findById(kafkaDto.getAlarmId()).orElseThrow();
-        findAlarm.setCheckStatus(true);
+        //해당 그냥 삭제하기
+        alarmRepository.deleteById(kafkaDto.getAlarmId());
     }
 
 
@@ -184,5 +183,56 @@ public class UserSentenceService {
                 userSentence.getKorean()).english(userSentence.getEnglish()).build());
         }
         return list;
+    }
+
+    public List<UserSentenceDto> getUserSentenceSubscribeGroupList(UserSentenceRequest request) {
+        Users findUser = userRepository.findById(request.getSentenceUserId()).orElseThrow();
+
+        List<SentenceGroup> findGroupList = sentenceGroupRepository.findListByUserNot(findUser);
+        List<UserSentenceDto> list = new ArrayList<>();
+        for (SentenceGroup sentenceGroup : findGroupList) {
+            list.add(
+                UserSentenceDto.builder().sentenceGroupId(sentenceGroup.getId()).sentenceGroupName(
+                    sentenceGroup.getSentenceName()).build());
+        }
+        return list;
+    }
+
+
+    public List<UserSentenceDto> getUserSubscribeGroupLIst(UserSentenceRequest request) {
+        Users findUser = userRepository.findById(request.getSubscriberId()).orElseThrow();
+        List<SentenceSubscribe> findGroupList = sentenceSubscribeRepository.findListBySubscribedUser(
+            findUser);
+        List<UserSentenceDto> list = new ArrayList<>();
+        for (SentenceSubscribe sentenceSubscribe : findGroupList) {
+            SentenceGroup findSentenceGroup = sentenceGroupRepository.findById(
+                sentenceSubscribe.getSentenceGroup().getId()).orElseThrow();
+            list.add(
+                UserSentenceDto.builder().sentenceGroupId(findSentenceGroup.getId()).sentenceGroupName(
+                    findSentenceGroup.getSentenceName()).build());
+        }
+        return list;
+
+    }
+
+
+    //나와 관련된 알람 전부다 가져오기
+    public List<AlarmInfoDto> getMyAlarmList(UserSentenceRequest request) {
+        Users findUser = userRepository.findById(request.getAlarmUserId()).orElseThrow();
+        List<SentenceGroup> groupList = sentenceGroupRepository.findListByUser(findUser);
+        List<Alarm> alarmList = alarmRepository.findBySentenceGroupInOrSubscribedUser(groupList,
+            findUser);
+        List<AlarmInfoDto> list = new ArrayList<>();
+        for (Alarm alarm : alarmList) {
+            list.add(AlarmInfoDto.builder().alarmId(alarm.getId()).alarmMessage(
+                alarm.getAlarmMessage()).alarmType(alarm.getAlarmType().getStringCheck()).build());
+        }
+        return list;
+    }
+
+
+    //알람 삭제하기
+    public void deleteAlarm(UserSentenceRequest request) {
+        alarmRepository.deleteById(request.getAlarmId());
     }
 }
