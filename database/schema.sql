@@ -41,3 +41,44 @@ CREATE TABLE admin_test_check(
     created_date TIMESTAMP NOT NULL,
     updated_date TIMESTAMP NOT NULL
 );
+
+
+DROP TABLE IF EXISTS sentence_group;
+
+CREATE TABLE sentence_group(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    sentence_name VARCHAR(255) NOT NULL,
+    created_date TIMESTAMP NOT NULL,
+    updated_date TIMESTAMP NOT NULL
+);
+
+DROP TABLE IF EXISTS user_setence;
+
+CREATE TABLE user_sentence(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    sentence_group_id BIGINT NOT NULL,
+    korean VARCHAR(255) NOT NULL,
+    english VARCHAR(255) NOT NULL
+);
+
+
+DROP TABLE IF EXISTS sentence_subscribe;
+
+CREATE TABLE sentence_subscribe(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    sentence_group_id BIGINT NOT NULL,
+    subscribed_user_id BIGINT NOT NULL
+);
+
+
+DROP TABLE IF EXISTS alarm;
+
+CREATE TABLE alarm(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    alarm_type VARCHAR(255) NOT NULL,
+    alarm_message VARCHAR(255) NOT NULL,
+    sentence_group_id BIGINT NOT NULL,
+    subscribed_user_id BIGINT NOT NULL
+);
+
