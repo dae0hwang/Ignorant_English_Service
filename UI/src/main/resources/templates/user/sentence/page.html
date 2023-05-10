@@ -85,18 +85,11 @@
             </thead>
             <tbody id="table-body">
             <tr>
-<!--                <td>-->
-
-<!--                </td>-->
             </tr>
             </tbody>
         </table>
     </div>
 </section>
-
-
-
-
 
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
@@ -106,10 +99,10 @@
   //home button
   document.getElementById("home-button").href = "http://" + uiUrl;
 
-  //타이틀 문장 목록 이름으로 하기
+  //타이틀 문장 목록 이름으로 설정
   const groupId = window.location.href.slice(-1);
   axios({
-    url: "http://" + plusApi + "/api/user/sentence/get/info/group",
+    url: "http://" + apiUrl + "/api/user/sentence/get/info/group",
     method: 'get',
     params: {"groupId": groupId}
   }).then(function (response) {
@@ -117,7 +110,7 @@
     document.getElementById("title-div").innerText = response.data.sentenceGroupName;
   });
 
-  //문장 등록하기
+  //Kafka2. 문장 등록하기
   document.getElementById("input-button").onclick = function () {
     axios({
       url: "http://" + apiUrl + "/api/user/sentence/add/sentence",
@@ -129,27 +122,23 @@
       }
     })
     .then(function (response) {
-      console.log(response);
       document.getElementById("korean-input").value = "";
       document.getElementById("english-input").value = "";
     });
   };
 
 
-  //일단 문장 목록 가져와기 -> 삭제 버튼도 만들기
+  //해당 문장 그룹 문장들 가져오기 테이블 만들기
   window.onload = function (){
     axios({
-      url: "http://" + plusApi + "/api/user/sentence/get/group/sentence",
+      url: "http://" + apiUrl + "/api/user/sentence/get/group/sentence",
       method: 'get',
       params: {"groupId": groupId}
     }).then(function (response) {
-      console.log(response);
       makeTable(response.data);
     });
   }
-
-
-  //테이블 정보 가져와서 테이블 만들기
+  //테이블 만들기
   let bodyElement = document.getElementById("table-body");
   function makeTable(dataList) {
 
@@ -186,9 +175,7 @@
     }
   }
 
-
-
-  //삭제 버튼 axios 지정하기.
+  //Kafka 3. 문장 삭제하기
   document.addEventListener("click", function (event) {
     if (event.target.id != "delete-button") {
       return;
@@ -202,13 +189,9 @@
       }
     })
     .then(function (response) {
-      console.log(response)
       window.location.reload()
     })
   });
-
-
-
 
 </script>
 </body>

@@ -36,15 +36,11 @@
                    id="home-button">Home</a>
                 <button type="button" class="btn btn-primary" id="logout-button">Logout</button>
 
-                <!--                <button type="button" class="btn btn-primary" id="alarm" >알림</button>-->
-
-
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseExample" aria-expanded="false"
                         aria-controls="collapseExample" id="alarm-button">
                     알림
                 </button>
-
 
             </div>
             <div class="collapse" id="collapseExample">
@@ -77,8 +73,6 @@
     </div>
 </section>
 
-<!--관리자 문장 체크 테스트 페이지로 넘어가는 버튼 만들어보기-->
-<!--일단 예비로 바로 테스트 페이지로 넘어가게 설정-->
 <section>
     <div class="inner">
         <div class="button-container">
@@ -195,7 +189,6 @@
       }
     })
     .then(function (response) {
-      console.log(response)
       userId = response.data.id;
       document.getElementById("title-div").textContent = response.data.name + "님의 페이지";
       const emailAuthBoolean = response.data.emailAuth;
@@ -205,17 +198,16 @@
         document.getElementById("email-auth-check").textContent = "이메일 인증이 필요합니다";
         document.getElementById("email-auth-check").setAttribute("class", "no-email-auth")
       }
-      //new 유저문장관라힉 셀렉트박스 채우기
+      //UserId 가져온 상태이다.
+      //유저 관리 문장 셀렉트 박스 채우기 - API 서버만 통신 - 분리 완료
       axios({
-        url: "http://" + plusApi + "/api/user/sentence/get/list/group",
+        url: "http://" + apiUrl + "/api/user/sentence/get/list/group",
         method: "post",
         data: {
           sentenceUserId: userId,
         }
       })
       .then(function (response) {
-        console.log(response)
-        //정보 들어 오면 채우기.
         let selectBox = document.getElementById("user-sentence-select");
         let dataList = response.data;
         for (let i = 0; i < dataList.length; i++) {
@@ -226,18 +218,15 @@
           selectBox.appendChild(optionElement);
         }
       });
-
-      //구독할 유저 문장 선택 셀렉트 박스 채우기
+      //앞으로 구독 할 유저 문장 선택 셀렉트 박스 채우기 -> API 서버만 통신
       axios({
-        url: "http://" + plusApi + "/api/user/sentence/get/list/subscribe/group",
+        url: "http://" + apiUrl + "/api/user/sentence/get/list/subscribe/group",
         method: "post",
         data: {
           sentenceUserId: userId,
         }
       })
       .then(function (response) {
-        console.log(response)
-
         let selectBox = document.getElementById("subscribe-select-list");
         let dataList = response.data;
         for (let i = 0; i < dataList.length; i++) {
@@ -248,19 +237,15 @@
           selectBox.appendChild(optionElement);
         }
       });
-
-      //내가 구독한 문장 셀렉트 박스 채우기.
+      //해당 유저가 구독한 문장 그룹 리스트 가져오기
       axios({
-        url: "http://" + plusApi + "/api/user/sentence/get/list/my/subscribe/group",
+        url: "http://" + apiUrl + "/api/user/sentence/get/list/my/subscribe/group",
         method: "post",
         data: {
           subscriberId: userId,
         }
       })
       .then(function (response) {
-        console.log("들어옴")
-        console.log(response)
-
         let selectBox = document.getElementById("my-subscribe-group");
         let dataList = response.data;
         for (let i = 0; i < dataList.length; i++) {
@@ -271,8 +256,7 @@
           selectBox.appendChild(optionElement);
         }
       });
-
-      //나와 관련된 알람 전부다 가져오기
+      //<PLUSAPI> 나와 관련된 알람 전부 가져오기
       axios({
         url: "http://" + plusApi + "/api/user/sentence/get/list/my/alarm",
         method: "post",
@@ -282,7 +266,8 @@
       })
       .then(function (response) {
         console.log(response)
-        //0이아니라면 붉게 만들어주고 부트스트랩 토스트로 안 채워주기
+        //관련된 알림 데이터가 존재하면 알림 버튼 붉게 만들어주고
+        //토스트로 데이터 넣고 x버튼 클릭 시 알림 삭제 되도록 설정
         if (response.data.length !== 0) {
           //알림버튼 붉게 표시하기
           document.getElementById(
@@ -290,16 +275,17 @@
           document.getElementById(
               "alarm-button").style.borderColor = "#DD202FFF";
 
-          //이제 들어온 data 만큼 토스트 만들어주기.
+          //이제 들어온 data로 토스트 만들어주기.
           let previousNode = document.getElementById("toast-container");
           for (let i = 0; i < response.data.length; i++) {
             let tempPreviousNode = previousNode;
             let cloneNode = tempPreviousNode.cloneNode(true);
+            // let cloneNode = previousNode.cloneNode(true);
             let textDiv = cloneNode.getElementsByClassName('toast-body')[0];
             textDiv.innerText = "[" + response.data[i].alarmType + "] "
                 + response.data[i].alarmMessage;
             let toastButton = cloneNode.getElementsByClassName('btn-close')[0];
-            //button 클릭하면
+            //x 버튼 클릭하면 해당 알림 삭제
             toastButton.onclick = function () {
               axios({
                 url: "http://"+plusApi+"/api/user/sentence/delete/alarm",
@@ -309,25 +295,24 @@
                 }
               })
             };
-            tempPreviousNode.after(cloneNode);
+            tempPreviousNode.before(cloneNode);
+            // previousNode.appendChild(cloneNode);
             tempPreviousNode = cloneNode;
           }
-          //마지막에 노드 삭제
           previousNode.remove();
         }
       });
-
     })
 
-    //new 문장 그룹 이동하기
+
+    //문장 관리를 위해서 문장 그룹 페이지로 이동하기
     document.getElementById("my-sentence-button").onclick = function () {
       let selectedGroup = document.getElementById("user-sentence-select");
       let groupId = selectedGroup.options[selectedGroup.selectedIndex].getAttribute("groupid");
-      //그룹아이디 구했고 pathPrameter로 보내기 ㅇㅇ
       window.location = "/user/sentence/page/" + groupId;
     }
 
-    //new 문장 그룹 등록 버튼 클릭.
+    //새로운 문장 그룹 추가하기 - API만
     document.getElementById("add-button").onclick = function () {
       axios({
         url: "http://" + apiUrl + "/api/user/sentence/add/group",
@@ -342,7 +327,7 @@
       });
     }
 
-    //남의 문장 그룹 구독하기 버튼 누르기
+    //다른 유저 문장 구독하기
     document.getElementById("subscribe-add-button").onclick = function () {
       let selectedGroup = document.getElementById("subscribe-select-list");
       let groupId = selectedGroup.options[selectedGroup.selectedIndex].getAttribute("groupid");

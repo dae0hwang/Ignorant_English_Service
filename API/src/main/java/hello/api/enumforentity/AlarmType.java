@@ -1,4 +1,4 @@
-package hello.plusapi.enumforentity;
+package hello.api.enumforentity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

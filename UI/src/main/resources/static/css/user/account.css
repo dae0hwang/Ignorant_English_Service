@@ -185,15 +185,6 @@ section {
   position: absolute;
   z-index: 100;
   width: 400px;
-  margin-top: 180px;
+  top: 80px;
   margin-left: 340px;
-
 }
-
-/*#alarm {*/
-/*  background-image: -webkit-linear-gradient(top, #e8616c, #dd202f);*/
-/*  background-image: -moz-linear-gradient(top, #e8616c, #dd202f);*/
-/*  background-image: -o-linear-gradient(top, #e8616c, #dd202f);*/
-/*  background-image: linear-gradient(to bottom, #e8616c, #dd202f);*/
-/*  border-color: #DD202FFF;*/
-/*}*/
