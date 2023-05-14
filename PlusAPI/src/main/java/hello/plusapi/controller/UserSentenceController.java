@@ -20,11 +20,6 @@ public class UserSentenceController {
 
     private final UserSentenceService userSentenceService;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return new ResponseEntity<>("ss", HttpStatus.OK);
-    }
-
     //유저에 해당하는 모든 알림 가져오기
     @PostMapping("/get/list/my/alarm")
     public ResponseEntity<List<AlarmInfoDto>> getMyAlarmList(

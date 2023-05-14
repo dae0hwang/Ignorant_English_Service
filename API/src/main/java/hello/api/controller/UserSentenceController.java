@@ -30,7 +30,6 @@ public class UserSentenceController {
     @PostMapping("/get/list/group")
     public ResponseEntity<List<UserSentenceDto>> getSentenceGroupList(
         @RequestBody UserSentenceRequest request) {
-        System.out.println(request.toString());
         List<UserSentenceDto> userSentenceGroupList = userSentenceService.getUserSentenceGroupList(
             request);
         return new ResponseEntity<>(userSentenceGroupList, HttpStatus.OK);

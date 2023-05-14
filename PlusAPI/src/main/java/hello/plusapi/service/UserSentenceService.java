@@ -33,9 +33,6 @@ public class UserSentenceService {
     public List<AlarmInfoDto> getMyAlarmList(UserSentenceRequest request) {
         Users findUser = userRepository.findById(request.getAlarmUserId()).orElseThrow();
         List<SentenceGroup> groupList = sentenceGroupRepository.findListByUser(findUser);
-        for (SentenceGroup sentenceGroup : groupList) {
-            System.out.println("group== "+sentenceGroup);
-        }
 
         List<Alarm> subscribeAlarmList = alarmRepository.findBySentenceGroupInAndAlarmType(
             groupList, AlarmType.SUBSCRIBE);
