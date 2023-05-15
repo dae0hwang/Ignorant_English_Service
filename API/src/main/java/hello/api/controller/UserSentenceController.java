@@ -6,6 +6,7 @@ import hello.api.dto.UserSentenceRequest;
 import hello.api.entity.SentenceSubscribe;
 import hello.api.service.SentenceAlarmKafkaService;
 import hello.api.service.UserSentenceService;
+import io.swagger.v3.oas.annotations.Hidden;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,18 @@
 spring:
+  profiles:
+    active:
+      - local
+    group:
+      local:
+        - db-local
+        - kafka-local
+      server:
+        - db-server
+        - kafka-server
+    include:
+      - db
+      - kafka
+
   jpa:
     open-in-view: false
     properties:
@@ -38,34 +52,34 @@ spring:
       ddl-auto: create
     database: mysql
 
----
-spring:
-  config:
-    activate:
-      on-profile: local
-  datasource:
-    url: "jdbc:mysql://127.0.0.3:3306/english"
-    username: "hwang"
-    password: "5510"
-  redis:
-    host: 127.0.0.3
-    port: 6379
-
-server:
-  port: 5510
-logging:
-  config: classpath:logback-local.xml
----
-spring:
-  config:
-    activate:
-      on-profile: server
-  datasource:
-    url: "jdbc:mysql://10.0.2.3:3306/english"
-    username: "hwang"
-    password: "5510"
-server:
-  port: 5511
-logging:
-  config: classpath:logback-server.xml
+#---
+#spring:
+#  config:
+#    activate:
+#      on-profile: local
+#  datasource:
+#    url: "jdbc:mysql://127.0.0.3:3306/english"
+#    username: "hwang"
+#    password: "5510"
+#  redis:
+#    host: 127.0.0.3
+#    port: 6379
+#
+#server:
+#  port: 5510
+#logging:
+#  config: classpath:logback-local.xml
+#---
+#spring:
+#  config:
+#    activate:
+#      on-profile: server
+#  datasource:
+#    url: "jdbc:mysql://10.0.2.3:3306/english"
+#    username: "hwang"
+#    password: "5510"
+#server:
+#  port: 5511
+#logging:
+#  config: classpath:logback-server.xml
 

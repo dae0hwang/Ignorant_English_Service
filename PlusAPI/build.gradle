@@ -45,6 +45,8 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok'
     //kafka
     implementation 'org.springframework.kafka:spring-kafka'
+    //spring-doc
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
 
 }
 
