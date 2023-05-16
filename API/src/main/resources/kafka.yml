@@ -1,20 +1,20 @@
-#spring:
-#  config:
-#    activate:
-#      on-profile: local
-#  kafka:
-#    producer:
-#      bootstrap-servers: 127.0.0.7:9093
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-#
-#---
-#spring:
-#  config:
-#    activate:
-#      on-profile: server
-#  kafka:
-#    producer:
-#      bootstrap-servers: 10.0.2.7:9092
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+spring:
+  config:
+    activate:
+      on-profile: local
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.7:9093
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+---
+spring:
+  config:
+    activate:
+      on-profile: server
+  kafka:
+    producer:
+      bootstrap-servers: 10.0.2.7:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

@@ -256,8 +256,6 @@
           selectBox.appendChild(optionElement);
         }
       });
-
-      console.log(userId)
       //<PLUSAPI> 나와 관련된 알람 전부 가져오기
       axios({
         url: "http://" + plusApi + "/api/user/sentence/get/list/my/alarm",
