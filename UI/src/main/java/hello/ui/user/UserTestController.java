@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user/test")
 public class UserTestController {
 
-    //이거 아직 안만듦 여기서 테스트 하기를 클릭하면 아래
     @GetMapping("/admin/check")
     public String adminSentenceCheckPage() {
         return "test/admin/check";
