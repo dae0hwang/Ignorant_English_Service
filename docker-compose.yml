@@ -1,0 +1,51 @@
+#docker-compose는 1버전 부터 3버전까지 있습니다. 최신 소프트웨어를 사용하기 위하여 버전을 3으로 명시
+version: '3'
+services:
+  api:
+    # Dockerfile이 있는 위치
+    build: ./API
+    #컨테이너 이름을 명시할 수 있지만, 명시하면 유니크하기때문에 확장하기 불가능하다.
+#    container_name: comapi-con
+    #이미지 명시하면 해당 이름의 이미지가 생성된다.
+    image: comapi-img
+    #dockerfile안에 이미지이름은 없고  포트 설정도 run안에 있공 ㅇ
+    #여기서 작성해줘야갰네 ㅇㅇ
+    ports:
+      - "5511:5511"
+  plus:
+    build: ./PlusAPI
+    ports:
+      - "6611:6611"
+    #여기는 image와 containername 지정안함
+  ui:
+    build: ./UI
+    ports:
+      - "8081:8081"
+
+
+
+
+#services:
+#  database:
+#    # Dockerfile이 있는 위치
+#    build: ./database
+#    # 내부에서 개방할 포트 : 외부에서 접근할 포트
+#    ports:
+#      - "3306:3306"
+#  backend:
+#    build: ./backend
+#    # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
+#    volumes:
+#      - ./backend:/usr/src/app
+#    ports:
+#      - "5000:5000"
+#    # 환경변수 설정
+#    environment:
+#      - DBHOST=database
+#  frontend:
+#    build: ./frontend
+#    # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
+#    volumes:
+#      - ./frontend:/home/node/app
+#    ports:
+#      - "8080:8080"
