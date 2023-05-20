@@ -51,7 +51,6 @@ public class TestResultService {
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         redisTemplate.opsForValue().set(redisKey, nowDateTime);
         redisTemplate.expire(redisKey, 300, TimeUnit.SECONDS);
-        //이거 한번 테스트해보기.a
     }
 
     public void TestTimeMessage(TestResultRequest request) throws JsonProcessingException {

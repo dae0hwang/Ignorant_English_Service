@@ -8,16 +8,18 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
+@Profile({"local","server"})
 public class RedisConfig  {
 
-    @Value("${spring.redis.host}")
+    @Value("${spring.redis.host:}")
     private String redisHost;
-    @Value("${spring.redis.port}")
+    @Value("${spring.redis.port: nu}")
     private int redisPort;
 
     @Bean

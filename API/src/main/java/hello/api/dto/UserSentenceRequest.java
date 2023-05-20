@@ -16,7 +16,7 @@ public class UserSentenceRequest {
     private Long subscriberId;
     private Long subscribedSentenceId;
     private Long updateSentenceGroupId;
-    private String Korean;
+    private String korean;
     private String english;
     private Long deleteSentenceId;
     private Long alarmId;

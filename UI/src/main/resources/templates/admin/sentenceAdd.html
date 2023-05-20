@@ -89,9 +89,6 @@
 </section>
 
 
-
-
-
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
   const uiUrl = [[${@environment.getProperty('url.ui')}]];
@@ -150,7 +147,6 @@
     });
   }
 
-
   //문장 등록
   let grammarSelect = document.getElementById("grammar-select");
   let situationSelect = document.getElementById("situation-select");
@@ -167,7 +163,6 @@
         grammar: grammarSelect.options[grammarSelect.selectedIndex].text,
         situation: situationSelect.options[situationSelect.selectedIndex].text
       }
-
     })
     .then(function (response) {
       document.getElementById("korean-input").value = "";

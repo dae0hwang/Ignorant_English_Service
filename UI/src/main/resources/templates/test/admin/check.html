@@ -112,7 +112,6 @@
 </section>
 
 
-
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
   const uiUrl = [[${@environment.getProperty('url.ui')}]];
@@ -223,7 +222,6 @@
     });
   }
 
-
   //이제 여기다가 검색 버튼 클릭하면 makeTable 하기
   document.addEventListener("click", function (event) {
     if (event.target.id !== "search-button") {
@@ -259,7 +257,6 @@
         situation: situation,
         check: check
       }
-
     })
     .then(function (response) {
       console.log(response);
@@ -274,12 +271,9 @@
     });
   });
 
-
-
   //테이블 정보 가져와서 테이블 만들기 이것도 수정 필요.
   let bodyElement = document.getElementById("table-body");
   function makeTable(dataList) {
-
     for (const dto of dataList) {
       let idTdElement = document.createElement("td")
       idTdElement.appendChild(document.createTextNode(dto.sentenceId));

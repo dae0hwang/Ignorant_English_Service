@@ -16,8 +16,7 @@ spring:
       on-profile: server
 server:
   port: 8081
-
-#nginX
 url:
-  api: 127.0.0.3
-  ui: 127.0.0.3
+  api: 127.0.0.6:5511
+  ui: 127.0.0.6:8081
+  plusApi: 127.0.0.6:6611

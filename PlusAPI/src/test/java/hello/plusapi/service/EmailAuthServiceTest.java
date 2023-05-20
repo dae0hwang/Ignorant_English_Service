@@ -10,15 +10,19 @@ import hello.plusapi.repository.EmailAuthRepository;
 import hello.plusapi.repository.UserRepository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import javax.persistence.EntityManager;
+import javax.swing.text.html.parser.Entity;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-@ActiveProfiles
+@ActiveProfiles("test")
+@Transactional
 class EmailAuthServiceTest {
 
     @Autowired
@@ -27,10 +31,8 @@ class EmailAuthServiceTest {
     EmailAuthRepository emailAuthRepository;
     @Autowired
     UserRepository userRepository;
-
-    @Test
-    void sendEmailAuth() {
-    }
+    @Autowired
+    EntityManager entityManager;
 
     @Test
     @DisplayName("이메일 인증 성공")
@@ -41,7 +43,9 @@ class EmailAuthServiceTest {
                 .name("name").roles(null).build());
         emailAuthRepository.save(
             EmailAuth.builder().authToken("authToken").email("email@naver.com").expired(false)
-                .build());
+                .expireDate(Timestamp.valueOf(LocalDateTime.now().plusHours(1L))).build());
+        entityManager.flush();
+        entityManager.clear();
         //when
         emailAuthService.confirmEmail("authToken");
         //then

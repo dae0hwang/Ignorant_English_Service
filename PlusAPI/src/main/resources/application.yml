@@ -79,4 +79,4 @@ server:
 logging:
   config: classpath:logback-server.xml
 api:
-  ip: 127.0.0.5
+  ip: 127.0.0.6

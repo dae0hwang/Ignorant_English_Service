@@ -76,7 +76,6 @@
   //home button
   document.getElementById("home-button").href = "http://" + uiUrl;
 
-
   //로그인 버튼 클릭.
   let registerButton = document.getElementById("register-button");
   registerButton.onclick = function () {
@@ -87,7 +86,6 @@
         username: document.getElementById("email-input").value,
         password: document.getElementById("password-input").value,
       }
-
     })
     .then(function (response) {
       console.log(response)

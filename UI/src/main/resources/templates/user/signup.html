@@ -79,16 +79,12 @@
 </section>
 
 
-
-
-
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
   const uiUrl = [[${@environment.getProperty('url.ui')}]];
 
   //home button
   document.getElementById("home-button").href = "http://" + uiUrl;
-
 
   //회원가입 등록
   let registerButton = document.getElementById("register-button");
@@ -101,7 +97,6 @@
         password: document.getElementById("password-input").value,
         name: document.getElementById("name-input").value,
       }
-
     })
     .then(function (response) {
       //성공시 이동
@@ -109,7 +104,6 @@
     })
     .catch(function (error) {
       console.log(error);
-
       if (error.code === "ERR_NETWORK") {
         alert("[실패] 잠시 후 시도해 주세요");
       }else {

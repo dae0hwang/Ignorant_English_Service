@@ -8,16 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user/sentence")
 public class UserSentenceController {
 
-//    @GetMapping("/page")
-//    public String userSentencePage() {
-//        return "user/sentence/page";
-//    }
-
     @GetMapping("/page/{groupId}")
     public String userSentencePage(Long groupId) {
         return "user/sentence/page";
     }
-
-
-
 }

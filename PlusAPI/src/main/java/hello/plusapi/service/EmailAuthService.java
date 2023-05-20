@@ -7,11 +7,7 @@ import hello.plusapi.enumforexception.EmailAuthExceptionEnum;
 import hello.plusapi.exception.EmailAuthException;
 import hello.plusapi.repository.EmailAuthRepository;
 import hello.plusapi.repository.UserRepository;
-import java.net.UnknownHostException;
-import java.time.LocalDateTime;
 import java.util.Optional;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +26,6 @@ public class EmailAuthService {
     private String port;
     @Value("${api.ip:localhost}")
     private String ip;
-    @PersistenceContext
-    EntityManager em;
     private static final String TOPIC = "email";
     private final JavaMailSender javaMailSender;
     private final EmailAuthRepository emailAuthRepository;
@@ -42,7 +36,6 @@ public class EmailAuthService {
     public void sendEmailAuth(KafkaEmailDto kafkaEmailDto) {
         EmailAuth emailAuth = emailAuthRepository.findByEmail(kafkaEmailDto.getEmail())
             .orElseThrow();
-
         SimpleMailMessage smm = new SimpleMailMessage();
         smm.setTo(kafkaEmailDto.getEmail());
         smm.setSubject("회원 가입 이메일 인증");

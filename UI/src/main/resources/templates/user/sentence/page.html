@@ -94,13 +94,12 @@
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
   const uiUrl = [[${@environment.getProperty('url.ui')}]];
-  const plusApi = [[${@environment.getProperty('url.plusApi')}]];
 
   //home button
   document.getElementById("home-button").href = "http://" + uiUrl;
 
   //타이틀 문장 목록 이름으로 설정
-  const groupId = window.location.href.replace("http://127.0.0.1:8080/user/sentence/page/", "")
+  const groupId = window.location.href.replace("http://"+uiUrl+"/user/sentence/page/", "")
   console.log(groupId);
   axios({
     url: "http://" + apiUrl + "/api/user/sentence/get/info/group",
@@ -193,7 +192,6 @@
       window.location.reload()
     })
   });
-
 </script>
 </body>
 </html>
