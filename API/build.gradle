@@ -93,3 +93,6 @@ compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
 //querydsl end
+jar {
+    enabled = false
+}
