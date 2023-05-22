@@ -1,4 +1,4 @@
-# IgnorantEnglish_Service
+# Ignorant_English_Service
 무식한 영어 공부 서비스는 **통 문장 암기**의 **편리성**과 **공부 효과**를 극대화하여 영어 실력 향상시켜줍니다. 
 
 
