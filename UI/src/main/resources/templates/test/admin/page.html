@@ -217,6 +217,16 @@
           allContainer.style.transform = 'translate('+(-800*(i+1)).toString()+'px)';
           //맞음 보내기
           axios({
+            url: "http://"+apiUrl+"/api/admin/test/check",
+            method: 'post',
+            data: {
+              userId: userId,
+              sentenceId : dataList[i].sentenceId,
+              check: "CORRECT"
+            }
+          })
+
+          axios({
             url: "http://"+apiUrl+"/api/test/result/correct",
             method: 'post',
             data: {
@@ -268,10 +278,18 @@
       wrongButton.setAttribute("id", "wrongButton");
       wrongButton.setAttribute("data", dataList[i]);
       wrongButton.onclick = function () {
-
         let answerCheck = currentNode.getAttribute("answerCheck");
         if (answerCheck === "yes") {
           allContainer.style.transform = 'translate('+(-800*(i+1)).toString()+'px)';
+          axios({
+            url: "http://"+apiUrl+"/api/admin/test/check",
+            method: 'post',
+            data: {
+              userId: userId,
+              sentenceId : dataList[i].sentenceId,
+              check: "WRONG"
+            }
+          })
           axios({
             url: "http://"+apiUrl+"/api/test/result/wrong",
             method: 'post',
