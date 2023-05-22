@@ -19,10 +19,6 @@
 
 # 도커 쿠버네티스(실행방법)
 
-# API doc, Spring doc - 관리자 문장 관리
-![apidoc](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/0874d950-a025-4db8-94a8-042a85792234)
-[자세한 관리자 문장 API doc과 Spring doc 설정 방법](https://coding-business.tistory.com/127)
-
 # 서비스 동작 구성
 ### 1. 관리자 문장 관리하기
 서비스에 가입한 모든 유저가 테스트할 수 있는 관리자 문장(영어, 번역) 데이터를 관리합니다.  
@@ -128,5 +124,9 @@
 - 알림 확인 후 데이터 삭제
 
 ![알림 확인 삭제](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/4145422c-1723-4069-9bf4-c0de82a5a6ba)
+
+# API doc, Spring doc - 관리자 문장 관리
+![apidoc](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/0874d950-a025-4db8-94a8-042a85792234)
+[자세한 관리자 문장 API doc과 Spring doc 설정 방법](https://coding-business.tistory.com/127)
 
 
