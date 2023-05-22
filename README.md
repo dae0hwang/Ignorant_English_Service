@@ -33,6 +33,7 @@
 ![ㅇ관리자문장삭제](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/3fcfd243-2f71-4005-9d29-8f6c95a4cf8d)
 
 ### 2. 사용자 계정 관리(이메일 인증)
+[동작 로직 설명](https://coding-business.tistory.com/67)
 - 사용자 회원 가입과 로그인
 
 ![ㅇ사용자회원가입로그인](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/45277e6d-2c94-4b78-8214-3eb157c1a3fb)
