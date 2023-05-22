@@ -43,6 +43,7 @@
 ![ㅇ사용자회원가입로그인](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/45277e6d-2c94-4b78-8214-3eb157c1a3fb)
 
 - 사용자 이메일 인증하기
+
 [동작 로직 설명](https://coding-business.tistory.com/73)
 
 ![ㅇ유저이메일인증](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/2b00756b-3402-45c2-beda-c48d4e6bbab7)
