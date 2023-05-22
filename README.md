@@ -19,7 +19,7 @@
 
 # 도커등 뭐든 실행방법 쿠버네티스(실행방법)
 
-# API docs Spring doc - 관리자 문장 관리
+# API doc, Spring doc - 관리자 문장 관리
 ![apidoc](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/0874d950-a025-4db8-94a8-042a85792234)
 [자세한 관리자 문장 API doc과 Spring doc 설정 방법](https://coding-business.tistory.com/127)
 
