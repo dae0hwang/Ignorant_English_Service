@@ -1,5 +1,5 @@
 #base 이미지를 지정하기
-FROM openjdk:11-jre
+FROM openjdk:11.0.7-jre-slim
 
 #이미지를 만들 때
 #실제 프로젝트 jar 파일을 이미지내 파일로 복사하기
@@ -15,7 +15,7 @@ ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=server", "app.jar"]
 #docker build -t hwangdy/ui:07 .
 
 #도커 허브에 이미지 올리기
-#docker push hwangdy/ui:01
+#docker push hwangdy/ui:07
 
 #도커 허브에서 이미지 가져오기
 #sudo docker image pull hwangdy/ui:07
