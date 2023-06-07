@@ -31,7 +31,7 @@ pipeline {
             steps {
                 echo 'Bulid Gradle'
                 //이부분
-                dir ('../API/API') {
+                dir ('../UI/UI') {
                     bat 'gradlew clean build'
                 }
             }
@@ -60,9 +60,9 @@ pipeline {
             steps {
                 echo 'Bulid Docker'
                 //이부분
-                dir ('../API/API') {
+                dir ('../UI/UI') {
                     script {
-                        dockerImage = docker.build 'hwangdy/api:latest'
+                        dockerImage = docker.build 'hwangdy/ui:latest'
                     }
                 }
             }
@@ -102,7 +102,7 @@ pipeline {
                     remote.allowAnyHosts = true
                     stage('Remote SSH') {
                         //이부분
-                        sshCommand remote: remote, command: "bash api.sh"
+                        sshCommand remote: remote, command: "bash ui.sh"
                     }
                 }
             }
