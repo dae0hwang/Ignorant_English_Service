@@ -71,4 +71,19 @@ server:
   port: 5511
 logging:
   config: classpath:logback-server.xml
-
+---
+spring:
+  config:
+    activate:
+      on-profile: aws
+  datasource:
+    url: "jdbc:mysql://database-2.cbiozpdvq17b.ap-northeast-2.rds.amazonaws.com:3306/english"
+    username: "hwang"
+    password: "12345678"
+  redis:
+    host: 10.0.2.3
+    port: 6379
+server:
+  port: 5511
+logging:
+  config: classpath:logback-server.xml

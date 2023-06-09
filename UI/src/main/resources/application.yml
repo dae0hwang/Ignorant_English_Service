@@ -20,3 +20,14 @@ url:
   api: 127.0.0.5:5511
   ui: 127.0.0.5:8081
   plusApi: 127.0.0.5:6611
+---
+spring:
+  config:
+    activate:
+      on-profile: aws
+server:
+  port: 8081
+url:
+  api: 3.35.202.92:5511
+  ui: 3.35.202.92:8081
+  plusApi: 3.35.202.92:6611

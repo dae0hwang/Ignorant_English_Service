@@ -6,7 +6,7 @@ FROM openjdk:11.0.7-jre-slim
 COPY build/libs/*.jar app.jar
 
 #이미지가 컨테이너로 실행될 때 수행할 java -jar app.jar 명령어 설정하기
-ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=server", "app.jar"]
+ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=aws", "app.jar"]
 
 #jar 파일 생성하기
 #./gradelw clean build

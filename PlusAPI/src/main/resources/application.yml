@@ -80,3 +80,18 @@ logging:
   config: classpath:logback-server.xml
 api:
   ip: 127.0.0.6
+---
+spring:
+  config:
+    activate:
+      on-profile: aws
+  datasource:
+    url: "jdbc:mysql://3.35.202.92:3306/english"
+    username: "hwang"
+    password: "12345678"
+server:
+  port: 6611
+logging:
+  config: classpath:logback-server.xml
+api:
+  ip: 127.0.0.6

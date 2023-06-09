@@ -6,20 +6,20 @@ FROM openjdk:11.0.7-jre-slim
 COPY build/libs/*.jar app.jar
 
 #이미지가 컨테이너로 실행될 때 수행할 java -jar app.jar 명령어 설정하기
-ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=server", "app.jar"]
+ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=aws", "app.jar"]
 
 #jar 파일 생성하기
 #./gradelw clean build
 
 #dockerimage 만들기 해당 이미지에 jar파일이 포함되어 있다.
-#docker build -t hwangdy/api:07 .
+#docker build -t hwangdy/api:latest .
 
 #도커 허브에 이미지 올리기
-#docker push hwangdy/api:07
+#docker push hwangdy/api:latest
 
 #도커 허브에서 이미지 가져오기
-#sudo docker image pull hwangdy/api:07
+#sudo docker image pull hwangdy/api:latest
 
 #해당 이미지를 실행하기
 #굳이 다운 받지 않고 해당 run하면 레포지토리에서 다운한다.
-# docker run --name api -p 5511:5511 hwangdy/api:07
+# docker run --name api -p 5511:5511 hwangdy/api:latest
