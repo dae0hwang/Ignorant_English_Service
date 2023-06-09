@@ -31,7 +31,7 @@ pipeline {
             steps {
                 echo 'Bulid Gradle'
                 //이부분
-                dir ('../UI/UI') {
+                dir ('../aws-ui/UI') {
                     bat 'gradlew clean build'
                 }
             }
@@ -60,7 +60,7 @@ pipeline {
             steps {
                 echo 'Bulid Docker'
                 //이부분
-                dir ('../UI/UI') {
+                dir ('../aws-ui/UI') {
                     script {
                         dockerImage = docker.build 'hwangdy/ui:latest'
                     }

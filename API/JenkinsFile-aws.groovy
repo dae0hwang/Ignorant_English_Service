@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo 'Bulid Gradle'
                 //이부분
-                dir ('../API/API') {
+                dir ('../aws-api/API') {
                     bat 'gradlew clean build'
                 }
             }
@@ -32,7 +32,7 @@ pipeline {
             steps {
                 echo 'Bulid Docker'
                 //이부분
-                dir ('../API/API') {
+                dir ('../aws-api/API') {
                     script {
                         dockerImage = docker.build 'hwangdy/api:latest'
                     }
