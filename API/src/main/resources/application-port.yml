@@ -1,0 +1,32 @@
+spring:
+  config:
+    activate:
+      on-profile: port-local
+server:
+  port: 5510
+---
+
+spring:
+  config:
+    activate:
+      on-profile: port-server
+server:
+  port: 5511
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: port-aws
+server:
+  port: 5511
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: port-new
+server:
+  port: 7070

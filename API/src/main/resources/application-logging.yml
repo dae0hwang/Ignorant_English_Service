@@ -1,0 +1,24 @@
+spring:
+  config:
+    activate:
+      on-profile: logging-local
+logging:
+  config: classpath:logback-local.xml
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: logging-server
+logging:
+  config: classpath:logback-server.xml
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: logging-aws
+logging:
+  config: classpath:logback-aws.xml
