@@ -20,7 +20,7 @@ spring:
     activate:
       on-profile: port-aws
 server:
-  port: 6612
+  port: 6611
 
 ---
 
