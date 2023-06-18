@@ -48,7 +48,8 @@
 
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
-  const uiUrl = [[${@environment.getProperty('url.ui')}]];
+  const uiUrl = window.location.host;
+
 
   //home button
   document.getElementById("home-button").href = "http://" + uiUrl;

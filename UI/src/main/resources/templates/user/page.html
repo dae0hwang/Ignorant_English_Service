@@ -56,7 +56,7 @@
 
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
-  const uiUrl = [[${@environment.getProperty('url.ui')}]];
+  const uiUrl = window.location.host;
 
   //유저 권한 확인하기->맞다면, 바로 account로 이동하기.
   let jwtToken = localStorage.getItem("Authorization")

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels: {}
+      name: "ui-server"
+    spec:
+      selector:
+        app: "ui-server"
+      type: LoadBalancer
+      ports:
+        - name: http
+          port: 8081
+          targetPort: 8081
+          protocol: TCP
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: "ui-server"
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: "ui-server"
+      template:
+        metadata:
+          labels:
+            app: "ui-server"
+        spec:
+          containers:
+            - image: hwangdy/ui:latest
+              imagePullPolicy: Always
+              name: "ui-server"
+              ports:
+                - protocol: TCP
+                  containerPort: 8081

@@ -16,12 +16,14 @@ import hello.plusapi.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Profile({"server", "test"})
 public class UserSentenceService {
 
     private final SentenceGroupRepository sentenceGroupRepository;

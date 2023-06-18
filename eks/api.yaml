@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations: {}
+      labels: {}
+      name: "api-server"
+    spec:
+      #내부 통신용 clusterIP 고정 - 실패  loadbalance로 일단 진행
+#      clusterIP: 10.100.67.149
+      selector:
+        app: "api-server"
+      type: LoadBalancer
+      ports:
+        - name: http
+          port: 5511
+          targetPort: 5511
+          protocol: TCP
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: "api-server"
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: "api-server"
+      template:
+        metadata:
+          labels:
+            app: "api-server"
+        spec:
+          containers:
+            - image: hwangdy/api:latest
+              imagePullPolicy: Always
+              name: "api-server"
+              ports:
+                - protocol: TCP
+                  containerPort: 5510

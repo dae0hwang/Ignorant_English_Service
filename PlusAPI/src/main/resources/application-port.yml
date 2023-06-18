@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: port-local
 server:
-  port: 5510
+  port: 6610
 ---
 
 spring:
@@ -11,7 +11,7 @@ spring:
     activate:
       on-profile: port-server
 server:
-  port: 5511
+  port: 6611
 
 ---
 
@@ -20,7 +20,7 @@ spring:
     activate:
       on-profile: port-aws
 server:
-  port: 5512
+  port: 6612
 
 ---
 

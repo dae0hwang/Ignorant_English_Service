@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: sqs-local
   kafka:
     consumer:
       bootstrap-servers: 127.0.0.7:9093
@@ -12,11 +12,14 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
         spring.json.use.type.headers: false
+server:
+  url: 127.0.0.1:6610
 ---
+
 spring:
   config:
     activate:
-      on-profile: server
+      on-profile: sqs-server
   kafka:
     consumer:
       bootstrap-servers: 10.0.2.7:9092
@@ -27,3 +30,24 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
         spring.json.use.type.headers: false
+server:
+  url: 127.0.0.1:6611
+---
+
+spring:
+  config:
+    activate:
+      on-profile: sqs-aws
+#aws profile은 kafka가 아닌 sqs를 사용
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+      auto: false
+    credentials:
+      access-key: AKIA3W5LLZVXZA7NAPGM
+      secret-key: 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
+    end-point:
+      url: https://sqs.ap-northeast-2.amazonaws.com/805128883567/sqs
+server:
+  url: 127.0.0.1:6610

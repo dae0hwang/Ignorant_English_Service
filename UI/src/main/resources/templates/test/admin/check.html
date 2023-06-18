@@ -114,7 +114,7 @@
 
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
-  const uiUrl = [[${@environment.getProperty('url.ui')}]];
+  const uiUrl = window.location.host;
 
   //JWT 토큰
   let jwtToken = localStorage.getItem("Authorization")

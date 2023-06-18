@@ -1,6 +1,5 @@
 package hello.plusapi.service;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import hello.plusapi.entity.EmailAuth;
 import hello.plusapi.entity.Users;
@@ -11,7 +10,6 @@ import hello.plusapi.repository.UserRepository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
-import javax.swing.text.html.parser.Entity;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

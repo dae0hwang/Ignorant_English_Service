@@ -144,11 +144,11 @@
 
 <script th:inline="javascript">
   const apiUrl = [[${@environment.getProperty('url.api')}]];
-  const uiUrl = [[${@environment.getProperty('url.ui')}]];
+  const uiUrl = window.location.host;
   const plusApi = [[${@environment.getProperty('url.plusApi')}]];
 
   //home button
-  document.getElementById("home-button").href = "http://" + uiUrl;
+  document.getElementById("home-button").href = "http://"+uiUrl
 
   //logout button
   let logoutButton = document.getElementById("logout-button");

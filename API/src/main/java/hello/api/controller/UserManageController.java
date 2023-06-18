@@ -3,7 +3,7 @@ package hello.api.controller;
 import hello.api.dto.UserInformationDto;
 import hello.api.dto.UserSignupRequest;
 import hello.api.service.EmailAuthService;
-import hello.api.service.KafkaEmailService;
+import hello.api.service.SqsEmailService;
 import hello.api.service.UserManageService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserManageController {
 
     private final UserManageService userManageService;
-    private final KafkaEmailService kafkaEmailService;
+    private final SqsEmailService sqsEmailService;
     private final EmailAuthService emailAuthService;
 
     @PostMapping("/signup")
@@ -32,7 +32,7 @@ public class UserManageController {
         @Valid @RequestBody UserSignupRequest userSignupRequest) {
         userManageService.signup(userSignupRequest);
         emailAuthService.save(userSignupRequest.getUsername());
-        kafkaEmailService.sendMessage(userSignupRequest.getUsername());
+        sqsEmailService.sendMessage(userSignupRequest.getUsername());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

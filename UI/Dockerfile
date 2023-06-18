@@ -12,14 +12,14 @@ ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=aws", "app.jar"]
 #./gradelw clean build
 
 #dockerimage 만들기 해당 이미지에 jar파일이 포함되어 있다.
-#docker build -t hwangdy/ui:07 .
+#docker build -t hwangdy/ui:latest .
 
 #도커 허브에 이미지 올리기
-#docker push hwangdy/ui:07
+#docker push hwangdy/ui:latest
 
 #도커 허브에서 이미지 가져오기
-#sudo docker image pull hwangdy/ui:07
+#sudo docker image pull hwangdy/ui:latest
 
 #해당 이미지를 실행하기
 #굳이 다운 받지 않고 해당 run하면 레포지토리에서 다운한다.
-# docker run --name ui -p 8081:8081 hwangdy/ui:07
+# docker run --name ui -p 8081:8081 hwangdy/ui:latest

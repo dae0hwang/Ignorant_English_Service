@@ -1,97 +1,28 @@
 spring:
-  config:
-    import: kafka.yml
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: geungan9@gmail.com
-    password: fkxutsddgdecradp
-    properties:
-      mail:
-        smtp:
-          starttls:
-            enable: true
-          auth: true
-          timeout: 5000
-  jpa:
-    open-in-view: false
-    properties:
-      hibernate:
-        format_sql: true
-    show-sql: true
-
-logging:
-  level:
-    org:
-      hibernate:
-        sql: debug
----
-spring:
-  config:
-    activate:
-      on-profile: test
-  datasource:
-    url: jdbc:h2:mem:test;MODE=MYSQL
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-
----
-spring:
-  config:
-    activate:
-      on-profile: test-mysql
-  datasource:
-    url: "jdbc:mysql://127.0.0.3:3306/english_test"
-    username: "hwang"
-    password: "5510"
-  jpa:
-    hibernate:
-      ddl-auto: create
-    database: mysql
-
----
-spring:
-  config:
-    activate:
-      on-profile: local
-  datasource:
-    url: "jdbc:mysql://127.0.0.3:3306/english"
-    username: "hwang"
-    password: "5510"
-server:
-  port: 6610
-logging:
-  config: classpath:logback-local.xml
-api:
-  ip: 127.0.0.1
----
-spring:
-  config:
-    activate:
-      on-profile: server
-  datasource:
-    url: "jdbc:mysql://10.0.2.3:3306/english"
-    username: "hwang"
-    password: "5510"
-server:
-  port: 6611
-logging:
-  config: classpath:logback-server.xml
-api:
-  ip: 127.0.0.6
----
-spring:
-  config:
-    activate:
-      on-profile: aws
-  datasource:
-    url: "jdbc:mysql://3.35.202.92:3306/english"
-    username: "hwang"
-    password: "12345678"
-server:
-  port: 6611
-logging:
-  config: classpath:logback-server.xml
-api:
-  ip: 127.0.0.6
+  profiles:
+    active:
+      - local
+    group:
+      local:
+        - default-default
+        - port-local
+        - db-local
+        - sqs-aws
+      server:
+        - default-default
+        - port-server
+        - db-server
+        - sqs-server
+      aws:
+        - default-default
+        - port-aws
+        - db-aws
+        - sqs-aws
+      test:
+        - db-test
+        - sqs-aws
+    include:
+      - default
+      - port
+      - db
+      - sqs
