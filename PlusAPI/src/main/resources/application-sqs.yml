@@ -50,4 +50,4 @@ cloud:
     end-point:
       url: https://sqs.ap-northeast-2.amazonaws.com/805128883567/sqs
 server:
-  url: 127.0.0.1:6610
+  url: a6407385ce7bf4da69a4d83a6fca3d33-115912414.ap-northeast-2.elb.amazonaws.com:6611

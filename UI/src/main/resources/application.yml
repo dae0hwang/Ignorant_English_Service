@@ -28,6 +28,6 @@ spring:
 server:
   port: 8081
 url:
-  api: a8a2b22bb4216492f84fd7c773ac786b-1399006883.ap-northeast-2.elb.amazonaws.com:5511
+  api: a08677316f1084ef5b3e8e6c20a0ce8b-1859690083.ap-northeast-2.elb.amazonaws.com:5511
 #  ui: 3.35.202.92:8081
-  plusApi: ac66f0dca98bb47978e9032682f17897-1753167754.ap-northeast-2.elb.amazonaws.com:6611
+  plusApi: a6407385ce7bf4da69a4d83a6fca3d33-115912414.ap-northeast-2.elb.amazonaws.com:6611

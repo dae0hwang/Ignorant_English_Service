@@ -15,8 +15,6 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile({"aws","local"})
 public class SqsConfig {
-    @Value("${cloud.aws.region.static}")
-    private String region;
 
     @Value("${cloud.aws.credentials.access-key}")
     private String awsAccessKey;

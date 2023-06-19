@@ -25,8 +25,6 @@ public class AwsSqsEmailService implements SqsEmailService<String>{
     @SqsListener("sqs")
     @Override
     public void sendEmailAuth(String email) {
-        log.info("들어옴");
-        log.info(email);
         EmailAuth emailAuth = emailAuthRepository.findByEmail(email)
             .orElseThrow();
         SimpleMailMessage smm = new SimpleMailMessage();
