@@ -32,7 +32,7 @@ cloud:
       static: ap-northeast-2
       auto: false
     credentials:
-      access-key: AKIA3W5LLZVXZA7NAPGM
-      secret-key: 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
+      access-key: A3KIA3W5LLZVXZA7NAPGM
+      secret-key: vHR51Q/w7aoNa7qk+PiJHVEKk488JhoFHxCfwVC
     end-point:
       url: https://sqs.ap-northeast-2.amazonaws.com/805128883567/sqs
