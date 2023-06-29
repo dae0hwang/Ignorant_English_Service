@@ -58,6 +58,21 @@
 
 ![ㅇ유저이메일인증](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/2b00756b-3402-45c2-beda-c48d4e6bbab7)
 
+
+### 3. OAuth2(Google) 인가 서비스 구현
+는 OAuth2-Google를 기존의 Security와 연결하여 Google 계정으로 인가 서비스를 제공
+[동작 로직 설명](https://coding-business.tistory.com/123)
+
+
+![ㅇ사용자회원가입로그인](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/45277e6d-2c94-4b78-8214-3eb157c1a3fb)
+
+- 사용자 이메일 인증하기
+
+[동작 로직 설명](https://coding-business.tistory.com/73)
+
+![ㅇ유저이메일인증](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/2b00756b-3402-45c2-beda-c48d4e6bbab7)
+
+
 ### 3. 관리자 문장 통문장 암기 테스트하기
 관리자 문장을 원하는 조건에 멎춰 테스트하고 그 결과를 확인할 수 있습니다.
 
