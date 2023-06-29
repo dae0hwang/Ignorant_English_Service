@@ -61,19 +61,15 @@
 
 ### 3. OAuth2(Google) 인가 서비스 구현
 는 OAuth2-Google를 기존의 Security와 연결하여 Google 계정으로 인가 서비스를 제공
+
+
 [동작 로직 설명](https://coding-business.tistory.com/123)
 
 
-![ㅇ사용자회원가입로그인](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/45277e6d-2c94-4b78-8214-3eb157c1a3fb)
-
-- 사용자 이메일 인증하기
-
-[동작 로직 설명](https://coding-business.tistory.com/73)
-
-![ㅇ유저이메일인증](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/2b00756b-3402-45c2-beda-c48d4e6bbab7)
+![ㅇ사용자회원가입로그인](https://github.com/dae0hwang/Ignorant_English_Service/assets/103154389/ba788d27-3de7-4329-9359-2396c67eb826)
 
 
-### 3. 관리자 문장 통문장 암기 테스트하기
+### 4. 관리자 문장 통문장 암기 테스트하기
 관리자 문장을 원하는 조건에 멎춰 테스트하고 그 결과를 확인할 수 있습니다.
 
 [암기 페이지 만들기](https://coding-business.tistory.com/102)
@@ -89,7 +85,7 @@
 
 ![테스트결과조회](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/fffb8788-5ad6-49c7-9ab1-6bbb4e5e9b5f)
 
-### 4. 관리자 문장 테스트 결과 ElasticSearch에 저장 후 kibana에서 확인
+### 5. 관리자 문장 테스트 결과 ElasticSearch에 저장 후 kibana에서 확인
 각 유저별로 테스트한 결과(맞음, 틀림, 힌트봄, 테스트 시간) 데이터를 로그로 남겨 EliasticSearch에 저장합니다.
 
 [동작 로직 설명](https://coding-business.tistory.com/128)
@@ -118,7 +114,7 @@
 
 ![특정유저틀린문제만검색](https://github.com/dae0hwang/IgnorantEnglish/assets/103154389/06ccac87-2f58-451e-9bd1-73e5a92db626)
 
-### 5. 유저 문장 관리 및 구독 알림 서비스
+### 6. 유저 문장 관리 및 구독 알림 서비스
 관리자 문장 외에 사용자도 자신만의 문장을 등록할 수 있습니다.    
 그리고 다른 유저가 등록한 문장 그룹을 구독할 수 있고 구독한 문장 그룹이 업데이트할 때 마다 알림 서비스가 동작합니다.
 
