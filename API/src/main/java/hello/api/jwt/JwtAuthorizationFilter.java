@@ -35,8 +35,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
 		//JWT 토큰이 헤더가 존재한다면, if문 안으로 들어가서 토큰 검증을 시작한다.
 		String header = request.getHeader(JwtProperties.HEADER_STRING);
+		log.info("header exist = {}", header);
 		if (header != null && header.startsWith(JwtProperties.TOKEN_PREFIX)) {
-			System.out.println("header : " + header);
 			String token = request.getHeader(JwtProperties.HEADER_STRING)
 				.replace(JwtProperties.TOKEN_PREFIX, "");
 

@@ -1,0 +1,52 @@
+spring:
+  config:
+    activate:
+      on-profile: oauth-local
+  social:
+    google:
+      client_id: 1041815058150-9610h3mpknadapggg91mltm95tjd3j6m.apps.googleusercontent.com
+      client_secret: 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
+      redirect: http://127.0.0.1:5510/api/user/manage/social/login/redirect
+      url:
+        login: https://accounts.google.com/o/oauth2/v2/auth
+        token: https://oauth2.googleapis.com/token
+        profile: https://www.googleapis.com/oauth2/v3/userinfo
+redirect:
+  ui:
+    url: http://127.0.0.1:8080/user/manage/oauth?token=
+---
+
+spring:
+  config:
+    activate:
+      on-profile: oauth-server
+  social:
+    google:
+      client_id: 1041815058150-9610h3mpknadapggg91mltm95tjd3j6m.apps.googleusercontent.com
+      client_secret: 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
+      redirect: http://10.0.2.5:5511/api/user/manage/social/login/redirect
+      url:
+        login: https://accounts.google.com/o/oauth2/v2/auth
+        token: https://oauth2.googleapis.com/token
+        profile: https://www.googleapis.com/oauth2/v3/userinfo
+redirect:
+  ui:
+    url: http://10.0.2.5:8081/user/manage/oauth?token=
+---
+
+spring:
+  config:
+    activate:
+      on-profile: oauth-aws
+  social:
+    google:
+      client_id: 1041815058150-9610h3mpknadapggg91mltm95tjd3j6m.apps.googleusercontent.com
+      client_secret: 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
+      redirect: http://~~~:5511/api/user/manage/social/login/redirect
+      url:
+        login: https://accounts.google.com/o/oauth2/v2/auth
+        token: https://oauth2.googleapis.com/token
+        profile: https://www.googleapis.com/oauth2/v3/userinfo
+redirect:
+  ui:
+    url: http://~~:8081/user/manage/oauth?token=

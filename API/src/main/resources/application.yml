@@ -9,18 +9,21 @@ spring:
         - port-local
         - db-local
         - sqs-aws
+        - oauth-local
       server:
         - default-default
         - logging-server
         - port-server
         - db-server
         - sqs-server
+        - oauth-server
       aws:
         - default-default
         - logging-aws
         - port-aws
         - db-aws
         - sqs-aws
+        - oauth-aws
       test:
         - db-test
         - sqs-aws
@@ -30,3 +33,4 @@ spring:
       - port
       - db
       - sqs
+      - oauth

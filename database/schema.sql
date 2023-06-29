@@ -18,7 +18,8 @@ CREATE TABLE users(
     password VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     email_auth TINYINT(1) NOT NULL,
-    roles VARCHAR(255) NOT NULL
+    roles VARCHAR(255) NOT NULL,
+    provider VARCHAR(255)
 );
 
 DROP TABLE IF EXISTS email_auth;

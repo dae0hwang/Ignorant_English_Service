@@ -3,7 +3,6 @@ package hello.api.controller;
 import hello.api.dto.UserSentenceDto;
 import hello.api.dto.UserSentenceKafkaDto;
 import hello.api.dto.UserSentenceRequest;
-import hello.api.entity.SentenceSubscribe;
 import hello.api.service.SentenceAlarmKafkaService;
 import hello.api.service.UserSentenceService;
 import java.util.List;
