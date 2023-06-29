@@ -60,7 +60,7 @@
 
 
 ### 3. OAuth2(Google) 인가 서비스 구현
-는 OAuth2-Google를 기존의 Security와 연결하여 Google 계정으로 인가 서비스를 제공
+OAuth2-Google를 기존의 Security와 연결하여 Google 계정으로 인가 서비스를 제공
 
 
 [동작 로직 설명](https://coding-business.tistory.com/123)
