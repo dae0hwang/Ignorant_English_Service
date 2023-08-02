@@ -1,12 +1,14 @@
 package hello.api.exceptionadvice;
 
 import static hello.api.enumforexception.UserManageExceptionEnum.DUPLICATED_SIGNUP_EMAIL;
+import static hello.api.enumforexception.UserManageExceptionEnum.DUPLICATED_SUBSCRIBE;
 import static hello.api.enumforexception.UserManageExceptionEnum.SIGNUP_REQUEST_EMAIL;
 import static hello.api.enumforexception.UserManageExceptionEnum.SIGNUP_REQUEST_NAME;
 import static hello.api.enumforexception.UserManageExceptionEnum.SIGNUP_REQUEST_PASSWORD;
 
 import hello.api.controller.UserManageController;
 import hello.api.enumforexception.UserManageExceptionEnum;
+import hello.api.exception.DuplicatedSubscribeException;
 import hello.api.exception.ErrorInformationTlsException;
 import hello.api.exception.UserManageException;
 import hello.api.threadlocalstorage.ErrorInformation;
@@ -87,5 +89,4 @@ public class UserManageExceptionAdvice {
         }
         throw new RuntimeException();
     }
-
 }

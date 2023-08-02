@@ -41,34 +41,6 @@
     </div>
 </section>
 
-
-<section>
-    <div class="inner">
-        <div class="input-container">
-            <div class="input-title">번역</div>
-            <input class="input-input" id="korean-input">
-        </div>
-    </div>
-</section>
-
-<section>
-    <div class="inner">
-        <div class="input-container">
-            <div class="input-title">영어</div>
-            <input class="input-input" id="english-input">
-        </div>
-    </div>
-</section>
-
-<section>
-    <div class="inner">
-        <div class="d-grid gap-2">
-            <button class="btn btn-primary" type="button" id="input-button">문장 등록</button>
-        </div>
-    </div>
-</section>
-
-
 <section>
     <div class="table-inner">
         <table class="table ">
@@ -81,7 +53,6 @@
                 <th scope="col">영어</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
-                <th scope="col">삭제</th>
             </tr>
             </thead>
             <tbody id="table-body">
@@ -96,7 +67,8 @@
 <script th:inline="javascript">
     const apiUrl = [[${@environment.getProperty('url.api')}]];
     const uiUrl = window.location.host;
-    const groupId = window.location.href.replace("http://" + uiUrl + "/user/sentence/page/", "")
+    const groupId = window.location.href.replace(
+        "http://" + uiUrl + "/user/sentence/subscribe/page/", "")
     axios({
         url: "http://" + apiUrl + "/api/user/sentence/get/info/group",
         method: 'get',
@@ -118,23 +90,10 @@
             let englishTdElement = document.createElement("td")
             englishTdElement.appendChild(document.createTextNode(dto.english));
             englishTdElement.setAttribute("colspan", 3);
-            let deleteButtonTd = document.createElement("td");
-            let deleteButton = document.createElement("button");
-            deleteButton.setAttribute("id", "delete-button");
-            deleteButton.setAttribute("entity", dto.sentenceId);
-            deleteButton.appendChild(document.createTextNode("삭제"))
-            deleteButton.style.width = "100%"
-            deleteButton.style.height = "100%"
-            deleteButton.style.borderRadius = "5px"
-            deleteButton.style.backgroundColor = "rgb(3, 110, 2533)"
-            deleteButton.style.border = "none";
-            deleteButton.style.color = "rgb(232, 248, 255)";
-            deleteButtonTd.appendChild(deleteButton);
             let trElement = document.createElement("tr");
             trElement.appendChild(idTdElement);
             trElement.appendChild(koreanTdElement);
             trElement.appendChild(englishTdElement);
-            trElement.appendChild(deleteButtonTd);
             bodyElement.appendChild(trElement);
         }
     };
@@ -144,49 +103,6 @@
         params: {"groupId": groupId}
     }).then(function (response) {
         makeTable(response.data);
-    });
-</script>
-<!--문장 추가하기-->
-<script th:inline="javascript">
-    document.getElementById("input-button").onclick = function () {
-        if (document.getElementById("korean-input").value.trim() === "" || document.getElementById(
-            "english-input").value.trim() === "") {
-            alert("공백은 문자으로 등록할 수 없습니다.");
-            return;
-        }
-        axios({
-            url: "http://" + apiUrl + "/api/user/sentence/add/sentence",
-            method: "post",
-            data: {
-                "updateSentenceGroupId": groupId,
-                "korean": document.getElementById("korean-input").value,
-                "english": document.getElementById("english-input").value
-            }
-        })
-        .then(function (response) {
-            window.location.reload();
-            // document.getElementById("korean-input").value = "";
-            // document.getElementById("english-input").value = "";
-        });
-    };
-</script>
-<!--문장 삭제하기-->
-<script th:inline="javascript">
-    document.addEventListener("click", function (event) {
-        if (event.target.id !== "delete-button") {
-            return;
-        }
-        event.target.getAttribute("entity");
-        axios({
-            url: "http://" + apiUrl + "/api/user/sentence/delete/sentence",
-            method: 'post',
-            data: {
-                "deleteSentenceId": event.target.getAttribute("entity")
-            }
-        })
-        .then(function (response) {
-            window.location.reload()
-        })
     });
 </script>
 </body>

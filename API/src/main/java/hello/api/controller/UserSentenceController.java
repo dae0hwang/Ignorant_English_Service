@@ -1,9 +1,9 @@
 package hello.api.controller;
 
+import hello.api.dto.AlarmInfoDto;
 import hello.api.dto.UserSentenceDto;
-import hello.api.dto.UserSentenceKafkaDto;
 import hello.api.dto.UserSentenceRequest;
-import hello.api.service.SentenceAlarmKafkaService;
+import hello.api.service.SentenceAlarmService;
 import hello.api.service.UserSentenceService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user/sentence")
 public class UserSentenceController {
 
-    private final SentenceAlarmKafkaService sentenceAlarmKafkaService;
+    private final SentenceAlarmService sentenceAlarmService;
     private final UserSentenceService userSentenceService;
 
 
@@ -61,28 +61,28 @@ public class UserSentenceController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //Kafka1. 다른 유저 문장 구독하기
+    //문장 구독하기 - 알람
     @PostMapping("/add/subscribe")
     public ResponseEntity<Void> addSubscribe(@RequestBody UserSentenceRequest request) {
         userSentenceService.subscribeSentence(request);
-        sentenceAlarmKafkaService.sendAddSubscribeMessage(request);
+        sentenceAlarmService.subscribeSentence(request.getSubscriberId(),
+            request.getSubscribedSentenceId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
-    //Kafka2. 문장 추가
+    //문장 추가 - 알람
     @PostMapping("/add/sentence")
     public ResponseEntity<Void> addSentence(@RequestBody UserSentenceRequest request) {
-        sentenceAlarmKafkaService.sendAddSentenceMessage(request);
+        sentenceAlarmService.addSentence(request.getUpdateSentenceGroupId());
         userSentenceService.addSentence(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //Kafka3. 문장 삭제
+    //K문장 삭제 - 알람
     @PostMapping("/delete/sentence")
     public ResponseEntity<Void> deleteSentence(@RequestBody UserSentenceRequest request) {
-        UserSentenceKafkaDto kafkaDto = userSentenceService.deleteSentence(request);
-        sentenceAlarmKafkaService.sendDeleteSentenceMessage(kafkaDto);
+        userSentenceService.deleteSentence(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -96,5 +96,19 @@ public class UserSentenceController {
     public ResponseEntity<List<UserSentenceDto>> getGroupSentence(@RequestParam Long groupId) {
         List<UserSentenceDto> groupSentence = userSentenceService.getGroupSentence(groupId);
         return new ResponseEntity<>(groupSentence, HttpStatus.OK);
+    }
+
+    @PostMapping("/get/list/my/alarm")
+    public ResponseEntity<List<AlarmInfoDto>> getMyAlarmList(
+        @RequestBody UserSentenceRequest request) {
+        List<AlarmInfoDto> myAlarmList = sentenceAlarmService.getMyAlarmList(request);
+        return new ResponseEntity<>(myAlarmList, HttpStatus.OK);
+    }
+
+    //알림 삭제하기
+    @PostMapping("delete/alarm")
+    public ResponseEntity<Void> deleteAlarm(@RequestBody UserSentenceRequest request) {
+        sentenceAlarmService.deleteAlarm(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

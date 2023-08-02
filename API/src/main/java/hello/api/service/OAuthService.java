@@ -109,7 +109,7 @@ public class OAuthService {
             //DB에 존재하지 않는다면 DB 저장 후 JWT 토큰 발급
             Users save = userRepository.save(
                 Users.builder().username(profile.getEmail()).name(profile.getName())
-                    .provider("google").roles("ROLE_USER").emailAuth(false).password("NO").build());
+                    .provider("google").roles("ROLE_USER").emailAuth(true).password("NO").build());
             return createJwtToken(save.getId(), save.getUsername());
         }
     }

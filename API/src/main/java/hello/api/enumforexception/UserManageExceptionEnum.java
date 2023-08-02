@@ -17,7 +17,9 @@ public enum UserManageExceptionEnum {
     SIGNUP_REQUEST_EMAIL(Constants.signupRequestEmail, "signupEmailValidationException",
         "/errors/user/manage/signup/email-pattern" , HttpStatus.BAD_REQUEST),
     SIGNUP_REQUEST_NAME(Constants.signupRequestName, "signupNameValidationException",
-        "/errors/user/manage/signup/name-pattern" , HttpStatus.BAD_REQUEST)
+        "/errors/user/manage/signup/name-pattern" , HttpStatus.BAD_REQUEST),
+    DUPLICATED_SUBSCRIBE(Constants.duplicatedSubscribe, "duplicatedSubscribeException",
+        "/errors/user/subscribe/duplicate", HttpStatus.BAD_REQUEST)
 
     ;
 
@@ -45,6 +47,7 @@ public enum UserManageExceptionEnum {
             "signup Request email must be email pattern";
         public static final String signupRequestName =
             "signup Request email must not be blank";
-
+        public static final String duplicatedSubscribe =
+            "duplicated subscribed sentence";
     }
 }

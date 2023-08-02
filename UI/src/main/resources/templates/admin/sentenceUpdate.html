@@ -8,7 +8,6 @@
     <title>무식한 영어 공부</title>
 
     <!--스타일 초기화  아이콘 폰트 등록-->
-    <link rel="stylesheet" href="../css/nomalize.css"/>
     <script src="https://kit.fontawesome.com/f1def33959.js" crossorigin="anonymous"></script>
     <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet"
           type="text/css"/>
@@ -28,7 +27,7 @@
     <div class="inner">
         <div class="head-container">
             <div class="head-brand">무식한 영어 공부</div>
-            <a class="btn btn-primary head" href="" role="button" style="color: #ffffff"
+            <a class="btn btn-primary head" href="/" role="button" style="color: #ffffff"
                id="home-button">Home</a>
         </div>
     </div>
@@ -90,130 +89,108 @@
     </div>
 </section>
 
-
+<!--업데이트 문장 정보 채우기 -->
 <script th:inline="javascript">
-  const apiUrl = [[${@environment.getProperty('url.api')}]];
-  const uiUrl = window.location.host;
+    const apiUrl = [[${@environment.getProperty('url.api')}]];
+    const id = [[${id}]];
+    const makeGrammarSelect = function (dataList) {
+        let grammarSelect = document.getElementById("grammar-select");
+        for (let i = 0; i < dataList.length; i++) {
+            if (i === 0) {
+                let optionElement = document.createElement("option");
+                optionElement.selected;
+                optionElement.appendChild(document.createTextNode(dataList[i]));
+                grammarSelect.appendChild(optionElement)
+            } else {
+                let optionElement = document.createElement("option");
+                optionElement.value = i;
+                optionElement.appendChild(document.createTextNode(dataList[i]));
+                grammarSelect.appendChild(optionElement)
+            }
+        }
+    }
 
-  //home button
-  document.getElementById("home-button").href = "http://" + uiUrl;
+    const makeSituationSelect = function (dataList) {
+        let situationSelect = document.getElementById("situation-select");
+        for (let i = 0; i < dataList.length; i++) {
+            if (i === 0) {
+                let optionElement = document.createElement("option");
+                optionElement.selected;
+                optionElement.appendChild(document.createTextNode(dataList[i]));
+                situationSelect.appendChild(optionElement)
+            } else {
+                let optionElement = document.createElement("option");
+                optionElement.value = i;
+                optionElement.appendChild(document.createTextNode(dataList[i]));
+                situationSelect.appendChild(optionElement)
+            }
+        }
+    }
 
-  //thymeleaf id 변수 가져오기
-  const id = [[${id}]];
-
-  //셀렉트 박스 정보 가져오기.
-  function makeGrammarSelect(dataList) {
     let grammarSelect = document.getElementById("grammar-select");
-
-    for (let i = 0; i < dataList.length; i++) {
-      if (i === 0) {
-        let optionElement = document.createElement("option");
-        optionElement.selected;
-        optionElement.appendChild(document.createTextNode(dataList[i]));
-        grammarSelect.appendChild(optionElement)
-      } else {
-        let optionElement = document.createElement("option");
-        optionElement.value = i;
-        optionElement.appendChild(document.createTextNode(dataList[i]));
-        grammarSelect.appendChild(optionElement)
-      }
-    }
-  }
-
-  function makeSituationSelect(dataList) {
     let situationSelect = document.getElementById("situation-select");
+    let englishInput = document.getElementById("english-input");
+    let koreanInput = document.getElementById("korean-input");
 
-    for (let i = 0; i < dataList.length; i++) {
-      if (i === 0) {
-        let optionElement = document.createElement("option");
-        optionElement.selected;
-        optionElement.appendChild(document.createTextNode(dataList[i]));
-        situationSelect.appendChild(optionElement)
-      } else {
-        let optionElement = document.createElement("option");
-        optionElement.value = i;
-        optionElement.appendChild(document.createTextNode(dataList[i]));
-        situationSelect.appendChild(optionElement)
-      }
+    const valueAdd = function (dto) {
+        koreanInput.value = dto.korean;
+        englishInput.value = dto.english;
+        let grammarOptions = grammarSelect.childNodes;
+        for (const grammarOption of grammarOptions) {
+            if (grammarOption.textContent === dto.grammar) {
+                grammarOption.selected = true;
+            }
+        }
+        let situationOptions = situationSelect.childNodes;
+        for (const situationOption of situationOptions) {
+            if (situationOption.textContent === dto.situation) {
+                situationOption.selected = true;
+            }
+        }
     }
-  }
 
-  //id에 해당하는 정보 넣는 함수
-  let grammarSelect = document.getElementById("grammar-select");
-  let situationSelect = document.getElementById("situation-select");
-  let englishInput = document.getElementById("english-input");
-  let koreanInput = document.getElementById("korean-input");
-
-  function valueAdd(dto) {
-    koreanInput.value = dto.korean;
-    englishInput.value = dto.english;
-    //grammarselect 옵션들을 돌아가면서 해당 조건에 맞으면 seletecd 옵션주기.
-    let grammarOptions = grammarSelect.childNodes;
-    for (const grammarOption of grammarOptions) {
-      if (grammarOption.textContent === dto.grammar) {
-        grammarOption.selected = true;
-      }
-    }
-    let situationOptions = situationSelect.childNodes;
-    for (const situationOption of situationOptions) {
-      if (situationOption.textContent === dto.situation) {
-        situationOption.selected = true;
-      }
-    }
-  }
-
-  //플러스 id에 해당하는 값 요소들에 미리 넣어주기
-  window.onload = function () {
     axios({
-      url: "http://" + apiUrl + "/api/admin/sentence/selection",
-      method: 'get',
-    })
-    .then(function (response) {
-      console.log(response);
-      makeGrammarSelect(response.data.grammarList);
-      makeSituationSelect(response.data.situationList);
-
-      //값 넣는 것은 셀렉트 박스가 완성 된 후에 작동하도록 안에 넣어주었다.
-      axios({
-        url: "http://" + apiUrl + "/api/admin/sentence/find/"+id,
+        url: "http://" + apiUrl + "/api/admin/sentence/selection",
         method: 'get',
-      })
-      .then(function (response) {
-        console.log(response);
-        valueAdd(response.data.adminSentenceDto);
-      })
-      .catch(function (error) {
-        console.log(error)
-
-      });
-    })
-    .catch(function (error) {
-      alert("[실패] 셀렉트 값 가져오기를 실패했습니다.");
-    });
-  }
-
-  //문장 업데이트 등록
-  let registerButton = document.getElementById("register-button");
-  registerButton.onclick = function () {
-    axios({
-      url: "http://" + apiUrl + "/api/admin/sentence/update/"+id,
-      method: 'put',
-      data: {
-        korean: koreanInput.value,
-        english: englishInput.value,
-        grammar: grammarSelect.options[grammarSelect.selectedIndex].text,
-        situation: situationSelect.options[situationSelect.selectedIndex].text
-      }
-
     })
     .then(function (response) {
-      location.href="/admin/sentence/list"
+        makeGrammarSelect(response.data.grammarList);
+        makeSituationSelect(response.data.situationList);
+        axios({
+            url: "http://" + apiUrl + "/api/admin/sentence/find/" + id,
+            method: 'get',
+        })
+        .then(function (response) {
+            valueAdd(response.data.adminSentenceDto);
+        })
+        .catch(function (error) {
+        });
     })
     .catch(function (error) {
-      console.log(error)
-      alert("[실패] 잠시 후 시도해 주세요");
+        alert("[실패] 셀렉트 값 가져오기를 실패했습니다.");
     });
-  }
+</script>
+<!--업데이트 버튼 구현-->
+<script th:inline="javascript">
+    let registerButton = document.getElementById("register-button");
+    registerButton.onclick = function () {
+        axios({
+            url: "http://" + apiUrl + "/api/admin/sentence/update/" + id,
+            method: 'put',
+            data: {
+                korean: koreanInput.value,
+                english: englishInput.value,
+                grammar: grammarSelect.options[grammarSelect.selectedIndex].text,
+                situation: situationSelect.options[situationSelect.selectedIndex].text
+            }
+        })
+        .then(function (response) {
+            location.href = "/admin/sentence/list"
+        })
+        .catch(function (error) {
+            alert("[실패] 업데이트에 실패했습니다.");
+        });
+    }
 </script>
 </body>
 </html>

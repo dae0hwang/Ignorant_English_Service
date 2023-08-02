@@ -9,7 +9,7 @@
 </body>
 </html>
 <script th:inline="javascript">
-  const token = [[${token}]];
-  localStorage.setItem("Authorization", "Bearer "+token);
-  window.location = "/";
+    const token = [[${token}]];
+    localStorage.setItem("Authorization", "Bearer " + token);
+    window.location = "/user/manage/account";
 </script>

@@ -10,7 +10,8 @@ public enum Grammar {
     NO("NO"),
     HAVEPP("HAVEPP"),
     IF("IF"),
-    AS("AS");
+    AS("AS"),
+    WHICH("WHICH");
 
     private final String stringGrammar;
 }

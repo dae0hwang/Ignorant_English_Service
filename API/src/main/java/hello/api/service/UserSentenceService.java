@@ -1,12 +1,14 @@
 package hello.api.service;
 
+import static hello.api.enumforexception.UserManageExceptionEnum.*;
+
 import hello.api.dto.UserSentenceDto;
-import hello.api.dto.UserSentenceKafkaDto;
 import hello.api.dto.UserSentenceRequest;
 import hello.api.entity.SentenceGroup;
 import hello.api.entity.SentenceSubscribe;
 import hello.api.entity.UserSentence;
 import hello.api.entity.Users;
+import hello.api.exception.DuplicatedSubscribeException;
 import hello.api.repository.SentenceGroupRepository;
 import hello.api.repository.SentenceSubscribeRepository;
 import hello.api.repository.UserRepository;
@@ -25,6 +27,7 @@ public class UserSentenceService {
     private final UserRepository userRepository;
     private final SentenceSubscribeRepository sentenceSubscribeRepository;
     private final UserSentenceRepository userSentenceRepository;
+    private final SentenceAlarmService sentenceAlarmService;
 
 
     //유저가 관리하는 문장 가져오기
@@ -87,6 +90,7 @@ public class UserSentenceService {
         Users findUser = userRepository.findById(request.getSubscriberId()).orElseThrow();
         SentenceGroup findSentenceGroup = sentenceGroupRepository.findById(
             request.getSubscribedSentenceId()).orElseThrow();
+        checkedDuplicatedSubscribeGroup(findUser, findSentenceGroup);
         SentenceSubscribe sentenceSubscribe = SentenceSubscribe.builder().subscribedUser(findUser)
             .sentenceGroup(findSentenceGroup).build();
         sentenceSubscribeRepository.save(sentenceSubscribe);
@@ -105,19 +109,9 @@ public class UserSentenceService {
 
     //자신 문장 그룹 문장 삭제하기
     @Transactional
-    public UserSentenceKafkaDto deleteSentence(UserSentenceRequest request) {
-        //kafka관련 정보 넘겨주기
-        UserSentence findUserSentence = userSentenceRepository.findById(
-            request.getDeleteSentenceId()).orElseThrow();
-        SentenceGroup findSentenceGroup = sentenceGroupRepository.findById(
-            findUserSentence.getSentenceGroup().getId()).orElseThrow();
-        List<SentenceSubscribe> findSubuscribeList = sentenceSubscribeRepository
-            .findListBySentenceGroup(findSentenceGroup);
-        UserSentenceKafkaDto kafkaDto = UserSentenceKafkaDto.builder().list(findSubuscribeList)
-            .sentenceGroup(findSentenceGroup).build();
-        //실제 데이터 삭제하기
+    public void deleteSentence(UserSentenceRequest request) {
+        sentenceAlarmService.deleteSentence(request.getDeleteSentenceId());
         userSentenceRepository.deleteById(request.getDeleteSentenceId());
-        return kafkaDto;
     }
 
     public UserSentenceDto getSentenceGroupInfo(Long groupId) {
@@ -137,5 +131,11 @@ public class UserSentenceService {
                 userSentence.getKorean()).english(userSentence.getEnglish()).build());
         }
         return list;
+    }
+    private void checkedDuplicatedSubscribeGroup(Users users, SentenceGroup sentenceGroup) {
+        sentenceSubscribeRepository.findBySubscribedUserAndSentenceGroup(users, sentenceGroup)
+            .ifPresent(m -> {
+                throw new DuplicatedSubscribeException(DUPLICATED_SUBSCRIBE.getErrormessage());
+            });
     }
 }

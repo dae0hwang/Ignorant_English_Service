@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum Situation {
     NO("NO"),
     BUSINESS("BUSINESS"),
-    CAFE("CAFE");
+    REACTION("REACTION"),
+    EVERYDAY("EVERYDAY"),
+    MEETING("MEETING");
 
     private final String stringSituation;
 }

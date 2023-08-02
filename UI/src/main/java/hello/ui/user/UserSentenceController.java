@@ -12,4 +12,8 @@ public class UserSentenceController {
     public String userSentencePage(Long groupId) {
         return "user/sentence/page";
     }
+    @GetMapping("subscribe/page/{groupId}")
+    public String subscribeSentencePage(Long groupId) {
+        return "user/sentence/subscribepage";
+    }
 }

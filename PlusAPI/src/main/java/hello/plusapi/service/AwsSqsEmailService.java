@@ -22,7 +22,7 @@ public class AwsSqsEmailService implements SqsEmailService<String>{
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender javaMailSender;
 
-    @SqsListener("sqs")
+    @SqsListener("english-sqs")
     @Override
     public void sendEmailAuth(String email) {
         EmailAuth emailAuth = emailAuthRepository.findByEmail(email)

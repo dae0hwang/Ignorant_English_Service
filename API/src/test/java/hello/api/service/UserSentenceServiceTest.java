@@ -179,12 +179,11 @@ class UserSentenceServiceTest {
         entityManager.flush();
         entityManager.clear();
         //when
-        UserSentenceKafkaDto kafkaDto = userSentenceService.deleteSentence(
+        userSentenceService.deleteSentence(
             UserSentenceRequest.builder().deleteSentenceId(save.getId()).build());
         //then
         List<UserSentence> all = userSentenceRepository.findAll();
         assertThat(all.size()).isEqualTo(0);
-        assertThat(kafkaDto.getList().size()).isEqualTo(1);
     }
 
 
