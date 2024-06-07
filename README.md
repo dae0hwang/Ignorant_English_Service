@@ -1,10 +1,6 @@
 
-## 무식한 영어 서비스
-사용자 페이지 : [http://www.daeyoung.p-e.kr/user/page](http://www.daeyoung.p-e.kr/user/page)    
-(임시 ID : guest / 임시 PW : Asd!1234) 또는 직접 회원가입을 진행하셔도 됩니다.
-
-관리자 페이지 :  [http://www.daeyoung.p-e.kr/admin/page](http://www.daeyoung.p-e.kr/admin/page)   
-## 서비스 소개
+## 무식한 영어 서비스-소개
+ 
 ![서비스](https://github.com/dae0hwang/Food_Ordering_Service/assets/103154389/a06b047c-0c0f-4d78-86dc-a7acf3775a2f)
 
 ## ERD
